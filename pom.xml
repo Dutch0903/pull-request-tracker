@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com</groupId>
-    <artifactId>pr-tracker</artifactId>
+    <artifactId>pull-request-tracker</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pr-tracker</name>
-    <description>pr-tracker</description>
+    <name>pull-request-tracker</name>
+    <description>A small application for tracking and interaction with pull request from multiple repositories</description>
 
     <properties>
         <java.version>21</java.version>

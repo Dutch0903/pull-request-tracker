@@ -60,6 +60,12 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
 
     @Override
     public void persist() throws IOException {
-        fileStorage.save(FILE_NAME, codeRepositories.values());
+        fileStorage.save(
+                FILE_NAME,
+                codeRepositories.values()
+                        .stream()
+                        .map(mapper::toDto)
+                        .toList()
+        );
     }
 }
