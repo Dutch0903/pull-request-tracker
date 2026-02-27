@@ -1,6 +1,6 @@
 package com.prtracker.domain.entity;
 
-import com.prtracker.domain.enums.Status;
+import com.prtracker.domain.enums.PullRequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,6 +12,6 @@ public class PullRequest {
     private long id;
     private String title;
     private String author;
-    private Status status;
+    private PullRequestStatus status;
     private Instant updatedAt;
 }
