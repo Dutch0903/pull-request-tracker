@@ -35,3 +35,4 @@ build/
 ### Application ###
 data/
 pull-request-tracker.log
+logs/

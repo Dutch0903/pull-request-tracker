@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter-jansi</artifactId>
+            <artifactId>spring-shell-starter-jna</artifactId>
             <version>${spring-shell.version}</version>
         </dependency>
 
