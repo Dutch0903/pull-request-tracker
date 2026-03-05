@@ -1,8 +1,10 @@
 package com.prtracker.infrastructure.persistence.dto;
 
 public record CodeRepositoryDto(
-        Long id,
+        String identifier,
         String owner,
         String name,
-        String url
+        String url,
+        String status,
+        String accessToken
 ) {}

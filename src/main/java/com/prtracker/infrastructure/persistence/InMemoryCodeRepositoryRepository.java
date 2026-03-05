@@ -2,7 +2,7 @@ package com.prtracker.infrastructure.persistence;
 
 import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.repository.CodeRepositoryRepository;
-import com.prtracker.domain.valueobject.CodeRepositoryId;
+import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
 import com.prtracker.infrastructure.persistence.dto.CodeRepositoryDto;
 import com.prtracker.infrastructure.persistence.mapper.CodeRepositoryMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
     private final FileStorage fileStorage;
     private final CodeRepositoryMapper mapper;
 
-    private final ConcurrentHashMap<CodeRepositoryId, CodeRepository> codeRepositories = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<CodeRepositoryIdentifier, CodeRepository> codeRepositories = new ConcurrentHashMap<>();
 
     @Override
     public void save(CodeRepository codeRepository) {
@@ -31,6 +31,11 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
     @Override
     public void delete(CodeRepository codeRepository) {
 
+    }
+
+    @Override
+    public boolean exists(CodeRepositoryIdentifier identifier) {
+        return codeRepositories.containsKey(identifier);
     }
 
     @Override
@@ -51,7 +56,7 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
                         .map(mapper::toDomain)
                         .collect(
                                 Collectors.toMap(
-                                        CodeRepository::getId,
+                                        CodeRepository::getIdentifier,
                                         Function.identity()
                                 )
                         )

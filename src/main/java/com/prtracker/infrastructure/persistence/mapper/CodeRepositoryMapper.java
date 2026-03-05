@@ -1,7 +1,8 @@
 package com.prtracker.infrastructure.persistence.mapper;
 
 import com.prtracker.domain.entity.CodeRepository;
-import com.prtracker.domain.valueobject.CodeRepositoryId;
+import com.prtracker.domain.enums.CodeRepositoryStatus;
+import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
 import com.prtracker.infrastructure.persistence.dto.CodeRepositoryDto;
 import org.springframework.stereotype.Component;
 
@@ -9,19 +10,23 @@ import org.springframework.stereotype.Component;
 public class CodeRepositoryMapper {
     public CodeRepositoryDto toDto(CodeRepository codeRepository) {
         return new CodeRepositoryDto(
-                codeRepository.getId().value(),
+                codeRepository.getIdentifier().value(),
                 codeRepository.getOwner(),
                 codeRepository.getName(),
-                codeRepository.getUrl()
+                codeRepository.getUrl(),
+                codeRepository.getStatus().toString(),
+                codeRepository.getAccessToken()
         );
     }
 
     public CodeRepository toDomain(CodeRepositoryDto codeRepositoryDto) {
         return new CodeRepository(
-                CodeRepositoryId.from(codeRepositoryDto.id()),
+                CodeRepositoryIdentifier.from(codeRepositoryDto.identifier()),
                 codeRepositoryDto.owner(),
                 codeRepositoryDto.name(),
-                codeRepositoryDto.url()
+                codeRepositoryDto.url(),
+                CodeRepositoryStatus.valueOf(codeRepositoryDto.status()),
+                codeRepositoryDto.accessToken()
         );
     }
 }
