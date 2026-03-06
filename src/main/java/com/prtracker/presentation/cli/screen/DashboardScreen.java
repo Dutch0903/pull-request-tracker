@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class HomeScreen extends BaseScreen {
+public class DashboardScreen extends BaseScreen {
     @Override
     public View render() {
         BoxView box = new BoxView();
