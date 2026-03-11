@@ -2,18 +2,20 @@ spring:
   main:
     banner-mode: off
     web-application-type: none
+    register-shutdown-hook: true
 
   application:
     name: pull-request-tracker
 
-  shell:
-    interactive:
-      enabled: false
+  lifecycle:
+    timeout-per-shutdown-phase: 10s
 
 logging:
   file:
     name: logs/application.log
 
   pattern:
-
     file: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+
+tamboui:
+  default-screen: dashboard

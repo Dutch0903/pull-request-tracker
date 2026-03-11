@@ -1,14 +1,12 @@
 package com.prtracker;
 
-import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(Application.class);
-        application.run(args);
+    static void main(String[] args) {
+        new SpringApplication(Application.class).run(args);
     }
 }

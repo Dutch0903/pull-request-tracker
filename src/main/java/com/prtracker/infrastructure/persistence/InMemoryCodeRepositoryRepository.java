@@ -25,12 +25,12 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
 
     @Override
     public void save(CodeRepository codeRepository) {
-
+        codeRepositories.put(codeRepository.getIdentifier(), codeRepository);
     }
 
     @Override
     public void delete(CodeRepository codeRepository) {
-
+        codeRepositories.remove(codeRepository.getIdentifier());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
 
     @Override
     public List<CodeRepository> findAll() {
-        return List.of();
+        return List.copyOf(codeRepositories.values());
     }
 
     public Integer count() {

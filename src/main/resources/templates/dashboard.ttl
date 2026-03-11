@@ -1,0 +1,19 @@
+<t:dock xmlns:t="https://github.com/KyleKreuter/tamboui-spring/template"
+        top-height="3" bottom-height="3">
+  <t:panel region="center" title="Welcome to TamboUI Spring" class="border-rounded">
+    <t:grid grid-size="2" gutter="1">
+        <t:panel title="Card 1" border-type="rounded">
+            <t:text t:text="Content" />
+        </t:panel>
+        <t:panel title="Card 2" border-type="rounded">
+            <t:text t:text="Recent repositories" />
+            <t:each items="${repositories}" var="repository" index="i">
+                <t:text t:text="${i + 1}. ${repository.identifier.value}" />
+            </t:each>
+        </t:panel>
+    </t:grid>
+  </t:panel>
+
+
+    <t:include template="keybindings" />
+</t:dock>
