@@ -1,19 +1,12 @@
 package com.prtracker.presentation.cli;
 
-import org.springframework.shell.jline.tui.component.view.event.KeyEvent;
+public record KeyBinding(String key, String label) {
+    public static KeyBinding create(String key, String label) {
+        return new KeyBinding(key, label);
+    }
 
-import java.util.function.Consumer;
-
-public record KeyBinding(
-        int key,
-        String description,
-        Consumer<KeyEvent> action
-) {
-    public static KeyBinding create(
-            int key,
-            String description,
-            Consumer<KeyEvent> action
-    ) {
-        return new KeyBinding(key, description, action);
+    @Override
+    public String toString() {
+        return "[" + key + "] " + label;
     }
 }

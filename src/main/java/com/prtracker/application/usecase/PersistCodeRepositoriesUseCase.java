@@ -16,6 +16,7 @@ public class PersistCodeRepositoriesUseCase extends AbstractVoidUseCase {
     protected void executeInternal() {
         try {
             codeRepositoryRepository.persist();
+
         } catch (Throwable e) {
             log.error("Failed to persist code repositories", e);
             throw new RuntimeException(e);
