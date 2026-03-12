@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-@TamboScreen(value = "add-repository", template = "add-repository")
+@TamboScreen(value = Screen.ADD_REPOSITORY, template = "add-repository")
 public class AddRepositoryController extends BaseScreenController {
     private final NavigationRouter navigationRouter;
     private final AddCodeRepositoryUseCase addCodeRepositoryUseCase;
@@ -26,7 +26,7 @@ public class AddRepositoryController extends BaseScreenController {
 
     private static final List<KeyBinding> KEY_BINDINGS = List.of(
         KeyBinding.create(SAVE_KEY, "Save"),
-            KeyBinding.create(BACK_KEY, "Back")
+        KeyBinding.create(BACK_KEY, "Back")
     );
 
     @BindState("nameInput")
@@ -61,7 +61,7 @@ public class AddRepositoryController extends BaseScreenController {
 
         try {
             addCodeRepositoryUseCase.execute(dto);
-            navigationRouter.navigateTo(Screen.DASHBOARD.toString());
+            navigationRouter.navigateTo(Screen.DASHBOARD);
         } catch (CodeRepositoryAlreadyExistsException e) {
             error = e.getMessage();
         }
@@ -70,7 +70,7 @@ public class AddRepositoryController extends BaseScreenController {
     @OnKey(BACK_KEY)
     public void back() {
         resetAll();
-        navigationRouter.navigateTo(Screen.DASHBOARD.toString());
+        navigationRouter.navigateTo(Screen.DASHBOARD);
     }
 
     private void resetAll() {

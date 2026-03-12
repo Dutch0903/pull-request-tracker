@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @RequiredArgsConstructor
-@TamboScreen(value = "dashboard", template = "dashboard")
+@TamboScreen(value = Screen.DASHBOARD, template = "dashboard")
 public class DashboardController extends BaseScreenController {
     private static final Logger log = LoggerFactory.getLogger(DashboardController.class);
     private final NavigationRouter navigationRouter;
@@ -42,6 +42,6 @@ public class DashboardController extends BaseScreenController {
 
     @OnKey(ADD_REPOSITORY_KEY)
     void addRepository() {
-        navigationRouter.navigateTo(Screen.ADD_REPOSITORY.toString());
+        navigationRouter.navigateTo(Screen.ADD_REPOSITORY);
     }
 }

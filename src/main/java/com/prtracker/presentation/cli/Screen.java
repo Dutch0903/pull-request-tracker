@@ -1,17 +1,9 @@
 package com.prtracker.presentation.cli;
 
-public enum Screen {
-    DASHBOARD("dashboard"),
-    ADD_REPOSITORY("add-repository");
+public class Screen {
 
-    private final String text;
+    public static final String DASHBOARD = "dashboard";
+    public static final String ADD_REPOSITORY = "add-repository";
 
-    Screen(final String text) {
-        this.text = text;
-    }
-
-    @Override
-    public String toString() {
-        return this.text;
-    }
+    private Screen() {}
 }
