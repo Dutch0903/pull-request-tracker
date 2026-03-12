@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class GlobalShortcuts {
 
-    @OnKey("ctrl+q")
-    public void onQuit() {
-        // fires on any screen
-        System.exit(0);
-    }
+	@OnKey("ctrl+q")
+	public void onQuit() {
+		// fires on any screen
+		System.exit(0);
+	}
 }

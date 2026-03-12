@@ -16,32 +16,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @TamboScreen(value = Screen.DASHBOARD, template = "dashboard")
 public class DashboardController extends BaseScreenController {
-    private static final Logger log = LoggerFactory.getLogger(DashboardController.class);
-    private final NavigationRouter navigationRouter;
-    private final GetCodeRepositoriesUseCase getCodeRepositoriesUseCase;
+	private static final Logger log = LoggerFactory.getLogger(DashboardController.class);
+	private final NavigationRouter navigationRouter;
+	private final GetCodeRepositoriesUseCase getCodeRepositoriesUseCase;
 
-    private static final String ADD_REPOSITORY_KEY = "a";
-    private static final String QUIT_KEY = "q";
+	private static final String ADD_REPOSITORY_KEY = "a";
+	private static final String QUIT_KEY = "q";
 
-    @Override
-    protected List<KeyBinding> getKeyBindings() {
-        return List.of(
-                KeyBinding.create(ADD_REPOSITORY_KEY, "Add Repository"),
-                KeyBinding.create(QUIT_KEY, "Quit")
-        );
-    }
+	@Override
+	protected List<KeyBinding> getKeyBindings() {
+		return List.of(KeyBinding.create(ADD_REPOSITORY_KEY, "Add Repository"), KeyBinding.create(QUIT_KEY, "Quit"));
+	}
 
-    @Override
-    public void populate(TemplateModel templateModel) {
-        super.populate(templateModel);
+	@Override
+	public void populate(TemplateModel templateModel) {
+		super.populate(templateModel);
 
-        var repositories = getCodeRepositoriesUseCase.execute(null);
+		var repositories = getCodeRepositoriesUseCase.execute(null);
 
-        templateModel.put("repositories", repositories);
-    }
+		templateModel.put("repositories", repositories);
+	}
 
-    @OnKey(ADD_REPOSITORY_KEY)
-    void addRepository() {
-        navigationRouter.navigateTo(Screen.ADD_REPOSITORY);
-    }
+	@OnKey(ADD_REPOSITORY_KEY)
+	void addRepository() {
+		navigationRouter.navigateTo(Screen.ADD_REPOSITORY);
+	}
 }

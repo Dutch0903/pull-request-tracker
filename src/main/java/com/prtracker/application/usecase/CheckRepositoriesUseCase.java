@@ -4,6 +4,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CheckRepositoriesUseCase extends AbstractVoidUseCase {
-    public void executeInternal() {
-    }
+	public void executeInternal() {
+	}
 }

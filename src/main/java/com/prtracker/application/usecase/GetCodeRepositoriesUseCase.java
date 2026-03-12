@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetCodeRepositoriesUseCase extends AbstractUseCase<Void, List<CodeRepository>> {
-    private final CodeRepositoryRepository codeRepositoryRepository;
+	private final CodeRepositoryRepository codeRepositoryRepository;
 
-    @Override
-    protected List<CodeRepository> executeInternal(Void input) {
-        return codeRepositoryRepository.findAll();
-    }
+	@Override
+	protected List<CodeRepository> executeInternal(Void input) {
+		return codeRepositoryRepository.findAll();
+	}
 }

@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PullRequestRepository {
-    void save(PullRequest pullRequest);
+	void save(PullRequest pullRequest);
 
-    void delete(PullRequest pullRequest);
+	void delete(PullRequest pullRequest);
 
-    Optional<PullRequest> findById(PullRequestId id);
+	Optional<PullRequest> findById(PullRequestId id);
 
-    List<PullRequest> findAll();
+	List<PullRequest> findAll();
 
-    List<PullRequest> findAllByRepository(CodeRepository repository);
+	List<PullRequest> findAllByRepository(CodeRepository repository);
 
-    void initialize();
+	void initialize();
 
-    void persist();
+	void persist();
 }

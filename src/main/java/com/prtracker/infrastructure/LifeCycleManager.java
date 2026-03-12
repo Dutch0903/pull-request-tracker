@@ -10,16 +10,16 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LifeCycleManager {
-    private final InitializeCodeRepositoriesUseCase initializeRepositoriesUseCase;
-    private final PersistCodeRepositoriesUseCase persistCodeRepositoriesUseCase;
+	private final InitializeCodeRepositoriesUseCase initializeRepositoriesUseCase;
+	private final PersistCodeRepositoriesUseCase persistCodeRepositoriesUseCase;
 
-    @PostConstruct
-    public void onPostConstruct() {
-        initializeRepositoriesUseCase.execute();
-    }
+	@PostConstruct
+	public void onPostConstruct() {
+		initializeRepositoriesUseCase.execute();
+	}
 
-    @PreDestroy
-    public void onPreDestroy() {
-        persistCodeRepositoriesUseCase.execute();
-    }
+	@PreDestroy
+	public void onPreDestroy() {
+		persistCodeRepositoriesUseCase.execute();
+	}
 }

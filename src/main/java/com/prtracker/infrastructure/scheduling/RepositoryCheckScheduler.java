@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RepositoryCheckScheduler {
 
-    private final CheckRepositoriesUseCase checkRepositoriesUseCase;
+	private final CheckRepositoriesUseCase checkRepositoriesUseCase;
 
-    public void checkAllRepositories() {
-        checkRepositoriesUseCase.execute();
-    }
+	public void checkAllRepositories() {
+		checkRepositoriesUseCase.execute();
+	}
 }
