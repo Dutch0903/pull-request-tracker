@@ -9,17 +9,17 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class InitializeCodeRepositoriesUseCase extends AbstractVoidUseCase {
-    private final CodeRepositoryRepository codeRepositoryRepository;
+	private final CodeRepositoryRepository codeRepositoryRepository;
 
-    protected void executeInternal() {
-        log.info("Initializing code repositories from file");
+	protected void executeInternal() {
+		log.info("Initializing code repositories from file");
 
-        try {
-            codeRepositoryRepository.initialize();
+		try {
+			codeRepositoryRepository.initialize();
 
-            log.info("Successfully initialized {} code repositories", codeRepositoryRepository.count());
-        } catch (Throwable e) {
-            log.error("Failed to initialize code repositories", e);
-        }
-    }
+			log.info("Successfully initialized {} code repositories", codeRepositoryRepository.count());
+		} catch (Throwable e) {
+			log.error("Failed to initialize code repositories", e);
+		}
+	}
 }

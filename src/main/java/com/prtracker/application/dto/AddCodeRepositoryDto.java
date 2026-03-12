@@ -1,6 +1,4 @@
 package com.prtracker.application.dto;
 
-public record AddCodeRepositoryDto(
-        String name,
-        String accessToken
-) {}
+public record AddCodeRepositoryDto(String name, String accessToken) {
+}

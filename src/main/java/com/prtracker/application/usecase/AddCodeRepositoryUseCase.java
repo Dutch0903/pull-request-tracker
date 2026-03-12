@@ -14,26 +14,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class AddCodeRepositoryUseCase extends AbstractUseCase<AddCodeRepositoryDto, Void> {
-    private final CodeRepositoryIdentifierParser parser;
-    private final CodeRepositoryService codeRepositoryService;
+	private final CodeRepositoryIdentifierParser parser;
+	private final CodeRepositoryService codeRepositoryService;
 
-    @Override
-    protected Void executeInternal(AddCodeRepositoryDto input) {
-        ParsedCodeRepository parsedCodeRepository = parser.parse(input.name());
-        CodeRepositoryIdentifier identifier = parsedCodeRepository.getIdentifier();
+	@Override
+	protected Void executeInternal(AddCodeRepositoryDto input) {
+		ParsedCodeRepository parsedCodeRepository = parser.parse(input.name());
+		CodeRepositoryIdentifier identifier = parsedCodeRepository.getIdentifier();
 
-        CodeRepository codeRepository = new CodeRepository(
-                identifier,
-                parsedCodeRepository.owner(),
-                parsedCodeRepository.name(),
-                input.name(),
-                input.accessToken()
-        );
+		CodeRepository codeRepository = new CodeRepository(identifier, parsedCodeRepository.owner(),
+				parsedCodeRepository.name(), input.name(), input.accessToken());
 
-        codeRepositoryService.add(codeRepository);
+		codeRepositoryService.add(codeRepository);
 
-        log.info("Added repository {}", identifier.value());
+		log.info("Added repository {}", identifier.value());
 
-        return null;
-    }
+		return null;
+	}
 }

@@ -15,30 +15,29 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class FileStorage {
-    private static final String DIRECTORY = "data";
+	private static final String DIRECTORY = "data";
 
-    private final ObjectMapper objectmapper;
+	private final ObjectMapper objectmapper;
 
-    public <T> List<T> load(String file, Class<T> expectedClass) throws JacksonException {
-        Path path = Path.of(DIRECTORY, file);
+	public <T> List<T> load(String file, Class<T> expectedClass) throws JacksonException {
+		Path path = Path.of(DIRECTORY, file);
 
-        if (Files.notExists(path)) {
-            return List.of();
-        }
+		if (Files.notExists(path)) {
+			return List.of();
+		}
 
-        CollectionType listType = objectmapper.getTypeFactory()
-                .constructCollectionType(List.class, expectedClass);
+		CollectionType listType = objectmapper.getTypeFactory().constructCollectionType(List.class, expectedClass);
 
-        return objectmapper.readValue(path, listType);
-    }
+		return objectmapper.readValue(path, listType);
+	}
 
-    public <T> void save(String file, Collection<T> data) throws IOException, JacksonException {
-        Path directory = Path.of(DIRECTORY);
+	public <T> void save(String file, Collection<T> data) throws IOException, JacksonException {
+		Path directory = Path.of(DIRECTORY);
 
-        if (Files.notExists(directory)) {
-            Files.createDirectory(directory);
-        }
+		if (Files.notExists(directory)) {
+			Files.createDirectory(directory);
+		}
 
-        objectmapper.writeValue(directory.resolve(file), data);
-    }
+		objectmapper.writeValue(directory.resolve(file), data);
+	}
 }
