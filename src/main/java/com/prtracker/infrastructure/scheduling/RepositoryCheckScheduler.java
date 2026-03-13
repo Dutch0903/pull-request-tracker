@@ -1,6 +1,6 @@
 package com.prtracker.infrastructure.scheduling;
 
-import com.prtracker.application.usecase.CheckRepositoriesUseCase;
+import com.prtracker.application.command.CheckRepositoriesCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RepositoryCheckScheduler {
 
-	private final CheckRepositoriesUseCase checkRepositoriesUseCase;
+	private final CheckRepositoriesCommand checkRepositoriesCommand;
 
 	public void checkAllRepositories() {
-		checkRepositoriesUseCase.execute();
+		checkRepositoriesCommand.execute();
 	}
 }

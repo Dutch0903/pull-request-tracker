@@ -1,4 +1,4 @@
-package com.prtracker.application.usecase;
+package com.prtracker.application.command;
 
 import com.prtracker.application.dto.AddCodeRepositoryDto;
 import com.prtracker.application.parser.CodeRepositoryIdentifierParser;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AddCodeRepositoryUseCase extends AbstractUseCase<AddCodeRepositoryDto, Void> {
+public class AddCodeRepositoryCommand extends Command<AddCodeRepositoryDto, Void> {
 	private final CodeRepositoryIdentifierParser parser;
 	private final CodeRepositoryService codeRepositoryService;
 
