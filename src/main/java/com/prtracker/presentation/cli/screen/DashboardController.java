@@ -1,6 +1,6 @@
 package com.prtracker.presentation.cli.screen;
 
-import com.prtracker.application.usecase.GetCodeRepositoriesUseCase;
+import com.prtracker.application.query.GetCodeRepositoriesQuery;
 import com.prtracker.presentation.cli.KeyBinding;
 import com.prtracker.presentation.cli.Screen;
 import io.github.kylekreuter.tamboui.spring.annotation.OnKey;
@@ -18,21 +18,23 @@ import java.util.List;
 public class DashboardController extends BaseScreenController {
 	private static final Logger log = LoggerFactory.getLogger(DashboardController.class);
 	private final NavigationRouter navigationRouter;
-	private final GetCodeRepositoriesUseCase getCodeRepositoriesUseCase;
+	private final GetCodeRepositoriesQuery getCodeRepositoriesQuery;
 
+	private static final String TOKENS_KEY = "t";
 	private static final String ADD_REPOSITORY_KEY = "a";
 	private static final String QUIT_KEY = "q";
 
 	@Override
 	protected List<KeyBinding> getKeyBindings() {
-		return List.of(KeyBinding.create(ADD_REPOSITORY_KEY, "Add Repository"), KeyBinding.create(QUIT_KEY, "Quit"));
+		return List.of(KeyBinding.create(TOKENS_KEY, "Tokens"), KeyBinding.create(ADD_REPOSITORY_KEY, "Add Repository"),
+				KeyBinding.create(QUIT_KEY, "Quit"));
 	}
 
 	@Override
 	public void populate(TemplateModel templateModel) {
 		super.populate(templateModel);
 
-		var repositories = getCodeRepositoriesUseCase.execute(null);
+		var repositories = getCodeRepositoriesQuery.execute();
 
 		templateModel.put("repositories", repositories);
 	}
@@ -40,5 +42,10 @@ public class DashboardController extends BaseScreenController {
 	@OnKey(ADD_REPOSITORY_KEY)
 	void addRepository() {
 		navigationRouter.navigateTo(Screen.ADD_REPOSITORY);
+	}
+
+	@OnKey(TOKENS_KEY)
+	void navigateToTokens() {
+		navigationRouter.navigateTo(Screen.TOKENS);
 	}
 }

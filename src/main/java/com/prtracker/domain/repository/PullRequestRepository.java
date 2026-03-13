@@ -4,6 +4,7 @@ import com.prtracker.domain.entity.PullRequest;
 import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.valueobject.PullRequestId;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public interface PullRequestRepository {
 
 	List<PullRequest> findAllByRepository(CodeRepository repository);
 
-	void initialize();
+	void initialize() throws IOException;
 
-	void persist();
+	void persist() throws IOException;
 }

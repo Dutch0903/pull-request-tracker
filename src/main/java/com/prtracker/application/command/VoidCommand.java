@@ -1,6 +1,6 @@
-package com.prtracker.application.usecase;
+package com.prtracker.application.command;
 
-public abstract class AbstractVoidUseCase extends AbstractUseCase<Void, Void> {
+public abstract class VoidCommand extends Command<Void, Void> {
 	public void execute() {
 		execute(null);
 	}

@@ -8,7 +8,7 @@
         <t:panel title="Card 2" border-type="rounded">
             <t:text t:text="Recent repositories" />
             <t:each items="${repositories}" var="repository" index="i">
-                <t:text t:text="${i + 1}. ${repository.identifier.value}" />
+                <t:text t:text="${i + 1}. ${repository.identifier}" />
             </t:each>
         </t:panel>
     </t:grid>

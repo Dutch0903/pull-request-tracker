@@ -1,8 +1,7 @@
 package com.prtracker.presentation.cli.screen;
 
-import com.prtracker.application.command.AddCodeRepositoryCommand;
-import com.prtracker.application.dto.AddCodeRepositoryDto;
-import com.prtracker.domain.exceptions.CodeRepositoryAlreadyExistsException;
+import com.prtracker.application.command.AddTokenCommand;
+import com.prtracker.application.dto.AddTokenDto;
 import com.prtracker.presentation.cli.KeyBinding;
 import com.prtracker.presentation.cli.Screen;
 import dev.tamboui.widgets.input.TextInputState;
@@ -16,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-@TamboScreen(value = Screen.ADD_REPOSITORY, template = "add-repository")
-public class AddRepositoryController extends BaseScreenController {
-	private final NavigationRouter navigationRouter;
-	private final AddCodeRepositoryCommand addCodeRepositoryCommand;
-
+@TamboScreen(value = Screen.ADD_TOKEN, template = "add-token")
+public class AddTokenController extends BaseScreenController {
 	private static final String SAVE_KEY = "ctrl+s";
 	private static final String BACK_KEY = "escape";
 
 	private static final List<KeyBinding> KEY_BINDINGS = List.of(KeyBinding.create(SAVE_KEY, "Save"),
 			KeyBinding.create(BACK_KEY, "Back"));
+
+	private final NavigationRouter navigationRouter;
+	private final AddTokenCommand addTokenCommand;
 
 	@BindState("nameInput")
 	private final TextInputState nameInput = new TextInputState();
@@ -35,11 +34,6 @@ public class AddRepositoryController extends BaseScreenController {
 
 	@BindState("tokenInput")
 	private final TextInputState tokenInput = new TextInputState();
-
-	@Override
-	protected List<KeyBinding> getKeyBindings() {
-		return KEY_BINDINGS;
-	}
 
 	@Override
 	public void populate(TemplateModel templateModel) {
@@ -52,12 +46,12 @@ public class AddRepositoryController extends BaseScreenController {
 		String name = nameInput.text();
 		String token = tokenInput.text();
 
-		AddCodeRepositoryDto dto = new AddCodeRepositoryDto(name, token);
+		AddTokenDto dto = new AddTokenDto(name, token);
 
 		try {
-			addCodeRepositoryCommand.execute(dto);
-			navigationRouter.navigateTo(Screen.DASHBOARD);
-		} catch (CodeRepositoryAlreadyExistsException e) {
+			addTokenCommand.execute(dto);
+			navigationRouter.navigateTo(Screen.TOKENS);
+		} catch (Throwable e) {
 			error = e.getMessage();
 		}
 	}
@@ -65,7 +59,12 @@ public class AddRepositoryController extends BaseScreenController {
 	@OnKey(BACK_KEY)
 	public void back() {
 		resetAll();
-		navigationRouter.navigateTo(Screen.DASHBOARD);
+		navigationRouter.navigateTo(Screen.TOKENS);
+	}
+
+	@Override
+	protected List<KeyBinding> getKeyBindings() {
+		return KEY_BINDINGS;
 	}
 
 	private void resetAll() {
