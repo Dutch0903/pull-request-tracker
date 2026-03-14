@@ -10,18 +10,18 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class PersistCodeRepositoriesCommand extends VoidCommand {
-	private final TokenRepository tokenRepository;
-	private final CodeRepositoryRepository codeRepositoryRepository;
+    private final TokenRepository tokenRepository;
+    private final CodeRepositoryRepository codeRepositoryRepository;
 
-	@Override
-	protected void executeInternal() {
-		try {
-			codeRepositoryRepository.persist();
-			tokenRepository.persist();
+    @Override
+    protected void executeInternal() {
+        try {
+            codeRepositoryRepository.persist();
+            tokenRepository.persist();
 
-		} catch (Throwable e) {
-			log.error("Failed to persist code repositories", e);
-			throw new RuntimeException(e);
-		}
-	}
+        } catch (Throwable e) {
+            log.error("Failed to persist code repositories", e);
+            throw new RuntimeException(e);
+        }
+    }
 }

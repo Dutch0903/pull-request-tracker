@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class DashboardController {
-	private final DashboardState dashboardState;
+    private final DashboardState dashboardState;
 
-	private final GetRecentCodeRepositoriesQuery getRecentCodeRepositoriesQuery;
+    private final GetRecentCodeRepositoriesQuery getRecentCodeRepositoriesQuery;
 
-	public void loadRecentRepositories() {
-		var repos = getRecentCodeRepositoriesQuery.execute();
+    public void loadRecentRepositories() {
+        var repos = getRecentCodeRepositoriesQuery.execute();
 
-		dashboardState.setRecentRepositories(repos);
-	}
+        dashboardState.setRecentRepositories(repos);
+    }
 }

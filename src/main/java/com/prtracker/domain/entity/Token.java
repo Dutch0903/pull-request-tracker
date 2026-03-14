@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Token {
-	private TokenId id;
-	private String name;
-	private String value;
+    private TokenId id;
+    private String name;
+    private String value;
 }

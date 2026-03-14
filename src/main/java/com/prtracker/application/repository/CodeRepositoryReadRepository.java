@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CodeRepositoryReadRepository {
-	List<CodeRepositoryView> findAllAsViews();
+    List<CodeRepositoryView> findAllAsViews();
 
-	Optional<CodeRepositoryView> findViewById(String identifier);
+    Optional<CodeRepositoryView> findViewById(String identifier);
 }

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AddTokenCommand extends Command<AddTokenDto, Void> {
-	private final TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
 
-	@Override
-	protected Void executeInternal(AddTokenDto input) {
-		Token token = new Token(TokenId.create(), input.name(), input.value());
-		tokenRepository.save(token);
-		return null;
-	}
+    @Override
+    protected Void executeInternal(AddTokenDto input) {
+        Token token = new Token(TokenId.create(), input.name(), input.value());
+        tokenRepository.save(token);
+        return null;
+    }
 }

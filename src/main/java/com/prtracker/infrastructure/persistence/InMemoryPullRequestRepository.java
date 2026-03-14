@@ -11,38 +11,38 @@ import java.util.Optional;
 
 @Repository
 public class InMemoryPullRequestRepository implements PullRequestRepository {
-	@Override
-	public void save(PullRequest pullRequest) {
+    @Override
+    public void save(PullRequest pullRequest) {
 
-	}
+    }
 
-	@Override
-	public void delete(PullRequest pullRequest) {
+    @Override
+    public void delete(PullRequest pullRequest) {
 
-	}
+    }
 
-	@Override
-	public Optional<PullRequest> findById(PullRequestId id) {
-		return Optional.empty();
-	}
+    @Override
+    public Optional<PullRequest> findById(PullRequestId id) {
+        return Optional.empty();
+    }
 
-	@Override
-	public List<PullRequest> findAll() {
-		return List.of();
-	}
+    @Override
+    public List<PullRequest> findAll() {
+        return List.of();
+    }
 
-	@Override
-	public List<PullRequest> findAllByRepository(CodeRepository repository) {
-		return List.of();
-	}
+    @Override
+    public List<PullRequest> findAllByRepository(CodeRepository repository) {
+        return List.of();
+    }
 
-	@Override
-	public void initialize() {
+    @Override
+    public void initialize() {
 
-	}
+    }
 
-	@Override
-	public void persist() {
+    @Override
+    public void persist() {
 
-	}
+    }
 }

@@ -1,3 +1,0 @@
-<t:panel region="bottom" class="border-rounded">
-    <t:text t:text="${keyBindings}" class="text-cyan" />
-</t:panel>

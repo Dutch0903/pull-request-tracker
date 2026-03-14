@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TokenReadRepository {
-	List<TokenView> findAllAsViews();
+    List<TokenView> findAllAsViews();
 
-	Optional<TokenView> findViewById(String id);
+    Optional<TokenView> findViewById(String id);
 }

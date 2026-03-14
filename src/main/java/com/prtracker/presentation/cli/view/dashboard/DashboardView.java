@@ -12,7 +12,6 @@ import dev.tamboui.toolkit.element.Size;
 import dev.tamboui.toolkit.elements.ListElement;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -22,49 +21,49 @@ import static dev.tamboui.toolkit.Toolkit.text;
 
 @ViewComponent(name = View.DASHBOARD, isStartView = true)
 public class DashboardView implements Element {
-	private final DashboardController controller;
-	private final DashboardState state;
-	private final DashboardKeyHandler keyHandler;
+    private final DashboardController controller;
+    private final DashboardState state;
+    private final DashboardKeyHandler keyHandler;
 
-	public DashboardView(DashboardController controller, DashboardState state, DashboardKeyHandler keyHandler) {
-		this.controller = controller;
-		this.state = state;
-		this.keyHandler = keyHandler;
+    public DashboardView(DashboardController controller, DashboardState state, DashboardKeyHandler keyHandler) {
+        this.controller = controller;
+        this.state = state;
+        this.keyHandler = keyHandler;
 
-		this.controller.loadRecentRepositories();
-	}
+        this.controller.loadRecentRepositories();
+    }
 
-	@Override
-	public void render(Frame frame, Rect area, RenderContext context) {
-		Element ui = dock().top(header()).center(content()).bottom(footer());
+    @Override
+    public void render(Frame frame, Rect area, RenderContext context) {
+        Element ui = dock().top(header()).center(content()).bottom(footer());
 
-		ui.render(frame, area, context);
-	}
+        ui.render(frame, area, context);
+    }
 
-	@Override
-	public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
-		return Size.UNKNOWN;
-	}
+    @Override
+    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
+        return Size.UNKNOWN;
+    }
 
-	@Override
-	public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
-		return keyHandler.handle(event);
-	}
+    @Override
+    public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
+        return keyHandler.handle(event);
+    }
 
-	private Element header() {
-		return text("Header");
-	}
-	private Element content() {
-		ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
-		List<CodeRepositoryView> repos = state.getRecentRepositories();
-		for (CodeRepositoryView repo : repos) {
-			list.add(repo.identifier());
-		}
+    private Element header() {
+        return text("Header");
+    }
+    private Element content() {
+        ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
+        List<CodeRepositoryView> repos = state.getRecentRepositories();
+        for (CodeRepositoryView repo : repos) {
+            list.add(repo.identifier());
+        }
 
-		return list;
-	}
+        return list;
+    }
 
-	private Element footer() {
-		return text("Footer");
-	}
+    private Element footer() {
+        return text("Footer");
+    }
 }
