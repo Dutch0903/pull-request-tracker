@@ -1,0 +1,59 @@
+package com.prtracker.presentation.cli;
+
+import com.prtracker.presentation.cli.event.NavigationEvent;
+import com.prtracker.presentation.cli.view.dashboard.DashboardView;
+import dev.tamboui.toolkit.element.Element;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.function.Supplier;
+
+@Component
+public class ViewManager {
+	private final ViewRegistry viewRegistry;
+	private final Deque<Element> viewStack = new ArrayDeque<>();
+
+	public ViewManager(ViewRegistry viewRegistry) {
+		this.viewRegistry = viewRegistry;
+		String startViewName = this.viewRegistry.getStartViewName();
+
+		viewStack.push(this.viewRegistry.getView(startViewName));
+	}
+
+	public void push(String viewName) {
+		Element view = this.viewRegistry.getView(viewName);
+		viewStack.push(view);
+	}
+
+	public void pop() {
+		if (!viewStack.isEmpty()) {
+			viewStack.pop();
+		}
+	}
+
+	public Element getCurrentView() {
+		return viewStack.peek();
+	}
+
+	public void replace(String viewName) {
+		pop();
+
+		push(viewName);
+	}
+
+	public boolean isEmpty() {
+		return viewStack.isEmpty();
+	}
+
+	public void reset() {
+		viewStack.clear();
+		viewStack.push(this.viewRegistry.getView(this.viewRegistry.getStartViewName()));
+	}
+
+	@EventListener
+	public void onNavigationEvent(NavigationEvent event) {
+		push(event.viewName());
+	}
+}
