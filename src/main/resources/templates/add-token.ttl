@@ -10,6 +10,7 @@
                     focused-border-color="cyan" label-width="12" />
 
     <t:form-field label="Token" bind="tokenInput"
+                    type="select"
                         placeholder="Token"
                         border-type="rounded" border-color="dark-gray"
                         focused-border-color="cyan" label-width="12" />
