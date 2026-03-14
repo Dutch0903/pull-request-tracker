@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TokenMapper {
-	public TokenDto toDto(Token token) {
-		return new TokenDto(token.getId().value(), token.getName(), token.getValue());
-	}
+    public TokenDto toDto(Token token) {
+        return new TokenDto(token.getId().value(), token.getName(), token.getValue());
+    }
 
-	public Token toDomain(TokenDto tokenDto) {
-		return new Token(TokenId.from(tokenDto.id()), tokenDto.name(), tokenDto.value());
-	}
+    public Token toDomain(TokenDto tokenDto) {
+        return new Token(TokenId.from(tokenDto.id()), tokenDto.name(), tokenDto.value());
+    }
 }

@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface TokenRepository {
-	void save(Token token);
+    void save(Token token);
 
-	void delete(TokenId tokenId);
+    void delete(TokenId tokenId);
 
-	List<Token> findAll();
+    List<Token> findAll();
 
-	void initialize() throws IOException;
+    void initialize() throws IOException;
 
-	void persist() throws IOException;
+    void persist() throws IOException;
 }

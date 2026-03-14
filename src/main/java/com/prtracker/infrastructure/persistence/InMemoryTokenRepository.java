@@ -21,55 +21,55 @@ import java.util.stream.Collectors;
 @Repository
 @RequiredArgsConstructor
 public class InMemoryTokenRepository implements TokenRepository, TokenReadRepository {
-	private static final String FILE_NAME = "tokens.json";
-	private final FileStorage fileStorage;
-	private final TokenMapper mapper;
+    private static final String FILE_NAME = "tokens.json";
+    private final FileStorage fileStorage;
+    private final TokenMapper mapper;
 
-	private final ConcurrentHashMap<TokenId, Token> tokens = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<TokenId, Token> tokens = new ConcurrentHashMap<>();
 
-	// Domain repository methods (for commands)
-	@Override
-	public void save(Token token) {
-		tokens.put(token.getId(), token);
-	}
+    // Domain repository methods (for commands)
+    @Override
+    public void save(Token token) {
+        tokens.put(token.getId(), token);
+    }
 
-	@Override
-	public void delete(TokenId tokenId) {
-		tokens.remove(tokenId);
-	}
+    @Override
+    public void delete(TokenId tokenId) {
+        tokens.remove(tokenId);
+    }
 
-	@Override
-	public List<Token> findAll() {
-		return List.copyOf(tokens.values());
-	}
+    @Override
+    public List<Token> findAll() {
+        return List.copyOf(tokens.values());
+    }
 
-	// Read repository methods (for queries)
-	@Override
-	public List<TokenView> findAllAsViews() {
-		return tokens.values().stream().map(TokenView::from).toList();
-	}
+    // Read repository methods (for queries)
+    @Override
+    public List<TokenView> findAllAsViews() {
+        return tokens.values().stream().map(TokenView::from).toList();
+    }
 
-	@Override
-	public Optional<TokenView> findViewById(String id) {
-		try {
-			UUID uuid = UUID.fromString(id);
-			TokenId tokenId = TokenId.from(uuid);
-			return Optional.ofNullable(tokens.get(tokenId)).map(TokenView::from);
-		} catch (IllegalArgumentException e) {
-			return Optional.empty();
-		}
-	}
+    @Override
+    public Optional<TokenView> findViewById(String id) {
+        try {
+            UUID uuid = UUID.fromString(id);
+            TokenId tokenId = TokenId.from(uuid);
+            return Optional.ofNullable(tokens.get(tokenId)).map(TokenView::from);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 
-	@Override
-	public void initialize() {
-		List<TokenDto> loadedTokens = fileStorage.load(FILE_NAME, TokenDto.class);
+    @Override
+    public void initialize() {
+        List<TokenDto> loadedTokens = fileStorage.load(FILE_NAME, TokenDto.class);
 
-		tokens.putAll(loadedTokens.stream().map(mapper::toDomain)
-				.collect(Collectors.toMap(Token::getId, Function.identity())));
-	}
+        tokens.putAll(loadedTokens.stream().map(mapper::toDomain)
+                .collect(Collectors.toMap(Token::getId, Function.identity())));
+    }
 
-	@Override
-	public void persist() throws IOException {
-		fileStorage.save(FILE_NAME, tokens.values().stream().map(mapper::toDto).toList());
-	}
+    @Override
+    public void persist() throws IOException {
+        fileStorage.save(FILE_NAME, tokens.values().stream().map(mapper::toDto).toList());
+    }
 }

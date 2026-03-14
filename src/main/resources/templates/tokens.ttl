@@ -1,8 +1,0 @@
-<t:dock xmlns:t="https://github.com/KyleKreuter/tamboui-spring/template"
-        top-height="3" bottom-height="3">
-  <t:panel region="center" title="Welcome to TamboUI Spring" class="border-rounded">
-    <t:text t:text="Tokens" />
-  </t:panel>
-
-    <t:include template="keybindings" />
-</t:dock>

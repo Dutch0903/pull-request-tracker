@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.util.List;
 
 public interface CodeRepositoryRepository {
-	void save(CodeRepository codeRepository);
+    void save(CodeRepository codeRepository);
 
-	void delete(CodeRepository codeRepository);
+    void delete(CodeRepository codeRepository);
 
-	boolean exists(CodeRepositoryIdentifier identifier);
+    boolean exists(CodeRepositoryIdentifier identifier);
 
-	List<CodeRepository> findAll();
+    List<CodeRepository> findAll();
 
-	Integer count();
+    Integer count();
 
-	void initialize() throws IOException;
+    void initialize() throws IOException;
 
-	void persist() throws IOException;
+    void persist() throws IOException;
 }

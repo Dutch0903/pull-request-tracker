@@ -39,7 +39,7 @@ public class ViewRegistry {
             throw new IllegalArgumentException("View not found: " + name);
         }
 
-        return  view;
+        return view;
     }
 
     public String getStartViewName() {

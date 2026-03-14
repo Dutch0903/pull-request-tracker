@@ -9,9 +9,9 @@ import java.time.Instant;
 @Getter
 @AllArgsConstructor
 public class PullRequest {
-	private long id;
-	private String title;
-	private String author;
-	private PullRequestStatus status;
-	private Instant updatedAt;
+    private long id;
+    private String title;
+    private String author;
+    private PullRequestStatus status;
+    private Instant updatedAt;
 }

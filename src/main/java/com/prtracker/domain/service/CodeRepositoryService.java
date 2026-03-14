@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CodeRepositoryService {
-	private final CodeRepositoryRepository codeRepositoryRepository;
+    private final CodeRepositoryRepository codeRepositoryRepository;
 
-	public void add(CodeRepository codeRepository) {
+    public void add(CodeRepository codeRepository) {
 
-		if (codeRepositoryRepository.exists(codeRepository.getIdentifier())) {
-			throw new CodeRepositoryAlreadyExistsException(codeRepository.getIdentifier());
-		}
+        if (codeRepositoryRepository.exists(codeRepository.getIdentifier())) {
+            throw new CodeRepositoryAlreadyExistsException(codeRepository.getIdentifier());
+        }
 
-		codeRepositoryRepository.save(codeRepository);
-	}
+        codeRepositoryRepository.save(codeRepository);
+    }
 }

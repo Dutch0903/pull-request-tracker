@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetCodeRepositoriesQuery extends VoidQuery<List<CodeRepositoryView>> {
-	private final CodeRepositoryReadRepository codeRepositoryReadRepository;
+    private final CodeRepositoryReadRepository codeRepositoryReadRepository;
 
-	@Override
-	protected List<CodeRepositoryView> executeInternal() {
-		return codeRepositoryReadRepository.findAllAsViews();
-	}
+    @Override
+    protected List<CodeRepositoryView> executeInternal() {
+        return codeRepositoryReadRepository.findAllAsViews();
+    }
 }

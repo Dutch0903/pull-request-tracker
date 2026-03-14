@@ -1,7 +1,6 @@
 package com.prtracker.presentation.cli.view.repositories;
 
 import com.prtracker.presentation.cli.View;
-import com.prtracker.presentation.cli.ViewManager;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;

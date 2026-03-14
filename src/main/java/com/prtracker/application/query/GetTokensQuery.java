@@ -10,10 +10,10 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class GetTokensQuery extends VoidQuery<List<TokenView>> {
-	private final TokenReadRepository tokenReadRepository;
+    private final TokenReadRepository tokenReadRepository;
 
-	@Override
-	protected List<TokenView> executeInternal() {
-		return tokenReadRepository.findAllAsViews();
-	}
+    @Override
+    protected List<TokenView> executeInternal() {
+        return tokenReadRepository.findAllAsViews();
+    }
 }

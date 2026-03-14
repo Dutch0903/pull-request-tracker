@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class InitializeCodeRepositoriesCommand extends VoidCommand {
-	private final TokenRepository tokenRepository;
-	private final CodeRepositoryRepository codeRepositoryRepository;
+    private final TokenRepository tokenRepository;
+    private final CodeRepositoryRepository codeRepositoryRepository;
 
-	@Override
-	protected void executeInternal() {
-		log.info("Initializing code repositories from file");
+    @Override
+    protected void executeInternal() {
+        log.info("Initializing code repositories from file");
 
-		try {
-			tokenRepository.initialize();
-			codeRepositoryRepository.initialize();
+        try {
+            tokenRepository.initialize();
+            codeRepositoryRepository.initialize();
 
-			log.info("Successfully initialized {} code repositories", codeRepositoryRepository.count());
-		} catch (Throwable e) {
-			log.error("Failed to initialize code repositories", e);
-		}
-	}
+            log.info("Successfully initialized {} code repositories", codeRepositoryRepository.count());
+        } catch (Throwable e) {
+            log.error("Failed to initialize code repositories", e);
+        }
+    }
 }

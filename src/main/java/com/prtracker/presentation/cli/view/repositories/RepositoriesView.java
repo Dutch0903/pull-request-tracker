@@ -16,28 +16,22 @@ import static dev.tamboui.toolkit.Toolkit.*;
 @RequiredArgsConstructor
 @ViewComponent(name = View.REPOSITORIES)
 public class RepositoriesView implements Element {
-	private final RepositoriesKeyHandler keyHandler;
+    private final RepositoriesKeyHandler keyHandler;
 
-	@Override
-	public void render(Frame frame, Rect area, RenderContext context) {
-		Element ui = dock().center(
-				column(
-						text("Repositories"),
-						spacer(20),
-						text("list")
-				)
-		);
+    @Override
+    public void render(Frame frame, Rect area, RenderContext context) {
+        Element ui = dock().center(column(text("Repositories"), spacer(20), text("list")));
 
-		ui.render(frame, area, context);
-	}
+        ui.render(frame, area, context);
+    }
 
-	@Override
-	public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
-		return Size.UNKNOWN;
-	}
+    @Override
+    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
+        return Size.UNKNOWN;
+    }
 
-	@Override
-	public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
-		return keyHandler.handle(event);
-	}
+    @Override
+    public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
+        return keyHandler.handle(event);
+    }
 }
