@@ -20,7 +20,7 @@ public class RepositoriesView implements Element {
 
     @Override
     public void render(Frame frame, Rect area, RenderContext context) {
-        Element ui = dock().center(column(text("Repositories"), spacer(20), text("list")));
+        Element ui = dock().center(row(this.renderRepositoryList(), this.renderRepositoryStats()).fill());
 
         ui.render(frame, area, context);
     }
@@ -33,5 +33,13 @@ public class RepositoriesView implements Element {
     @Override
     public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
         return keyHandler.handle(event);
+    }
+
+    public Element renderRepositoryStats() {
+        return panel(text("Stats")).fill();
+    }
+
+    public Element renderRepositoryList() {
+        return panel(text("Repositories")).fill();
     }
 }
