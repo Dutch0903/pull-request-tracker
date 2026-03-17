@@ -1,4 +1,4 @@
-package com.prtracker.presentation.cli.view.repositories;
+package com.prtracker.presentation.cli.view.repository;
 
 import com.prtracker.presentation.cli.View;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RepositoriesKeyHandler {
+public class RepositoryListKeyHandler {
     private final NavigationEventPublisher navigationEventPublisher;
 
     public EventResult handle(KeyEvent event) {
