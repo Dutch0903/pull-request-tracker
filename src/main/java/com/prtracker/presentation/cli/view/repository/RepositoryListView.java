@@ -1,4 +1,4 @@
-package com.prtracker.presentation.cli.view.repositories;
+package com.prtracker.presentation.cli.view.repository;
 
 import com.prtracker.presentation.cli.View;
 import com.prtracker.presentation.cli.ViewComponent;
@@ -15,8 +15,8 @@ import static dev.tamboui.toolkit.Toolkit.*;
 
 @RequiredArgsConstructor
 @ViewComponent(name = View.REPOSITORIES)
-public class RepositoriesView implements Element {
-    private final RepositoriesKeyHandler keyHandler;
+public class RepositoryListView implements Element {
+    private final RepositoryListKeyHandler keyHandler;
 
     @Override
     public void render(Frame frame, Rect area, RenderContext context) {

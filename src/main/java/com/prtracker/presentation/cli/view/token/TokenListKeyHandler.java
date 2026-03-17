@@ -1,4 +1,4 @@
-package com.prtracker.presentation.cli.view.dashboard;
+package com.prtracker.presentation.cli.view.token;
 
 import com.prtracker.presentation.cli.View;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
@@ -9,17 +9,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DashboardKeyHandler {
+public class TokenListKeyHandler {
     private final NavigationEventPublisher navigationEventPublisher;
 
     public EventResult handle(KeyEvent event) {
-        if (event.isCharIgnoreCase('r')) {
-            navigationEventPublisher.navigateTo(View.REPOSITORIES);
-            return EventResult.HANDLED;
-        }
-
-        if (event.isCharIgnoreCase('t')) {
-            navigationEventPublisher.navigateTo(View.TOKENS);
+        if (event.isCharIgnoreCase('d')) {
+            navigationEventPublisher.navigateTo(View.DASHBOARD);
             return EventResult.HANDLED;
         }
 
