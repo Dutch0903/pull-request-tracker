@@ -1,6 +1,6 @@
 package com.prtracker.presentation.cli.view.token;
 
-import com.prtracker.presentation.cli.View;
+import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
@@ -9,12 +9,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TokenListKeyHandler {
+public class TokenManagerKeyHandler {
+    private final TokenManagerController controller;
     private final NavigationEventPublisher navigationEventPublisher;
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('d')) {
-            navigationEventPublisher.navigateTo(View.DASHBOARD);
+            navigationEventPublisher.navigateTo(ViewName.DASHBOARD);
+            return EventResult.HANDLED;
+        }
+
+        if (event.isCharIgnoreCase('n')) {
+            controller.promptCreateToken();
+            return EventResult.HANDLED;
+        }
+
+        if (event.isCharIgnoreCase('u')) {
+            controller.promptUpdateToken();
             return EventResult.HANDLED;
         }
 

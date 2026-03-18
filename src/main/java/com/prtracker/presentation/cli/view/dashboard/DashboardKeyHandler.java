@@ -1,6 +1,6 @@
 package com.prtracker.presentation.cli.view.dashboard;
 
-import com.prtracker.presentation.cli.View;
+import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
@@ -14,12 +14,12 @@ public class DashboardKeyHandler {
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('r')) {
-            navigationEventPublisher.navigateTo(View.REPOSITORIES);
+            navigationEventPublisher.navigateTo(ViewName.REPOSITORIES);
             return EventResult.HANDLED;
         }
 
         if (event.isCharIgnoreCase('t')) {
-            navigationEventPublisher.navigateTo(View.TOKENS);
+            navigationEventPublisher.navigateTo(ViewName.TOKENS);
             return EventResult.HANDLED;
         }
 
