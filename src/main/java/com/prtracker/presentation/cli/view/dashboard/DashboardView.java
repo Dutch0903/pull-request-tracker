@@ -1,7 +1,7 @@
 package com.prtracker.presentation.cli.view.dashboard;
 
 import com.prtracker.application.dto.CodeRepositoryView;
-import com.prtracker.presentation.cli.View;
+import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.ViewComponent;
 import dev.tamboui.layout.Rect;
 import dev.tamboui.style.Color;
@@ -19,7 +19,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
 import static dev.tamboui.toolkit.Toolkit.dock;
 import static dev.tamboui.toolkit.Toolkit.text;
 
-@ViewComponent(name = View.DASHBOARD, isStartView = true)
+@ViewComponent(name = ViewName.DASHBOARD, isStartView = true)
 public class DashboardView implements Element {
     private final DashboardController controller;
     private final DashboardState state;

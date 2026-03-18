@@ -1,6 +1,6 @@
 package com.prtracker.presentation.cli.view.repository;
 
-import com.prtracker.presentation.cli.View;
+import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
@@ -14,7 +14,7 @@ public class RepositoryListKeyHandler {
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('d')) {
-            navigationEventPublisher.navigateTo(View.DASHBOARD);
+            navigationEventPublisher.navigateTo(ViewName.DASHBOARD);
             return EventResult.HANDLED;
         }
 

@@ -41,15 +41,6 @@ public class ViewManager {
         push(viewName);
     }
 
-    public boolean isEmpty() {
-        return viewStack.isEmpty();
-    }
-
-    public void reset() {
-        viewStack.clear();
-        viewStack.push(this.viewRegistry.getView(this.viewRegistry.getStartViewName()));
-    }
-
     @EventListener
     public void onNavigationEvent(NavigationEvent event) {
         push(event.viewName());
