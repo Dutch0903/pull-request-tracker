@@ -5,6 +5,7 @@ import com.prtracker.application.repository.TokenReadRepository;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.repository.TokenRepository;
 import com.prtracker.domain.valueobject.TokenId;
+import com.prtracker.domain.valueobject.TokenName;
 import com.prtracker.infrastructure.persistence.dto.TokenDto;
 import com.prtracker.infrastructure.persistence.mapper.TokenMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,11 @@ public class InMemoryTokenRepository implements TokenRepository, TokenReadReposi
     @Override
     public List<Token> findAll() {
         return List.copyOf(tokens.values());
+    }
+
+    @Override
+    public boolean existsByName(TokenName name) {
+        return tokens.values().stream().anyMatch(token -> token.getName().equals(name));
     }
 
     // Read repository methods (for queries)
