@@ -2,6 +2,7 @@ package com.prtracker.domain.repository;
 
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.valueobject.TokenId;
+import com.prtracker.domain.valueobject.TokenName;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,6 +13,8 @@ public interface TokenRepository {
     void delete(TokenId tokenId);
 
     List<Token> findAll();
+
+    boolean existsByName(TokenName name);
 
     void initialize() throws IOException;
 

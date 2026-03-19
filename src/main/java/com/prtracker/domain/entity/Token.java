@@ -1,6 +1,7 @@
 package com.prtracker.domain.entity;
 
 import com.prtracker.domain.valueobject.TokenId;
+import com.prtracker.domain.valueobject.TokenName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,6 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Token {
     private TokenId id;
-    private String name;
+    private TokenName name;
     private String value;
 }
