@@ -1,12 +1,12 @@
 package com.prtracker.application.repository;
 
-import com.prtracker.application.dto.TokenView;
+import com.prtracker.application.dto.TokenProjection;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TokenReadRepository {
-    List<TokenView> findAllAsViews();
+    List<TokenProjection> findAllAsViews();
 
-    Optional<TokenView> findViewById(String id);
+    Optional<TokenProjection> findViewById(String id);
 }

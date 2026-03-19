@@ -1,6 +1,6 @@
 package com.prtracker.infrastructure.persistence;
 
-import com.prtracker.application.dto.TokenView;
+import com.prtracker.application.dto.TokenProjection;
 import com.prtracker.application.repository.TokenReadRepository;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.repository.TokenRepository;
@@ -40,6 +40,11 @@ public class InMemoryTokenRepository implements TokenRepository, TokenReadReposi
     }
 
     @Override
+    public Optional<Token> findById(TokenId id) {
+        return tokens.values().stream().filter(token -> token.getId().equals(id)).findFirst();
+    }
+
+    @Override
     public List<Token> findAll() {
         return List.copyOf(tokens.values());
     }
@@ -51,16 +56,16 @@ public class InMemoryTokenRepository implements TokenRepository, TokenReadReposi
 
     // Read repository methods (for queries)
     @Override
-    public List<TokenView> findAllAsViews() {
-        return tokens.values().stream().map(TokenView::from).toList();
+    public List<TokenProjection> findAllAsViews() {
+        return tokens.values().stream().map(TokenProjection::from).toList();
     }
 
     @Override
-    public Optional<TokenView> findViewById(String id) {
+    public Optional<TokenProjection> findViewById(String id) {
         try {
             UUID uuid = UUID.fromString(id);
             TokenId tokenId = TokenId.from(uuid);
-            return Optional.ofNullable(tokens.get(tokenId)).map(TokenView::from);
+            return Optional.ofNullable(tokens.get(tokenId)).map(TokenProjection::from);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }

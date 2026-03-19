@@ -10,6 +10,7 @@ import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;
 import dev.tamboui.toolkit.elements.DialogElement;
+import dev.tamboui.toolkit.elements.ListElement;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,11 @@ public class TokenManangerView extends View {
     }
 
     private Element renderTokenList() {
-        return panel(text("Tokens")).fill().borderless();
+        ListElement<?> list = list().data(controller.getTokens(), tokenProjection -> text(tokenProjection.name()))
+                .highlightColor(Color.CYAN).highlightSymbol("> ").autoScroll().scrollbar()
+                .onKeyEvent(keyHandler::handle).selected(controller.getSelectedIndex()).scrollbarThumbColor(Color.CYAN);
+
+        return panel(column(text("Tokens"), list)).fill().borderless();
     }
 
     private void renderCreateDialog(Frame frame, Rect area, RenderContext context) {
@@ -77,8 +82,8 @@ public class TokenManangerView extends View {
         return dialog(title, text(dialogMessage),
                 formField("Name", controller.getNameInputState()).id("name").labelWidth(5).rounded()
                         .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).onSubmit(onConfirm),
-                formField("Token", controller.getTokenInputState()).id("token").labelWidth(5).rounded()
-                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).onSubmit(onConfirm),
+                formField("Value", controller.getValueInputState()).id("value").labelWidth(5).rounded()
+                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).onSubmit(onConfirm).masked('*'),
                 text("[Enter] Confirm  [Esc] Cancel").dim()).rounded().width(Math.max(50, (dialogMessage.length() + 4)))
                 .onConfirm(onConfirm).onCancel(controller::dismissDialog);
     }

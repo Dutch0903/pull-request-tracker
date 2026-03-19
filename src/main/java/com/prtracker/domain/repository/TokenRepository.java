@@ -6,11 +6,14 @@ import com.prtracker.domain.valueobject.TokenName;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface TokenRepository {
     void save(Token token);
 
     void delete(TokenId tokenId);
+
+    Optional<Token> findById(TokenId tokenId);
 
     List<Token> findAll();
 
