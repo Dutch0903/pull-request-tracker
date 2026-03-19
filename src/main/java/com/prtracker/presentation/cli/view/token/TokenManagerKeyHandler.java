@@ -29,6 +29,16 @@ public class TokenManagerKeyHandler {
             return EventResult.HANDLED;
         }
 
+        if (event.isDown()) {
+            controller.selectNext();
+            return EventResult.HANDLED;
+        }
+
+        if (event.isUp()) {
+            controller.selectPrevious();
+            return EventResult.HANDLED;
+        }
+
         return EventResult.UNHANDLED;
     }
 }
