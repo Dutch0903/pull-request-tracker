@@ -1,7 +1,7 @@
 package com.prtracker.presentation.cli.view.token;
 
-import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.ViewComponent;
+import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.view.View;
 import dev.tamboui.layout.Rect;
 import dev.tamboui.style.Color;
@@ -76,9 +76,9 @@ public class TokenManangerView extends View {
         String dialogMessage = controller.getDialogMessage();
         return dialog(title, text(dialogMessage),
                 formField("Name", controller.getNameInputState()).id("name").labelWidth(5).rounded()
-                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).arrowNavigation(true),
+                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).onSubmit(onConfirm),
                 formField("Token", controller.getTokenInputState()).id("token").labelWidth(5).rounded()
-                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).arrowNavigation(true),
+                        .borderColor(Color.GRAY).focusedBorderColor(Color.CYAN).onSubmit(onConfirm),
                 text("[Enter] Confirm  [Esc] Cancel").dim()).rounded().width(Math.max(50, (dialogMessage.length() + 4)))
                 .onConfirm(onConfirm).onCancel(controller::dismissDialog);
     }

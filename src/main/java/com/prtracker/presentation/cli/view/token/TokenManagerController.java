@@ -1,10 +1,16 @@
 package com.prtracker.presentation.cli.view.token;
 
+import com.prtracker.application.command.AddTokenCommand;
+import com.prtracker.application.dto.AddTokenDto;
 import dev.tamboui.widgets.input.TextInputState;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TokenManagerController {
+    private final AddTokenCommand addTokenCommand;
+
     private DialogType currentDialog = DialogType.NONE;
     private String dialogMessage = "";
     private final TextInputState nameInputState = new TextInputState();
@@ -43,6 +49,11 @@ public class TokenManagerController {
     }
 
     public void confirmDialog() {
+        switch (currentDialog) {
+            case CREATE -> this.createToken();
+            case UPDATE -> this.updateToken();
+        }
+
         dismissDialog();
     }
 
@@ -52,8 +63,18 @@ public class TokenManagerController {
     }
 
     private void resetInputStates() {
-
         nameInputState.clear();
         tokenInputState.clear();
+    }
+
+    private void createToken() {
+        String name = nameInputState.text();
+        String token = tokenInputState.text();
+
+        addTokenCommand.execute(new AddTokenDto(name, token));
+    }
+
+    private void updateToken() {
+
     }
 }
