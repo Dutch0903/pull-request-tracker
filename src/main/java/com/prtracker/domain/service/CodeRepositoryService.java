@@ -12,7 +12,6 @@ public class CodeRepositoryService {
     private final CodeRepositoryRepository codeRepositoryRepository;
 
     public void add(CodeRepository codeRepository) {
-
         if (codeRepositoryRepository.exists(codeRepository.getIdentifier())) {
             throw new CodeRepositoryAlreadyExistsException(codeRepository.getIdentifier());
         }

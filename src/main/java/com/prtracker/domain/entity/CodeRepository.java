@@ -13,15 +13,12 @@ public class CodeRepository {
     private String name;
     private String url;
     private CodeRepositoryStatus status;
-    private String accessToken;
 
-    public CodeRepository(CodeRepositoryIdentifier identifier, String owner, String name, String url,
-            String accessToken) {
+    public CodeRepository(CodeRepositoryIdentifier identifier, String owner, String name, String url) {
         this.identifier = identifier;
         this.owner = owner;
         this.name = name;
         this.url = url;
-        this.accessToken = accessToken;
         this.status = CodeRepositoryStatus.INACTIVE;
     }
 }

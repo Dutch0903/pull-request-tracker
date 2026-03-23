@@ -5,7 +5,6 @@ import com.prtracker.domain.exceptions.TokenAlreadyExistsException;
 import com.prtracker.domain.exceptions.TokenNotFoundException;
 import com.prtracker.domain.repository.TokenRepository;
 import com.prtracker.domain.valueobject.TokenName;
-import com.prtracker.testfixtures.TokenTestBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
