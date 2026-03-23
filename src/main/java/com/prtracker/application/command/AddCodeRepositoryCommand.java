@@ -23,7 +23,7 @@ public class AddCodeRepositoryCommand extends Command<AddCodeRepositoryDto, Void
         CodeRepositoryIdentifier identifier = parsedCodeRepository.getIdentifier();
 
         CodeRepository codeRepository = new CodeRepository(identifier, parsedCodeRepository.owner(),
-                parsedCodeRepository.name(), input.name(), input.accessToken());
+                parsedCodeRepository.name(), input.name());
 
         codeRepositoryService.add(codeRepository);
 
