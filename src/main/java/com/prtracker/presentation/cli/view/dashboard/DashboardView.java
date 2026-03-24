@@ -1,6 +1,6 @@
 package com.prtracker.presentation.cli.view.dashboard;
 
-import com.prtracker.application.dto.CodeRepositoryView;
+import com.prtracker.application.query.dto.CodeRepositoryProjection;
 import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.ViewComponent;
 import dev.tamboui.layout.Rect;
@@ -55,8 +55,8 @@ public class DashboardView implements Element {
     }
     private Element content() {
         ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
-        List<CodeRepositoryView> repos = state.getRecentRepositories();
-        for (CodeRepositoryView repo : repos) {
+        List<CodeRepositoryProjection> repos = state.getRecentRepositories();
+        for (CodeRepositoryProjection repo : repos) {
             list.add(repo.identifier());
         }
 

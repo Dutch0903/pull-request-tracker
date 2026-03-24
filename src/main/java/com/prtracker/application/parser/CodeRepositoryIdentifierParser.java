@@ -16,7 +16,7 @@ public class CodeRepositoryIdentifierParser {
 
     public ParsedCodeRepository parse(String input) {
         if (input == null || input.isBlank()) {
-            throw new IllegalArgumentException("Repository identifier cannot be empty");
+            throw new IllegalArgumentException("Repository identifier cannot be null or empty");
         }
 
         Matcher httpsMatcher = HTTPS_PATTERN.matcher(input.trim());

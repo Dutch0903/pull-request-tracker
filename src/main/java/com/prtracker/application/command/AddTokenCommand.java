@@ -1,6 +1,6 @@
 package com.prtracker.application.command;
 
-import com.prtracker.application.dto.AddTokenDto;
+import com.prtracker.application.command.dto.AddTokenDto;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.service.TokenService;
 import com.prtracker.domain.valueobject.TokenId;

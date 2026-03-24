@@ -26,8 +26,7 @@ public class CodeRepositoryServiceTest {
 
     @Test
     void add_whenIdentifierDoesNotExists_shouldSaveCodeRepository() {
-        CodeRepository codeRepository = aCodeRepository()
-                .withIdentifier(CodeRepositoryIdentifier.from("unique/repo"))
+        CodeRepository codeRepository = aCodeRepository().withIdentifier(CodeRepositoryIdentifier.from("unique/repo"))
                 .build();
 
         when(codeRepositoryRepository.exists(codeRepository.getIdentifier())).thenReturn(false);
@@ -41,18 +40,16 @@ public class CodeRepositoryServiceTest {
     @Test
     void add_whenIdentifierAlreadyExists_shouldThrowCodeRepositoryAlreadyExistsException() {
         CodeRepository codeRepository = aCodeRepository()
-                .withIdentifier(CodeRepositoryIdentifier.from("already/exists"))
-                .build();
+                .withIdentifier(CodeRepositoryIdentifier.from("already/exists")).build();
 
         when(codeRepositoryRepository.exists(codeRepository.getIdentifier())).thenReturn(true);
 
-        CodeRepositoryAlreadyExistsException exception = assertThrows(
-                CodeRepositoryAlreadyExistsException.class,
-                () -> codeRepositoryService.add(codeRepository)
-        );
+        CodeRepositoryAlreadyExistsException exception = assertThrows(CodeRepositoryAlreadyExistsException.class,
+                () -> codeRepositoryService.add(codeRepository));
 
         verify(codeRepositoryRepository, times(0)).save(codeRepository);
 
-        assertEquals("Code Repository with identifier " + codeRepository.getIdentifier().value() + " already exists", exception.getMessage());
+        assertEquals("Code Repository with identifier " + codeRepository.getIdentifier().value() + " already exists",
+                exception.getMessage());
     }
 }

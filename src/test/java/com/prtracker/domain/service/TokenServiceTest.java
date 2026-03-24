@@ -30,9 +30,7 @@ public class TokenServiceTest {
 
     @Test
     void add_whenTokenNameDoesNotExists_shouldSaveToken() {
-        Token newToken = aToken()
-                .withName(TokenName.from("Unique name"))
-                .build();
+        Token newToken = aToken().withName(TokenName.from("Unique name")).build();
 
         when(tokenRepository.existsByName(newToken.getName())).thenReturn(false);
 
@@ -44,17 +42,12 @@ public class TokenServiceTest {
 
     @Test
     void add_whenTokenNameAlreadyExists_shouldThrowTokenAlreadyExistsException() {
-        Token newToken = aToken()
-                .withName(TokenName.from("Already existing name"))
-                .build();
-
+        Token newToken = aToken().withName(TokenName.from("Already existing name")).build();
 
         when(tokenRepository.existsByName(newToken.getName())).thenReturn(true);
 
-        TokenAlreadyExistsException exception = assertThrows(
-                TokenAlreadyExistsException.class,
-                () -> tokenService.add(newToken)
-        );
+        TokenAlreadyExistsException exception = assertThrows(TokenAlreadyExistsException.class,
+                () -> tokenService.add(newToken));
 
         verify(tokenRepository, times(0)).save(newToken);
 
@@ -67,10 +60,8 @@ public class TokenServiceTest {
 
         when(tokenRepository.findById(updatedToken.getId())).thenReturn(Optional.empty());
 
-        TokenNotFoundException exception = assertThrows(
-                TokenNotFoundException.class,
-                () -> tokenService.update(updatedToken)
-        );
+        TokenNotFoundException exception = assertThrows(TokenNotFoundException.class,
+                () -> tokenService.update(updatedToken));
 
         verify(tokenRepository, times(1)).findById(updatedToken.getId());
 
@@ -79,30 +70,21 @@ public class TokenServiceTest {
 
     @Test
     void update_whenTokenNameHasChangedToExistingName_shouldThrowTokenAlreadyExistsException() {
-        Token existingToken = aToken()
-                .withName(TokenName.from("existing-name"))
-                .build();
+        Token existingToken = aToken().withName(TokenName.from("existing-name")).build();
 
-        Token updatedToken = copyOf(existingToken)
-                .withName(TokenName.from("new-name"))
-                .build();
+        Token updatedToken = copyOf(existingToken).withName(TokenName.from("new-name")).build();
 
         when(tokenRepository.findById(updatedToken.getId())).thenReturn(Optional.of(existingToken));
         when(tokenRepository.existsByName(updatedToken.getName())).thenReturn(true);
 
-        assertThrows(TokenAlreadyExistsException.class,
-                () -> tokenService.update(updatedToken));
+        assertThrows(TokenAlreadyExistsException.class, () -> tokenService.update(updatedToken));
     }
 
     @Test
     void update_whenTokenNameHasChangedToAUniqueName_shouldSaveToken() {
-        Token existingToken = aToken()
-                .withName(TokenName.from("existing-name"))
-                .build();
+        Token existingToken = aToken().withName(TokenName.from("existing-name")).build();
 
-        Token updatedToken = copyOf(existingToken)
-                .withName(TokenName.from("unique-name"))
-                .build();
+        Token updatedToken = copyOf(existingToken).withName(TokenName.from("unique-name")).build();
 
         when(tokenRepository.findById(updatedToken.getId())).thenReturn(Optional.of(existingToken));
         when(tokenRepository.existsByName(updatedToken.getName())).thenReturn(false);
@@ -114,13 +96,9 @@ public class TokenServiceTest {
 
     @Test
     void update_whenTokenNameIsStillTheSame_shouldNotCheckForExistingTokens() {
-        Token existingToken = aToken()
-                .withName(TokenName.from("existing-name"))
-                .build();
+        Token existingToken = aToken().withName(TokenName.from("existing-name")).build();
 
-        Token updatedToken = copyOf(existingToken)
-                .withValue("New value")
-                .build();
+        Token updatedToken = copyOf(existingToken).withValue("New value").build();
 
         when(tokenRepository.findById(updatedToken.getId())).thenReturn(Optional.of(existingToken));
 

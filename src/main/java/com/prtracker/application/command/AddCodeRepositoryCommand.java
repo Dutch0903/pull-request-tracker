@@ -1,6 +1,6 @@
 package com.prtracker.application.command;
 
-import com.prtracker.application.dto.AddCodeRepositoryDto;
+import com.prtracker.application.command.dto.AddCodeRepositoryDto;
 import com.prtracker.application.parser.CodeRepositoryIdentifierParser;
 import com.prtracker.application.parser.ParsedCodeRepository;
 import com.prtracker.domain.entity.CodeRepository;

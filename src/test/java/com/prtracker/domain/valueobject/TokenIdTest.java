@@ -21,10 +21,7 @@ public class TokenIdTest {
 
     @Test
     void from_whenValueIsNull_shouldThrowInvalidTokenIdException() {
-        InvalidTokenIdException exception = assertThrows(
-                InvalidTokenIdException.class,
-                () -> TokenId.from(null)
-        );
+        InvalidTokenIdException exception = assertThrows(InvalidTokenIdException.class, () -> TokenId.from(null));
 
         assertEquals("Invalid token ID: Token ID cannot be null", exception.getMessage());
     }

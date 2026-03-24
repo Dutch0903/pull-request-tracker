@@ -18,30 +18,22 @@ public class TokenNameTest {
 
     @Test
     void from_whenValueIsNull_shouldThrowInvalidTokenNameException() {
-        InvalidTokenNameException exception = assertThrows(
-                InvalidTokenNameException.class,
-                () -> TokenName.from(null)
-        );
+        InvalidTokenNameException exception = assertThrows(InvalidTokenNameException.class, () -> TokenName.from(null));
 
         assertEquals("Invalid token name: Token name cannot be empty", exception.getMessage());
     }
 
     @Test
     void from_whenValueIsEmpty_shouldThrowInvalidTokenNameException() {
-        InvalidTokenNameException exception = assertThrows(
-                InvalidTokenNameException.class,
-                () -> TokenName.from("")
-        );
+        InvalidTokenNameException exception = assertThrows(InvalidTokenNameException.class, () -> TokenName.from(""));
 
         assertEquals("Invalid token name: Token name cannot be empty", exception.getMessage());
     }
 
     @Test
     void from_whenValueIsBlank_shouldThrowInvalidTokenException() {
-        InvalidTokenNameException exception = assertThrows(
-                InvalidTokenNameException.class,
-                () -> TokenName.from("    ")
-        );
+        InvalidTokenNameException exception = assertThrows(InvalidTokenNameException.class,
+                () -> TokenName.from("    "));
 
         assertEquals("Invalid token name: Token name cannot be empty", exception.getMessage());
     }
