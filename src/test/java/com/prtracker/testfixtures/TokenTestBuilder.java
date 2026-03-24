@@ -14,10 +14,7 @@ public class TokenTestBuilder {
     }
 
     public static TokenTestBuilder copyOf(Token token) {
-        return aToken()
-                .withTokenId(token.getId())
-                .withName(token.getName())
-                .withValue(token.getValue());
+        return aToken().withTokenId(token.getId()).withName(token.getName()).withValue(token.getValue());
     }
 
     public TokenTestBuilder withTokenId(TokenId id) {

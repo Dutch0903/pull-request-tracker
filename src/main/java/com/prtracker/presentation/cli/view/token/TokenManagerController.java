@@ -2,9 +2,9 @@ package com.prtracker.presentation.cli.view.token;
 
 import com.prtracker.application.command.AddTokenCommand;
 import com.prtracker.application.command.UpdateTokenCommand;
-import com.prtracker.application.dto.AddTokenDto;
-import com.prtracker.application.dto.TokenProjection;
-import com.prtracker.application.dto.UpdateTokenDto;
+import com.prtracker.application.command.dto.AddTokenDto;
+import com.prtracker.application.query.dto.TokenProjection;
+import com.prtracker.application.command.dto.UpdateTokenDto;
 import com.prtracker.application.query.GetTokensQuery;
 import dev.tamboui.widgets.input.TextInputState;
 import lombok.Getter;
@@ -31,6 +31,8 @@ public class TokenManagerController {
     private final TextInputState nameInputState = new TextInputState();
     @Getter
     private final TextInputState valueInputState = new TextInputState();
+
+    private final String dummyToken = "dummy-token";
 
     // List
     private List<TokenProjection> tokens;
@@ -108,7 +110,7 @@ public class TokenManagerController {
     private void prefillInputStates(TokenProjection token) {
         if (token != null) {
             nameInputState.setText(token.name());
-            valueInputState.setText(token.value());
+            valueInputState.setText(dummyToken);
         } else {
             clearInputStates();
         }

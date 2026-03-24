@@ -1,6 +1,6 @@
 package com.prtracker.infrastructure.persistence;
 
-import com.prtracker.application.dto.TokenProjection;
+import com.prtracker.application.query.dto.TokenProjection;
 import com.prtracker.application.repository.TokenReadRepository;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.repository.TokenRepository;

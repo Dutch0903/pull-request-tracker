@@ -1,12 +1,12 @@
 package com.prtracker.application.repository;
 
-import com.prtracker.application.dto.CodeRepositoryView;
+import com.prtracker.application.query.dto.CodeRepositoryProjection;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CodeRepositoryReadRepository {
-    List<CodeRepositoryView> findAllAsViews();
+    List<CodeRepositoryProjection> findAllAsViews();
 
-    Optional<CodeRepositoryView> findViewById(String identifier);
+    Optional<CodeRepositoryProjection> findViewById(String identifier);
 }

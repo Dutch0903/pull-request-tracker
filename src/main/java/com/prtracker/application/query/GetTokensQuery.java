@@ -1,6 +1,6 @@
 package com.prtracker.application.query;
 
-import com.prtracker.application.dto.TokenProjection;
+import com.prtracker.application.query.dto.TokenProjection;
 import com.prtracker.application.repository.TokenReadRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

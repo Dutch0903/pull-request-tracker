@@ -1,6 +1,6 @@
 package com.prtracker.infrastructure.persistence;
 
-import com.prtracker.application.dto.CodeRepositoryView;
+import com.prtracker.application.query.dto.CodeRepositoryProjection;
 import com.prtracker.application.repository.CodeRepositoryReadRepository;
 import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.repository.CodeRepositoryRepository;
@@ -53,14 +53,14 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
 
     // Read repository methods (for queries)
     @Override
-    public List<CodeRepositoryView> findAllAsViews() {
-        return codeRepositories.values().stream().map(CodeRepositoryView::from).toList();
+    public List<CodeRepositoryProjection> findAllAsViews() {
+        return codeRepositories.values().stream().map(CodeRepositoryProjection::from).toList();
     }
 
     @Override
-    public Optional<CodeRepositoryView> findViewById(String identifier) {
+    public Optional<CodeRepositoryProjection> findViewById(String identifier) {
         CodeRepositoryIdentifier id = CodeRepositoryIdentifier.from(identifier);
-        return Optional.ofNullable(codeRepositories.get(id)).map(CodeRepositoryView::from);
+        return Optional.ofNullable(codeRepositories.get(id)).map(CodeRepositoryProjection::from);
     }
 
     @Override

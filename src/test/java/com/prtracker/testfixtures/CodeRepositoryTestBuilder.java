@@ -5,9 +5,7 @@ import com.prtracker.domain.enums.CodeRepositoryStatus;
 import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
 
 public class CodeRepositoryTestBuilder {
-    private CodeRepositoryIdentifier identifier = new CodeRepositoryIdentifier(
-            "account/repo"
-    );
+    private CodeRepositoryIdentifier identifier = new CodeRepositoryIdentifier("account/repo");
     private String owner = "account";
     private String name = "repo";
     private String url = "https://github.com/account/repo";
@@ -18,11 +16,8 @@ public class CodeRepositoryTestBuilder {
     }
 
     public static CodeRepositoryTestBuilder copyOf(CodeRepository codeRepository) {
-        return aCodeRepository()
-                .withIdentifier(codeRepository.getIdentifier())
-                .withName(codeRepository.getName())
-                .withOwner(codeRepository.getOwner())
-                .withUrl(codeRepository.getUrl())
+        return aCodeRepository().withIdentifier(codeRepository.getIdentifier()).withName(codeRepository.getName())
+                .withOwner(codeRepository.getOwner()).withUrl(codeRepository.getUrl())
                 .withStatus(codeRepository.getStatus());
     };
 
@@ -37,7 +32,7 @@ public class CodeRepositoryTestBuilder {
     }
 
     public CodeRepositoryTestBuilder withName(String name) {
-        this.name  =name;
+        this.name = name;
         return this;
     }
 
@@ -52,12 +47,6 @@ public class CodeRepositoryTestBuilder {
     }
 
     public CodeRepository build() {
-        return new CodeRepository(
-                identifier,
-                owner,
-                name,
-                url,
-                status
-        );
+        return new CodeRepository(identifier, owner, name, url, status);
     }
 }

@@ -1,6 +1,6 @@
 package com.prtracker.application.repository;
 
-import com.prtracker.application.dto.TokenProjection;
+import com.prtracker.application.query.dto.TokenProjection;
 
 import java.util.List;
 import java.util.Optional;
