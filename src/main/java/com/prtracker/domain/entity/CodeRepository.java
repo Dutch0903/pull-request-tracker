@@ -11,14 +11,12 @@ public class CodeRepository {
     private CodeRepositoryIdentifier identifier;
     private String owner;
     private String name;
-    private String url;
     private CodeRepositoryStatus status;
 
-    public CodeRepository(CodeRepositoryIdentifier identifier, String owner, String name, String url) {
+    public CodeRepository(CodeRepositoryIdentifier identifier, String owner, String name) {
         this.identifier = identifier;
         this.owner = owner;
         this.name = name;
-        this.url = url;
         this.status = CodeRepositoryStatus.INACTIVE;
     }
 }

@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class CodeRepositoryMapper {
     public CodeRepositoryDto toDto(CodeRepository codeRepository) {
         return new CodeRepositoryDto(codeRepository.getIdentifier().value(), codeRepository.getOwner(),
-                codeRepository.getName(), codeRepository.getUrl(), codeRepository.getStatus().toString());
+                codeRepository.getName(), codeRepository.getStatus().toString());
     }
 
     public CodeRepository toDomain(CodeRepositoryDto codeRepositoryDto) {
         return new CodeRepository(CodeRepositoryIdentifier.from(codeRepositoryDto.identifier()),
-                codeRepositoryDto.owner(), codeRepositoryDto.name(), codeRepositoryDto.url(),
+                codeRepositoryDto.owner(), codeRepositoryDto.name(),
                 CodeRepositoryStatus.valueOf(codeRepositoryDto.status()));
     }
 }
