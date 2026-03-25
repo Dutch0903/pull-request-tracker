@@ -1,6 +1,6 @@
 package com.prtracker.application.parser;
 
-import com.prtracker.domain.enums.CodeRepositoryIdentifierType;
+import com.prtracker.domain.enums.CodeRepositoryReferenceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CodeRepositoryIdentifierParserTest {
-    private CodeRepositoryIdentifierParser parser;
+    private CodeRepositoryReferenceParser parser;
 
     @BeforeEach
     public void init() {
-        parser = new CodeRepositoryIdentifierParser();
+        parser = new CodeRepositoryReferenceParser();
     }
 
     @Test
@@ -44,9 +44,9 @@ public class CodeRepositoryIdentifierParserTest {
     void parse_whenInputIsValidUrl_shouldReturnParsedCodeRepository() {
         String url = "https://github.com/owner/repo";
 
-        ParsedCodeRepository parsed = parser.parse(url);
+        ParsedCodeRepositoryReference parsed = parser.parse(url);
 
-        assertEquals(CodeRepositoryIdentifierType.HTTPS_URL, parsed.type());
+        assertEquals(CodeRepositoryReferenceType.HTTPS_URL, parsed.type());
         assertEquals("owner", parsed.owner());
         assertEquals("repo", parsed.name());
     }
@@ -55,9 +55,9 @@ public class CodeRepositoryIdentifierParserTest {
     void parse_whenInputIsValidSsh_shouldReturnParsedCodeRepository() {
         String validSsh = "git@github.com:owner/repo";
 
-        ParsedCodeRepository parsed = parser.parse(validSsh);
+        ParsedCodeRepositoryReference parsed = parser.parse(validSsh);
 
-        assertEquals(CodeRepositoryIdentifierType.SSH_URL, parsed.type());
+        assertEquals(CodeRepositoryReferenceType.SSH_URL, parsed.type());
         assertEquals("owner", parsed.owner());
         assertEquals("repo", parsed.name());
     }
@@ -66,9 +66,9 @@ public class CodeRepositoryIdentifierParserTest {
     void parse_whenInputIsValidOwnerName_shouldReturnParsedCodeRepository() {
         String validOwnerName = "owner/repo";
 
-        ParsedCodeRepository parsed = parser.parse(validOwnerName);
+        ParsedCodeRepositoryReference parsed = parser.parse(validOwnerName);
 
-        assertEquals(CodeRepositoryIdentifierType.OWNER_NAME, parsed.type());
+        assertEquals(CodeRepositoryReferenceType.OWNER_NAME, parsed.type());
         assertEquals("owner", parsed.owner());
         assertEquals("repo", parsed.name());
     }
