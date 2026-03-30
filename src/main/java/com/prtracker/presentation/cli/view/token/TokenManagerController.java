@@ -1,12 +1,17 @@
 package com.prtracker.presentation.cli.view.token;
 
-import com.prtracker.application.command.AddTokenCommand;
-import com.prtracker.application.command.UpdateTokenCommand;
-import com.prtracker.application.command.dto.AddTokenDto;
-import com.prtracker.application.query.dto.TokenProjection;
-import com.prtracker.application.command.dto.UpdateTokenDto;
 import com.prtracker.application.query.GetTokensQuery;
-import dev.tamboui.widgets.input.TextInputState;
+import com.prtracker.application.query.dto.TokenProjection;
+import com.prtracker.presentation.cli.action.token.CreateTokenAction;
+import com.prtracker.presentation.cli.action.token.DeleteTokenAction;
+import com.prtracker.presentation.cli.action.token.UpdateTokenAction;
+import com.prtracker.presentation.cli.dialog.DialogManager;
+import com.prtracker.presentation.cli.dialog.DialogType;
+import com.prtracker.presentation.cli.dialog.confirm.ConfirmDialogHandler;
+import com.prtracker.presentation.cli.dialog.form.FormDialogHandler;
+import com.prtracker.presentation.cli.dialog.token.CreateTokenDialogConfiguration;
+import com.prtracker.presentation.cli.dialog.token.DeleteTokenDialogConfiguration;
+import com.prtracker.presentation.cli.dialog.token.UpdateTokenDialogConfiguration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,25 +21,12 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TokenManagerController {
-    private final AddTokenCommand addTokenCommand;
-    private final UpdateTokenCommand updateTokenCommand;
+    private final DialogManager dialogManager;
+    private final CreateTokenAction createTokenAction;
+    private final UpdateTokenAction updateTokenAction;
+    private final DeleteTokenAction deleteTokenAction;
     private final GetTokensQuery getTokensQuery;
 
-    // Dialog
-    @Getter
-    private DialogType currentDialog = DialogType.NONE;
-    @Getter
-    private String dialogMessage = "";
-
-    // Form
-    @Getter
-    private final TextInputState nameInputState = new TextInputState();
-    @Getter
-    private final TextInputState valueInputState = new TextInputState();
-
-    private final String dummyToken = "dummy-token";
-
-    // List
     private List<TokenProjection> tokens;
 
     @Getter
@@ -46,10 +38,6 @@ public class TokenManagerController {
         }
 
         return tokens;
-    }
-
-    public void refreshTokens() {
-        loadTokens();
     }
 
     public TokenProjection getSelectedToken() {
@@ -72,67 +60,44 @@ public class TokenManagerController {
         }
     }
 
-    public boolean hasDialog() {
-        return currentDialog != DialogType.NONE;
+    public void openCreateTokenDialog() {
+        FormDialogHandler handler = values -> {
+            createTokenAction.execute(values.get(CreateTokenDialogConfiguration.NAME),
+                    values.get(CreateTokenDialogConfiguration.VALUE));
+            loadTokens();
+        };
+
+        dialogManager.openDialog(DialogType.FORM, new CreateTokenDialogConfiguration(), handler);
     }
 
-    public void promptCreateToken() {
-        this.clearInputStates();
-        dialogMessage = "Create a new token";
-        currentDialog = DialogType.CREATE;
-    }
-
-    public void promptUpdateToken() {
-        this.prefillInputStates(getSelectedToken());
-        dialogMessage = "Update a existing token";
-        currentDialog = DialogType.UPDATE;
-    }
-
-    public void confirmDialog() {
-        switch (currentDialog) {
-            case CREATE -> this.createToken();
-            case UPDATE -> this.updateToken();
-        }
-
-        dismissDialog();
-    }
-
-    public void dismissDialog() {
-        currentDialog = DialogType.NONE;
-        this.clearInputStates();
-    }
-
-    private void clearInputStates() {
-        nameInputState.clear();
-        valueInputState.clear();
-    }
-
-    private void prefillInputStates(TokenProjection token) {
-        if (token != null) {
-            nameInputState.setText(token.name());
-            valueInputState.setText(dummyToken);
-        } else {
-            clearInputStates();
-        }
-    }
-
-    private void createToken() {
-        String name = nameInputState.text();
-        String value = valueInputState.text();
-
-        addTokenCommand.execute(new AddTokenDto(name, value));
-
-        refreshTokens();
-    }
-
-    private void updateToken() {
+    public void openUpdateTokenDialog() {
         TokenProjection token = getSelectedToken();
-        String name = nameInputState.text();
-        String value = valueInputState.text();
 
-        updateTokenCommand.execute(new UpdateTokenDto(token.id(), name, value));
+        if (token == null) {
+            return;
+        }
 
-        refreshTokens();;
+        FormDialogHandler handler = values -> {
+            updateTokenAction.execute(token.id(), values.get(UpdateTokenDialogConfiguration.NAME),
+                    values.get(UpdateTokenDialogConfiguration.VALUE));
+            loadTokens();
+        };
+
+        dialogManager.openDialog(DialogType.FORM, new UpdateTokenDialogConfiguration(token), handler);
+    }
+
+    public void openDeleteTokenDialog() {
+        TokenProjection token = getSelectedToken();
+        if (token == null) {
+            return;
+        }
+
+        ConfirmDialogHandler handler = () -> {
+            deleteTokenAction.execute(token.id());
+            loadTokens();
+        };
+
+        dialogManager.openDialog(DialogType.CONFIRM, new DeleteTokenDialogConfiguration(token), handler);
     }
 
     private void loadTokens() {

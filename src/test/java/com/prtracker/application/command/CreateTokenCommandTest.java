@@ -1,6 +1,6 @@
 package com.prtracker.application.command;
 
-import com.prtracker.application.command.dto.AddTokenDto;
+import com.prtracker.application.command.dto.CreateTokenDto;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.service.TokenService;
 import org.junit.jupiter.api.Test;
@@ -15,23 +15,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class AddTokenCommandTest {
+public class CreateTokenCommandTest {
     @Mock
     private TokenService tokenService;
 
     @InjectMocks
-    private AddTokenCommand addTokenCommand;
+    private CreateTokenCommand createTokenCommand;
 
     @Test
     void execute_whenCalled_shouldCallTokenService() {
         String value = "value";
         String name = "name";
-        AddTokenDto input = new AddTokenDto(name, value);
+        CreateTokenDto input = new CreateTokenDto(name, value);
 
-        addTokenCommand.execute(input);
+        createTokenCommand.execute(input);
 
         ArgumentCaptor<Token> argument = ArgumentCaptor.forClass(Token.class);
-        verify(tokenService, times(1)).add(argument.capture());
+        verify(tokenService, times(1)).create(argument.capture());
 
         Token capturedToken = argument.getValue();
         assertEquals(name, capturedToken.getName().value());
