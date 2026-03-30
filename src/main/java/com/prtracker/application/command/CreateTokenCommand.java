@@ -1,6 +1,6 @@
 package com.prtracker.application.command;
 
-import com.prtracker.application.command.dto.AddTokenDto;
+import com.prtracker.application.command.dto.CreateTokenDto;
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.service.TokenService;
 import com.prtracker.domain.valueobject.TokenId;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AddTokenCommand extends Command<AddTokenDto, Void> {
+public class CreateTokenCommand extends Command<CreateTokenDto, Void> {
     private final TokenService tokenService;
 
     @Override
-    protected Void executeInternal(AddTokenDto input) {
+    protected Void executeInternal(CreateTokenDto input) {
         Token token = new Token(TokenId.create(), TokenName.from(input.name()), input.value());
 
-        tokenService.add(token);
+        tokenService.create(token);
         return null;
     }
 }

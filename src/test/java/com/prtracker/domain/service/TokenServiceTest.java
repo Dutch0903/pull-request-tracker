@@ -29,25 +29,25 @@ public class TokenServiceTest {
     private TokenService tokenService;
 
     @Test
-    void add_whenTokenNameDoesNotExists_shouldSaveToken() {
+    void create_whenTokenNameDoesNotExists_shouldSaveToken() {
         Token newToken = aToken().withName(TokenName.from("Unique name")).build();
 
         when(tokenRepository.existsByName(newToken.getName())).thenReturn(false);
 
-        tokenService.add(newToken);
+        tokenService.create(newToken);
 
         verify(tokenRepository, times(1)).existsByName(newToken.getName());
         verify(tokenRepository, times(1)).save(newToken);
     }
 
     @Test
-    void add_whenTokenNameAlreadyExists_shouldThrowTokenAlreadyExistsException() {
+    void create_whenTokenNameAlreadyExists_shouldThrowTokenAlreadyExistsException() {
         Token newToken = aToken().withName(TokenName.from("Already existing name")).build();
 
         when(tokenRepository.existsByName(newToken.getName())).thenReturn(true);
 
         TokenAlreadyExistsException exception = assertThrows(TokenAlreadyExistsException.class,
-                () -> tokenService.add(newToken));
+                () -> tokenService.create(newToken));
 
         verify(tokenRepository, times(0)).save(newToken);
 

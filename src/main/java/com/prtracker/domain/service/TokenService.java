@@ -4,6 +4,7 @@ import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.exceptions.TokenAlreadyExistsException;
 import com.prtracker.domain.exceptions.TokenNotFoundException;
 import com.prtracker.domain.repository.TokenRepository;
+import com.prtracker.domain.valueobject.TokenId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class TokenService {
     private final TokenRepository tokenRepository;
 
-    public void add(Token token) {
+    public void create(Token token) {
         if (tokenRepository.existsByName(token.getName())) {
             throw new TokenAlreadyExistsException(token.getName());
         }
@@ -36,5 +37,9 @@ public class TokenService {
         }
 
         tokenRepository.save(token);
+    }
+
+    public void delete(TokenId tokenId) {
+        tokenRepository.delete(tokenId);
     }
 }

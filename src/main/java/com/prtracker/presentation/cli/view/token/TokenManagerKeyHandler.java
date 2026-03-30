@@ -20,12 +20,17 @@ public class TokenManagerKeyHandler {
         }
 
         if (event.isCharIgnoreCase('n')) {
-            controller.promptCreateToken();
+            controller.openCreateTokenDialog();
             return EventResult.HANDLED;
         }
 
         if (event.isCharIgnoreCase('u')) {
-            controller.promptUpdateToken();
+            controller.openUpdateTokenDialog();
+            return EventResult.HANDLED;
+        }
+
+        if (event.isDeleteBackward()) {
+            controller.openDeleteTokenDialog();
             return EventResult.HANDLED;
         }
 
