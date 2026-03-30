@@ -11,6 +11,8 @@ public class ConfirmDialog implements Dialog {
     private final ConfirmDialogHandler handler;
     private final Runnable closeDialog;
 
+    private String errorMessage;
+
     public ConfirmDialog(ConfirmDialogConfiguration configuration, ConfirmDialogHandler handler, Runnable closeDialog) {
         this.configuration = configuration;
         this.handler = handler;
@@ -19,13 +21,18 @@ public class ConfirmDialog implements Dialog {
 
     @Override
     public DialogElement render() {
-        return dialog(configuration.title(), text(configuration.description()),
+        return dialog(configuration.title(), text(configuration.description()), text(errorMessage).red(),
                 text("[Enter] Confirm  [Esc] Cancel").dim()).onConfirm(this::confirm).onCancel(closeDialog)
                 .width(Math.max(50, configuration.description().length()));
     }
 
     public void confirm() {
-        handler.onConfirm();
+        try {
+            handler.onConfirm();
+        } catch (RuntimeException e) {
+            this.errorMessage = e.getMessage();
+            return;
+        }
         closeDialog.run();
     }
 }

@@ -19,6 +19,7 @@ public class FormDialog implements Dialog {
     private final FormDialogHandler handler;
     private final Runnable closeDialog;
     private FormState state;
+    private String errorMessage;
 
     public FormDialog(FormDialogConfiguration configuration, FormDialogHandler handler, Runnable closeDialog) {
         this.configuration = configuration;
@@ -47,7 +48,13 @@ public class FormDialog implements Dialog {
             values.put(id, value);
         });
 
-        handler.onSubmit(values);
+        try {
+            handler.onSubmit(values);
+        } catch (RuntimeException e) {
+            this.errorMessage = e.getMessage();
+            return;
+        }
+
         closeDialog.run();
     }
 
@@ -66,6 +73,10 @@ public class FormDialog implements Dialog {
 
             elements.add(element);
         });
+
+        if (errorMessage != null) {
+            elements.add(text(errorMessage).red());
+        }
 
         elements.add(text("[Enter] Confirm  [Esc] Cancel").dim());
 
