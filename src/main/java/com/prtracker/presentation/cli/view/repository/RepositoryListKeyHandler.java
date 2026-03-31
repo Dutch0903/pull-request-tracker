@@ -11,10 +11,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RepositoryListKeyHandler {
     private final NavigationEventPublisher navigationEventPublisher;
+    private final RepositoryListController repositoryListController;
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('d')) {
             navigationEventPublisher.navigateTo(ViewName.DASHBOARD);
+            return EventResult.HANDLED;
+        }
+
+        if (event.isCharIgnoreCase('c')) {
+            repositoryListController.openCreateRepositoryDialog();
             return EventResult.HANDLED;
         }
 

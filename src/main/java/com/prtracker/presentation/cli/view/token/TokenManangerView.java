@@ -17,30 +17,23 @@ import lombok.RequiredArgsConstructor;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 
-@RequiredArgsConstructor
 @ViewComponent(name = ViewName.TOKENS)
 public class TokenManangerView extends View {
-    private final DialogManager dialogManager;
     private final TokenManagerKeyHandler keyHandler;
     private final TokenManagerController controller;
 
-    private DialogElement renderedDialog;
+    public TokenManangerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler, TokenManagerController controller) {
+        super(dialogManager);
+
+        this.keyHandler = keyHandler;
+        this.controller = controller;
+    }
 
     @Override
     protected Element renderBody() {
         return row(this.renderTokenList());
     }
 
-    @Override
-    protected void renderOverlay(Frame frame, Rect area, RenderContext context) {
-        if (!dialogManager.isDialogOpen()) {
-            renderedDialog = null;
-            return;
-        }
-
-        renderedDialog = dialogManager.getCurrentDialog().render();
-        renderedDialog.render(frame, area, context);
-    }
 
     @Override
     public EventResult handleKeyEvent(KeyEvent event, boolean focused) {

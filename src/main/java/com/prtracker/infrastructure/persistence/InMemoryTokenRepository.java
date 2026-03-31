@@ -56,19 +56,8 @@ public class InMemoryTokenRepository implements TokenRepository, TokenReadReposi
 
     // Read repository methods (for queries)
     @Override
-    public List<TokenProjection> findAllAsViews() {
+    public List<TokenProjection> findAllAsProjection() {
         return tokens.values().stream().map(TokenProjection::from).toList();
-    }
-
-    @Override
-    public Optional<TokenProjection> findViewById(String id) {
-        try {
-            UUID uuid = UUID.fromString(id);
-            TokenId tokenId = TokenId.from(uuid);
-            return Optional.ofNullable(tokens.get(tokenId)).map(TokenProjection::from);
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
     }
 
     @Override

@@ -1,4 +1,6 @@
 package com.prtracker.infrastructure.persistence.dto;
 
-public record CodeRepositoryDto(String identifier, String owner, String name, String status) {
+import java.util.UUID;
+
+public record CodeRepositoryDto(String identifier, String owner, String name, String status, UUID tokenId) {
 }

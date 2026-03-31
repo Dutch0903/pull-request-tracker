@@ -1,10 +1,13 @@
 package com.prtracker.presentation.cli.view.token;
 
+import com.prtracker.application.command.CreateTokenCommand;
+import com.prtracker.application.command.DeleteTokenCommand;
+import com.prtracker.application.command.UpdateTokenCommand;
+import com.prtracker.application.command.dto.CreateTokenDto;
+import com.prtracker.application.command.dto.DeleteTokenDto;
+import com.prtracker.application.command.dto.UpdateTokenDto;
 import com.prtracker.application.query.GetTokensQuery;
 import com.prtracker.application.query.dto.TokenProjection;
-import com.prtracker.presentation.cli.action.token.CreateTokenAction;
-import com.prtracker.presentation.cli.action.token.DeleteTokenAction;
-import com.prtracker.presentation.cli.action.token.UpdateTokenAction;
 import com.prtracker.presentation.cli.dialog.DialogManager;
 import com.prtracker.presentation.cli.dialog.DialogType;
 import com.prtracker.presentation.cli.dialog.confirm.ConfirmDialogHandler;
@@ -22,9 +25,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TokenManagerController {
     private final DialogManager dialogManager;
-    private final CreateTokenAction createTokenAction;
-    private final UpdateTokenAction updateTokenAction;
-    private final DeleteTokenAction deleteTokenAction;
+    private final CreateTokenCommand createTokenCommand;
+    private final UpdateTokenCommand updateTokenCommand;
+    private final DeleteTokenCommand deleteTokenCommand;
     private final GetTokensQuery getTokensQuery;
 
     private List<TokenProjection> tokens;
@@ -62,8 +65,8 @@ public class TokenManagerController {
 
     public void openCreateTokenDialog() {
         FormDialogHandler handler = values -> {
-            createTokenAction.execute(values.get(CreateTokenDialogConfiguration.NAME),
-                    values.get(CreateTokenDialogConfiguration.VALUE));
+            createTokenCommand.execute(new CreateTokenDto(values.get(CreateTokenDialogConfiguration.NAME),
+                    values.get(CreateTokenDialogConfiguration.VALUE)));
             loadTokens();
         };
 
@@ -78,8 +81,8 @@ public class TokenManagerController {
         }
 
         FormDialogHandler handler = values -> {
-            updateTokenAction.execute(token.id(), values.get(UpdateTokenDialogConfiguration.NAME),
-                    values.get(UpdateTokenDialogConfiguration.VALUE));
+            updateTokenCommand.execute(new UpdateTokenDto(token.id(), values.get(UpdateTokenDialogConfiguration.NAME),
+                    values.get(UpdateTokenDialogConfiguration.VALUE)));
             loadTokens();
         };
 
@@ -93,7 +96,7 @@ public class TokenManagerController {
         }
 
         ConfirmDialogHandler handler = () -> {
-            deleteTokenAction.execute(token.id());
+            deleteTokenCommand.execute(new DeleteTokenDto(token.id()));
             loadTokens();
         };
 

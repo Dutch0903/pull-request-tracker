@@ -31,7 +31,7 @@ public class FormDialog implements Dialog {
 
     @Override
     public DialogElement render() {
-        return dialog(configuration.title(), buildElements()).onConfirm(this::submit).onCancel(closeDialog);
+        return dialog(configuration.title(), buildElements()).onConfirm(this::submit).onCancel(closeDialog).width(Math.max(50, configuration.description().length()));
     }
 
     private void submit() {
@@ -67,8 +67,8 @@ public class FormDialog implements Dialog {
             element.onSubmit(this::submit);
 
             switch (field) {
-                case TextField f -> element.state(state.textField(field.id()));
-                case SelectField f -> element.state(state.selectField(field.id()));
+                case TextField f -> element.state(state.textField(f.id()));
+                case SelectField f -> element.state(state.selectField(f.id()));
             }
 
             elements.add(element);
@@ -89,7 +89,7 @@ public class FormDialog implements Dialog {
         configuration.fields().forEach(field -> {
             switch (field) {
                 case TextField f -> builder.textField(f.id(), f.initialValue());
-                case SelectField f -> builder.selectField(f.id(), f.options(), f.options().indexOf(f.id()));
+                case SelectField f -> builder.selectField(f.id(), f.options(), f.options().indexOf(f.initialValue()));
             }
         });
 
