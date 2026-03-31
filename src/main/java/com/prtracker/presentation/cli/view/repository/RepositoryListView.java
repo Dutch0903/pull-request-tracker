@@ -2,6 +2,8 @@ package com.prtracker.presentation.cli.view.repository;
 
 import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.ViewComponent;
+import com.prtracker.presentation.cli.dialog.DialogManager;
+import com.prtracker.presentation.cli.view.View;
 import dev.tamboui.layout.Rect;
 import dev.tamboui.terminal.Frame;
 import dev.tamboui.toolkit.element.Element;
@@ -13,16 +15,19 @@ import lombok.RequiredArgsConstructor;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 
-@RequiredArgsConstructor
 @ViewComponent(name = ViewName.REPOSITORIES)
-public class RepositoryListView implements Element {
+public class RepositoryListView extends View {
     private final RepositoryListKeyHandler keyHandler;
 
-    @Override
-    public void render(Frame frame, Rect area, RenderContext context) {
-        Element ui = dock().center(row(this.renderRepositoryList(), this.renderRepositoryStats()).fill());
+    public RepositoryListView(DialogManager dialogManager, RepositoryListKeyHandler keyHandler) {
+        super(dialogManager);
 
-        ui.render(frame, area, context);
+        this.keyHandler = keyHandler;
+    }
+
+    @Override
+    protected Element renderBody() {
+        return row(this.renderRepositoryList(), this.renderRepositoryStats());
     }
 
     @Override

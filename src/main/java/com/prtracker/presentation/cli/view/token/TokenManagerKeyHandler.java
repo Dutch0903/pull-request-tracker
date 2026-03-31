@@ -19,7 +19,7 @@ public class TokenManagerKeyHandler {
             return EventResult.HANDLED;
         }
 
-        if (event.isCharIgnoreCase('n')) {
+        if (event.isCharIgnoreCase('c')) {
             controller.openCreateTokenDialog();
             return EventResult.HANDLED;
         }

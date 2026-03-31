@@ -14,6 +14,6 @@ public class GetTokensQuery extends VoidQuery<List<TokenProjection>> {
 
     @Override
     protected List<TokenProjection> executeInternal() {
-        return tokenReadRepository.findAllAsViews();
+        return tokenReadRepository.findAllAsProjection();
     }
 }
