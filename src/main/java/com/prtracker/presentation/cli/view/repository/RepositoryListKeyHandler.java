@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RepositoryListKeyHandler {
     private final NavigationEventPublisher navigationEventPublisher;
-    private final RepositoryListController repositoryListController;
+    private final CreateRepositoryDialogAction createRepositoryDialogAction;
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('d')) {
@@ -20,7 +20,7 @@ public class RepositoryListKeyHandler {
         }
 
         if (event.isCharIgnoreCase('c')) {
-            repositoryListController.openCreateRepositoryDialog();
+            createRepositoryDialogAction.open();
             return EventResult.HANDLED;
         }
 

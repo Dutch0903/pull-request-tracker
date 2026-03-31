@@ -1,6 +1,9 @@
 package com.prtracker.presentation.cli.view.token;
 
 import com.prtracker.presentation.cli.ViewName;
+import com.prtracker.presentation.cli.dialog.token.CreateTokenDialogAction;
+import com.prtracker.presentation.cli.dialog.token.DeleteTokenDialogAction;
+import com.prtracker.presentation.cli.dialog.token.UpdateTokenDialogAction;
 import com.prtracker.presentation.cli.event.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
@@ -10,8 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TokenManagerKeyHandler {
-    private final TokenManagerController controller;
+    private final TokenManagerState state;
     private final NavigationEventPublisher navigationEventPublisher;
+    private final CreateTokenDialogAction createTokenDialogAction;
+    private final UpdateTokenDialogAction updateTokenDialogAction;
+    private final DeleteTokenDialogAction deleteTokenDialogAction;
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('d')) {
@@ -20,27 +26,27 @@ public class TokenManagerKeyHandler {
         }
 
         if (event.isCharIgnoreCase('c')) {
-            controller.openCreateTokenDialog();
+            createTokenDialogAction.open();
             return EventResult.HANDLED;
         }
 
         if (event.isCharIgnoreCase('u')) {
-            controller.openUpdateTokenDialog();
+            updateTokenDialogAction.open();
             return EventResult.HANDLED;
         }
 
         if (event.isDeleteBackward()) {
-            controller.openDeleteTokenDialog();
+            deleteTokenDialogAction.open();
             return EventResult.HANDLED;
         }
 
         if (event.isDown()) {
-            controller.selectNext();
+            state.selectNext();
             return EventResult.HANDLED;
         }
 
         if (event.isUp()) {
-            controller.selectPrevious();
+            state.selectPrevious();
             return EventResult.HANDLED;
         }
 

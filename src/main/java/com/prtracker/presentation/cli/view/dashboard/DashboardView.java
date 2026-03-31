@@ -53,6 +53,7 @@ public class DashboardView implements Element {
     private Element header() {
         return text("Header");
     }
+
     private Element content() {
         ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
         List<CodeRepositoryProjection> repos = state.getRecentRepositories();
