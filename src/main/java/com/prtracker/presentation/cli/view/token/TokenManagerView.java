@@ -4,29 +4,25 @@ import com.prtracker.presentation.cli.ViewComponent;
 import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.dialog.DialogManager;
 import com.prtracker.presentation.cli.view.View;
-import dev.tamboui.layout.Rect;
 import dev.tamboui.style.Color;
-import dev.tamboui.terminal.Frame;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;
-import dev.tamboui.toolkit.elements.DialogElement;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
-import lombok.RequiredArgsConstructor;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 
 @ViewComponent(name = ViewName.TOKENS)
-public class TokenManangerView extends View {
+public class TokenManagerView extends View {
     private final TokenManagerKeyHandler keyHandler;
-    private final TokenManagerController controller;
+    private final TokenManagerState state;
 
-    public TokenManangerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler, TokenManagerController controller) {
+    public TokenManagerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler, TokenManagerState state) {
         super(dialogManager);
 
         this.keyHandler = keyHandler;
-        this.controller = controller;
+        this.state = state;
     }
 
     @Override
@@ -51,9 +47,9 @@ public class TokenManangerView extends View {
 
     private Element renderTokenList() {
         return panel(column(text("Tokens"),
-                list().data(controller.getTokens(), tokenProjection -> text(tokenProjection.name()))
+                list().data(state.getTokens(), tokenProjection -> text(tokenProjection.name()))
                         .highlightColor(Color.CYAN).highlightSymbol("> ").autoScroll().scrollbar()
-                        .onKeyEvent(keyHandler::handle).selected(controller.getSelectedIndex())
+                        .onKeyEvent(keyHandler::handle).selected(state.getSelectedIndex())
                         .scrollbarThumbColor(Color.CYAN)))
                 .fill().borderless();
     }

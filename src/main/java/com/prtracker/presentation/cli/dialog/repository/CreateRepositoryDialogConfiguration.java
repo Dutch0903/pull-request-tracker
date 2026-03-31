@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateRepositoryDialogConfiguration implements FormDialogConfiguration {
-    public static final String REFERENCE = "reference";
-    public static final String TOKEN = "token";
-
     private final List<String> tokenOptions;
 
     public CreateRepositoryDialogConfiguration(List<TokenProjection> tokens) {
@@ -26,8 +23,8 @@ public class CreateRepositoryDialogConfiguration implements FormDialogConfigurat
     @Override
     public List<Field> fields() {
         return List.of(
-                new TextField(REFERENCE, "Reference", false, ""),
-                new SelectField(TOKEN, "Token", tokenOptions, "None")
+                new TextField(RepositoryFormFields.REFERENCE, "Reference", false, ""),
+                new SelectField(RepositoryFormFields.TOKEN, "Token", tokenOptions, "None")
         );
     }
 

@@ -8,9 +8,6 @@ import com.prtracker.presentation.cli.dialog.form.TextField;
 import java.util.List;
 
 public class UpdateTokenDialogConfiguration implements FormDialogConfiguration {
-    public static final String NAME = "name";
-    public static final String VALUE = "value";
-
     private final TokenProjection token;
 
     public UpdateTokenDialogConfiguration(TokenProjection token) {
@@ -19,8 +16,8 @@ public class UpdateTokenDialogConfiguration implements FormDialogConfiguration {
 
     @Override
     public List<Field> fields() {
-        return List.of(new TextField(NAME, "Name", false, token.name()),
-                new TextField(VALUE, "Value", true, token.value()));
+        return List.of(new TextField(TokenFormFields.NAME, "Name", false, token.name()),
+                new TextField(TokenFormFields.VALUE, "Value", true, token.value()));
     }
 
     @Override
