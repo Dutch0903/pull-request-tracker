@@ -1,6 +1,5 @@
 package com.prtracker.domain.service;
 
-import com.prtracker.application.repository.TokenReadRepository;
 import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.exceptions.CodeRepositoryAlreadyExistsException;
 import com.prtracker.domain.exceptions.TokenNotFoundException;
@@ -16,11 +15,11 @@ public class CodeRepositoryService {
     private final TokenRepository tokenRepository;
 
     public void add(CodeRepository codeRepository) {
-        if (codeRepositoryRepository.exists(codeRepository.getIdentifier())) {
-            throw new CodeRepositoryAlreadyExistsException(codeRepository.getIdentifier());
+        if (codeRepositoryRepository.exists(codeRepository.getFullName())) {
+            throw new CodeRepositoryAlreadyExistsException(codeRepository.getFullName());
         }
 
-        if (tokenRepository.findById(codeRepository.getTokenId()).isEmpty()) {
+        if (codeRepository.getTokenId() != null && tokenRepository.findById(codeRepository.getTokenId()).isEmpty()) {
             throw new TokenNotFoundException(codeRepository.getTokenId());
         }
 

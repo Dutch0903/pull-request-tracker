@@ -30,7 +30,6 @@ public class TokenManagerView extends View {
         return row(this.renderTokenList());
     }
 
-
     @Override
     public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
         if (renderedDialog != null && dialogManager.isDialogOpen()) {

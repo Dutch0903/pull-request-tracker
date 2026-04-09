@@ -22,10 +22,8 @@ public class CreateRepositoryDialogConfiguration implements FormDialogConfigurat
 
     @Override
     public List<Field> fields() {
-        return List.of(
-                new TextField(RepositoryFormFields.REFERENCE, "Reference", false, ""),
-                new SelectField(RepositoryFormFields.TOKEN, "Token", tokenOptions, "None")
-        );
+        return List.of(new TextField(RepositoryFormFields.REFERENCE, "Reference", false, ""),
+                new SelectField(RepositoryFormFields.TOKEN, "Token", tokenOptions, "None"));
     }
 
     @Override
