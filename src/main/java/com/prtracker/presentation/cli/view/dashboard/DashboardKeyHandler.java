@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DashboardKeyHandler {
     private final NavigationEventPublisher navigationEventPublisher;
+    private final DashboardController dashboardController;
 
     public EventResult handle(KeyEvent event) {
         if (event.isCharIgnoreCase('r')) {
@@ -21,6 +22,10 @@ public class DashboardKeyHandler {
         if (event.isCharIgnoreCase('t')) {
             navigationEventPublisher.navigateTo(ViewName.TOKENS);
             return EventResult.HANDLED;
+        }
+
+        if (event.isCharIgnoreCase('f')) {
+            dashboardController.fetchRepositoryPullRequests();
         }
 
         return EventResult.UNHANDLED;

@@ -20,8 +20,8 @@ public class CreateTokenDialogAction implements DialogAction {
     @Override
     public void open() {
         FormDialogHandler handler = values -> {
-            createTokenCommand.execute(new CreateTokenDto(values.get(TokenFormFields.NAME),
-                    values.get(TokenFormFields.VALUE)));
+            createTokenCommand
+                    .execute(new CreateTokenDto(values.get(TokenFormFields.NAME), values.get(TokenFormFields.VALUE)));
             tokenManagerState.refreshTokens();
         };
 

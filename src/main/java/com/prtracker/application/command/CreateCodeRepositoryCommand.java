@@ -5,7 +5,8 @@ import com.prtracker.application.parser.CodeRepositoryReferenceParser;
 import com.prtracker.application.parser.ParsedCodeRepositoryReference;
 import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.service.CodeRepositoryService;
-import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
+import com.prtracker.domain.valueobject.CodeRepositoryId;
+import com.prtracker.domain.valueobject.FullName;
 import com.prtracker.domain.valueobject.TokenId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,10 @@ public class CreateCodeRepositoryCommand extends Command<CreateCodeRepositoryDto
     @Override
     protected Void executeInternal(CreateCodeRepositoryDto input) {
         ParsedCodeRepositoryReference parsedCodeRepositoryReference = parser.parse(input.repositoryReference());
-        CodeRepositoryIdentifier identifier = parsedCodeRepositoryReference.getIdentifier();
 
-        CodeRepository codeRepository = new CodeRepository(identifier, parsedCodeRepositoryReference.owner(),
-                parsedCodeRepositoryReference.name(), TokenId.from(input.tokenId()));
+        CodeRepository codeRepository = new CodeRepository(CodeRepositoryId.create(),
+                new FullName(parsedCodeRepositoryReference.owner(), parsedCodeRepositoryReference.name()),
+                TokenId.from(input.tokenId()));
 
         codeRepositoryService.add(codeRepository);
 

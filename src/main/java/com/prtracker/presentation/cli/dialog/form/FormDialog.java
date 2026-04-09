@@ -31,7 +31,8 @@ public class FormDialog implements Dialog {
 
     @Override
     public DialogElement render() {
-        return dialog(configuration.title(), buildElements()).onConfirm(this::submit).onCancel(closeDialog).width(Math.max(50, configuration.description().length()));
+        return dialog(configuration.title(), buildElements()).onConfirm(this::submit).onCancel(closeDialog)
+                .width(Math.max(50, configuration.description().length()));
     }
 
     private void submit() {

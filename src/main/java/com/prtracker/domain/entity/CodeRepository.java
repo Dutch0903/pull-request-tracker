@@ -1,7 +1,8 @@
 package com.prtracker.domain.entity;
 
 import com.prtracker.domain.enums.CodeRepositoryStatus;
-import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
+import com.prtracker.domain.valueobject.CodeRepositoryId;
+import com.prtracker.domain.valueobject.FullName;
 import com.prtracker.domain.valueobject.TokenId;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,16 +10,14 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CodeRepository {
-    private CodeRepositoryIdentifier identifier;
-    private String owner;
-    private String name;
+    private CodeRepositoryId id;
+    private FullName fullName;
     private CodeRepositoryStatus status;
     private TokenId tokenId;
 
-    public CodeRepository(CodeRepositoryIdentifier identifier, String owner, String name, TokenId tokenId) {
-        this.identifier = identifier;
-        this.owner = owner;
-        this.name = name;
+    public CodeRepository(CodeRepositoryId id, FullName fullName, TokenId tokenId) {
+        this.id = id;
+        this.fullName = fullName;
         this.tokenId = tokenId;
         this.status = CodeRepositoryStatus.INACTIVE;
     }

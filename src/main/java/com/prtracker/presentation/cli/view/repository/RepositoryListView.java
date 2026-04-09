@@ -4,14 +4,11 @@ import com.prtracker.presentation.cli.ViewName;
 import com.prtracker.presentation.cli.ViewComponent;
 import com.prtracker.presentation.cli.dialog.DialogManager;
 import com.prtracker.presentation.cli.view.View;
-import dev.tamboui.layout.Rect;
-import dev.tamboui.terminal.Frame;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
-import lombok.RequiredArgsConstructor;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 

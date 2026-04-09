@@ -1,9 +1,9 @@
 package com.prtracker.domain.exceptions;
 
-import com.prtracker.domain.valueobject.CodeRepositoryIdentifier;
+import com.prtracker.domain.valueobject.FullName;
 
 public class CodeRepositoryAlreadyExistsException extends RuntimeException {
-    public CodeRepositoryAlreadyExistsException(CodeRepositoryIdentifier codeRepositoryIdentifier) {
-        super("Code Repository with identifier " + codeRepositoryIdentifier.value() + " already exists");
+    public CodeRepositoryAlreadyExistsException(FullName fullName) {
+        super("Code Repository " + fullName + " already exists");
     }
 }

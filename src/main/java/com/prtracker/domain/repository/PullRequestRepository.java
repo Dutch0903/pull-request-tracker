@@ -1,7 +1,7 @@
 package com.prtracker.domain.repository;
 
 import com.prtracker.domain.entity.PullRequest;
-import com.prtracker.domain.entity.CodeRepository;
+import com.prtracker.domain.valueobject.CodeRepositoryId;
 import com.prtracker.domain.valueobject.PullRequestId;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public interface PullRequestRepository {
 
     List<PullRequest> findAll();
 
-    List<PullRequest> findAllByRepository(CodeRepository repository);
+    List<PullRequest> findAllByCodeRepositoryId(CodeRepositoryId codeRepositoryId);
 
     void initialize() throws IOException;
 

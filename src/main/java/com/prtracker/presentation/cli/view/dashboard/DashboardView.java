@@ -58,7 +58,7 @@ public class DashboardView implements Element {
         ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
         List<CodeRepositoryProjection> repos = state.getRecentRepositories();
         for (CodeRepositoryProjection repo : repos) {
-            list.add(repo.identifier());
+            list.add(repo.owner() + "/" + repo.name());
         }
 
         return list;
