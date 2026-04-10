@@ -1,4 +1,4 @@
-package com.prtracker.testfixtures.dto;
+package com.prtracker.testfixtures.application.command.dto;
 
 import com.prtracker.application.command.dto.CreateCodeRepositoryDto;
 

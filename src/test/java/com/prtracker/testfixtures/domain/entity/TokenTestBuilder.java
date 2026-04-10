@@ -1,4 +1,4 @@
-package com.prtracker.testfixtures;
+package com.prtracker.testfixtures.domain.entity;
 
 import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.valueobject.TokenId;
