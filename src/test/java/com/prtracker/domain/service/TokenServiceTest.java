@@ -4,6 +4,7 @@ import com.prtracker.domain.entity.Token;
 import com.prtracker.domain.exceptions.TokenAlreadyExistsException;
 import com.prtracker.domain.exceptions.TokenNotFoundException;
 import com.prtracker.domain.repository.TokenRepository;
+import com.prtracker.domain.valueobject.TokenId;
 import com.prtracker.domain.valueobject.TokenName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -106,5 +107,14 @@ public class TokenServiceTest {
 
         verify(tokenRepository, times(0)).existsByName(updatedToken.getName());
         verify(tokenRepository, times(1)).save(updatedToken);
+    }
+
+    @Test
+    void delete_whenCalled_shouldCallRepository() {
+        TokenId tokenId = TokenId.create();
+
+        tokenService.delete(tokenId);
+
+        verify(tokenRepository, times(1)).delete(tokenId);
     }
 }
