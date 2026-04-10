@@ -3,17 +3,15 @@ package com.prtracker.application.command;
 import com.prtracker.application.command.dto.CreateCodeRepositoryDto;
 import com.prtracker.application.parser.CodeRepositoryReferenceParser;
 import com.prtracker.application.parser.ParsedCodeRepositoryReference;
-import com.prtracker.domain.entity.CodeRepository;
 import com.prtracker.domain.enums.CodeRepositoryReferenceType;
 import com.prtracker.domain.service.CodeRepositoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.prtracker.testfixtures.dto.CreateCodeRepositoryDtoTestBuilder.aCreateCodeRepositoryDto;
+import static com.prtracker.testfixtures.application.command.dto.CreateCodeRepositoryDtoTestBuilder.aCreateCodeRepositoryDto;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)

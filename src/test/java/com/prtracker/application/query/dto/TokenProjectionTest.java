@@ -3,7 +3,7 @@ package com.prtracker.application.query.dto;
 import com.prtracker.domain.entity.Token;
 import org.junit.jupiter.api.Test;
 
-import static com.prtracker.testfixtures.TokenTestBuilder.aToken;
+import static com.prtracker.testfixtures.domain.entity.TokenTestBuilder.aToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TokenProjectionTest {

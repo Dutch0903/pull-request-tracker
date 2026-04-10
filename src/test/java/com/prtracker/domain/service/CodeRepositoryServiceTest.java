@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.prtracker.testfixtures.CodeRepositoryTestBuilder.aCodeRepository;
-import static com.prtracker.testfixtures.TokenTestBuilder.aToken;
+import static com.prtracker.testfixtures.domain.entity.CodeRepositoryTestBuilder.aCodeRepository;
+import static com.prtracker.testfixtures.domain.entity.TokenTestBuilder.aToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
