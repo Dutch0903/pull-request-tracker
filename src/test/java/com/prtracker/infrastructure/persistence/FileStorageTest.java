@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,6 +54,23 @@ public class FileStorageTest {
         fileStorage.save(file, list);
 
         assertTrue(Files.exists(tempDir.resolve(file)));
+    }
+
+    @Test
+    void save_whenDirectoryDoesNotExists_shouldCreateDirectory() throws IOException {
+        Path dir = tempDir.resolve(UUID.randomUUID().toString());
+
+        fileStorage = new FileStorage(dir.toString(), new ObjectMapper());
+
+        String file = "dtos.json";
+
+        List<Dto> list = List.of(new Dto("name"));
+
+        assertFalse(Files.exists(tempDir.resolve(dir)));
+
+        fileStorage.save(file, list);
+
+        assertTrue(Files.exists(tempDir.resolve(dir)));
     }
 
     record Dto(String name) {
