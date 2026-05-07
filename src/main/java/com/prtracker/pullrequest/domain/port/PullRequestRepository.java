@@ -13,6 +13,8 @@ public interface PullRequestRepository {
 
     void delete(PullRequest pullRequest);
 
+    int count();
+
     Optional<PullRequest> findById(PullRequestId id);
 
     List<PullRequest> findAll();

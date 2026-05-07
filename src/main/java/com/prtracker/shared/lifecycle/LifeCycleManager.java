@@ -27,6 +27,8 @@ public class LifeCycleManager {
             pullRequestRepository.initialize();
 
             log.info("Successfully initialized {} code repositories", codeRepositoryRepository.count());
+            log.info("Successfully initialized {} tokens", tokenRepository.count());
+            log.info("Successfully initialized {} pull requests", pullRequestRepository.count());
         } catch (Throwable e) {
             log.error("Failed to initialize repositories", e);
         }
@@ -35,6 +37,7 @@ public class LifeCycleManager {
     @PreDestroy
     public void persist() {
         try {
+            log.info("Persisting {} tokens, {} repositories and {} pull requests", tokenRepository.count(), codeRepositoryRepository.count(), pullRequestRepository.count());
             codeRepositoryRepository.persist();
             tokenRepository.persist();
             pullRequestRepository.persist();

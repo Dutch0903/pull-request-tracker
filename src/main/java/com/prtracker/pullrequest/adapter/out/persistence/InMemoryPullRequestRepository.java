@@ -35,6 +35,11 @@ public class InMemoryPullRequestRepository implements PullRequestRepository {
     }
 
     @Override
+    public int count() {
+        return pullRequests.size();
+    }
+
+    @Override
     public Optional<PullRequest> findById(PullRequestId id) {
         return Optional.ofNullable(pullRequests.get(id));
     }

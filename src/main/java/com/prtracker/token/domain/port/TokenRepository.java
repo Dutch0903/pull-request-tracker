@@ -13,6 +13,8 @@ public interface TokenRepository {
 
     void delete(TokenId tokenId);
 
+    int count();
+
     Optional<Token> findById(TokenId tokenId);
 
     List<Token> findAll();
