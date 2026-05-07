@@ -13,18 +13,16 @@ import java.time.Duration;
 public class PullRequestTracker implements SmartInitializingSingleton {
     private final ViewManager viewManager;
 
-    public void run() throws Exception {
-        try (ToolkitRunner runner = ToolkitRunner.create(configure())) {
-            runner.run(viewManager::getCurrentView);
-        }
-    }
-
     public void afterSingletonsInstantiated() {
-        try {
-            run();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Thread tuiThread = new Thread(() -> {
+            try (ToolkitRunner runner = ToolkitRunner.create(configure())) {
+                runner.run(viewManager::getCurrentView);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, "tui-thread");
+        tuiThread.setDaemon(true);
+        tuiThread.start();
     }
 
     private TuiConfig configure() {

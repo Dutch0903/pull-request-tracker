@@ -7,6 +7,7 @@ import com.prtracker.pullrequest.domain.model.PullRequestFactory;
 import com.prtracker.pullrequest.domain.port.RepositorySynchronizerPort;
 import com.prtracker.shared.kernel.CodeRepositoryId;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.kohsuke.github.*;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class GitHubRepositorySynchronizer implements RepositorySynchronizerPort {
     private final GitHubClientFactory clientFactory;
     private final GitHubPullRequestMapper mapper;
@@ -27,6 +29,9 @@ public class GitHubRepositorySynchronizer implements RepositorySynchronizerPort 
     public List<PullRequest> synchronize(CodeRepository codeRepository, List<PullRequest> existingPullRequests) {
         try {
             List<GitHubPullRequestData> rawData = fetchRawData(codeRepository);
+
+            log.info("Synchronizing {} pull requests", rawData.size());
+
             Map<Integer, PullRequest> existingByExternalId = existingPullRequests.stream()
                     .collect(Collectors.toMap(PullRequest::getExternalId, Function.identity()));
 
@@ -41,7 +46,7 @@ public class GitHubRepositorySynchronizer implements RepositorySynchronizerPort 
     private List<GitHubPullRequestData> fetchRawData(CodeRepository codeRepository) throws IOException {
         GitHub github = clientFactory.build(codeRepository);
         return github.getRepository(codeRepository.getFullName().toString())
-                .getPullRequests(GHIssueState.ALL)
+                .getPullRequests(GHIssueState.OPEN)
                 .stream()
                 .map(this::collectSafely)
                 .toList();

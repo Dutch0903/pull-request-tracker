@@ -10,6 +10,10 @@ spring:
   lifecycle:
     timeout-per-shutdown-phase: 10s
 
+repository-check:
+  interval-ms: 6000
+  thread-pool-size: 4
+
 logging:
   file:
     name: logs/application.log

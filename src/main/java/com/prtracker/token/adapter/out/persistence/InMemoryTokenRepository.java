@@ -37,6 +37,11 @@ public class InMemoryTokenRepository implements TokenRepository, TokenReadPort {
     }
 
     @Override
+    public int count() {
+        return tokens.size();
+    }
+
+    @Override
     public Optional<Token> findById(TokenId id) {
         return tokens.values().stream().filter(token -> token.getId().equals(id)).findFirst();
     }
