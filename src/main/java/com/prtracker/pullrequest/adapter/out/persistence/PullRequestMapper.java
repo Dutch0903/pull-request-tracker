@@ -20,7 +20,7 @@ public class PullRequestMapper {
 
     public PullRequestDto toDto(PullRequest pullRequest) {
         List<ReviewDto> reviewDtos = pullRequest.getReviews().stream()
-                .map(r -> new ReviewDto(r.reviewer(), r.state().name(), r.submittedAt())).toList();
+                .map(r -> new ReviewDto(r.reviewer(), r.status().name(), r.submittedAt())).toList();
 
         return new PullRequestDto(pullRequest.getId().value(), pullRequest.getCodeRepositoryId().value(),
                 pullRequest.getExternalId(), pullRequest.getTitle(), pullRequest.getAuthor(), pullRequest.isDraft(),
