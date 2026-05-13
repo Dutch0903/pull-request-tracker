@@ -4,12 +4,9 @@ import com.prtracker.pullrequest.domain.enums.CiStatus;
 import com.prtracker.pullrequest.domain.enums.PullRequestStatus;
 import com.prtracker.pullrequest.domain.enums.ReviewStatus;
 import com.prtracker.shared.kernel.CodeRepositoryId;
-import org.springframework.stereotype.Component;
-
 import java.time.Instant;
 import java.util.List;
 
-@Component
 public class PullRequestFactory {
 
     public PullRequest create(CodeRepositoryId codeRepositoryId, PullRequestSyncData syncData) {

@@ -6,9 +6,7 @@ import com.prtracker.coderepository.domain.model.CodeRepository;
 import com.prtracker.coderepository.domain.port.CodeRepositoryRepository;
 import com.prtracker.coderepository.domain.port.TokenExistencePort;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 public class CodeRepositoryDomainService {
     private final CodeRepositoryRepository codeRepositoryRepository;
