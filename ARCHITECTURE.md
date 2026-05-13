@@ -25,7 +25,7 @@ adapter/in → application → domain ← adapter/out
 
 - Adapters depend on the application and domain — never the reverse.
 - The domain has zero dependencies on anything outside itself.
-- Ports (interfaces) live in the domain; their implementations live in adapters.
+- Write ports (repositories, external services) live in the domain; read ports (projections) live in `application/query/port/`. All port implementations live in adapters.
 
 ---
 
@@ -38,7 +38,7 @@ The domain contains everything a business expert could describe without mentioni
 **Contains:**
 - Entities and value objects with their invariants
 - Domain services for logic that spans multiple entities
-- Port interfaces (what the domain *needs* from the outside world)
+- Write port interfaces (what the domain *needs* from the outside world — repositories, external services)
 - Domain exceptions
 
 **Rule:** No imports from `application`, `adapter`, or any framework. Pure Java.
@@ -51,6 +51,7 @@ The application layer contains use cases. It orchestrates the domain and calls p
 - Command handlers (state-changing operations)
 - Query handlers (read operations)
 - DTOs for input/output across the use-case boundary
+- Read ports (`query/port/`) — interfaces for querying read models/projections that return application-layer DTOs, not domain objects
 
 **Rule:** Knows about ports and domain objects. Does not know about adapters or delivery mechanisms.
 

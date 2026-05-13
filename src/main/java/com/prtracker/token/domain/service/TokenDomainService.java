@@ -6,11 +6,9 @@ import com.prtracker.token.domain.exception.TokenNotFoundException;
 import com.prtracker.token.domain.model.Token;
 import com.prtracker.token.domain.port.TokenRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
 public class TokenDomainService {
     private final TokenRepository tokenRepository;
