@@ -1,7 +1,5 @@
 package com.prtracker.coderepository.application.command;
 
-import com.prtracker.coderepository.application.command.CreateCodeRepository;
-import com.prtracker.coderepository.application.command.CreateCodeRepositoryDto;
 import com.prtracker.coderepository.application.parser.CodeRepositoryReferenceParser;
 import com.prtracker.coderepository.application.parser.ParsedCodeRepositoryReference;
 import com.prtracker.coderepository.domain.model.CodeRepositoryReferenceType;
@@ -30,9 +28,7 @@ public class CreateCodeRepositoryCommandTest {
     void execute_whenCalled_shouldParseCodeRepositoryReferenceAndSaveCodeRepository() {
         String owner = "owner";
         String name = "name";
-        CreateCodeRepositoryDto dto = aCreateCodeRepositoryDto()
-                .withRepositoryReference(owner + "/" + name)
-                .build();
+        CreateCodeRepositoryDto dto = aCreateCodeRepositoryDto().withRepositoryReference(owner + "/" + name).build();
 
         when(codeRepositoryReferenceParser.parse(dto.repositoryReference()))
                 .thenReturn(new ParsedCodeRepositoryReference(owner, name, CodeRepositoryReferenceType.OWNER_NAME));
@@ -41,10 +37,8 @@ public class CreateCodeRepositoryCommandTest {
 
         verify(codeRepositoryReferenceParser, times(1)).parse(dto.repositoryReference());
 
-        verify(codeRepositoryDomainService, times(1)).add(
-                argThat(argument -> argument.getFullName().owner().equals(owner)
-                        && argument.getFullName().name().equals(name)
-                        && argument.getTokenId().value().equals(dto.tokenId()))
-        );
+        verify(codeRepositoryDomainService, times(1)).add(argThat(
+                argument -> argument.getFullName().owner().equals(owner) && argument.getFullName().name().equals(name)
+                        && argument.getTokenId().value().equals(dto.tokenId())));
     }
 }

@@ -11,6 +11,7 @@ public class CodeRepositoryDtoTestBuilder {
     private String name = "name";
     private String status = CodeRepositoryStatus.ACTIVE.toString();
     private UUID tokenId = UUID.randomUUID();
+    private String lastCheckedAt = null;
 
     public static CodeRepositoryDtoTestBuilder aCodeRepositoryDto() {
         return new CodeRepositoryDtoTestBuilder();
@@ -41,7 +42,12 @@ public class CodeRepositoryDtoTestBuilder {
         return this;
     }
 
+    public CodeRepositoryDtoTestBuilder withLastCheckedAt(String lastCheckedAt) {
+        this.lastCheckedAt = lastCheckedAt;
+        return this;
+    }
+
     public CodeRepositoryDto build() {
-        return new CodeRepositoryDto(id, owner, name, status, tokenId);
+        return new CodeRepositoryDto(id, owner, name, status, tokenId, lastCheckedAt);
     }
 }

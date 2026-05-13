@@ -1,13 +1,13 @@
 package com.prtracker.coderepository.adapter.out.persistence;
 
-import com.prtracker.coderepository.adapter.out.persistence.CodeRepositoryDto;
-import com.prtracker.coderepository.adapter.out.persistence.CodeRepositoryMapper;
 import com.prtracker.coderepository.domain.model.CodeRepository;
 import com.prtracker.coderepository.domain.model.CodeRepositoryStatus;
 import com.prtracker.coderepository.domain.model.FullName;
 import com.prtracker.shared.kernel.CodeRepositoryId;
 import com.prtracker.shared.kernel.TokenId;
 import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
 
 import static com.prtracker.testfixtures.coderepository.adapter.out.persistence.CodeRepositoryDtoTestBuilder.aCodeRepositoryDto;
 import static com.prtracker.testfixtures.coderepository.domain.model.CodeRepositoryTestBuilder.aCodeRepository;
@@ -24,8 +24,8 @@ public class CodeRepositoryMapperTest {
         CodeRepository codeRepository = mapper.toDomain(dto);
 
         assertEquals(CodeRepositoryId.from(dto.id()), codeRepository.getId());
-        assertEquals(new FullName(dto.owner(),  dto.name()), codeRepository.getFullName());
-        assertEquals(CodeRepositoryStatus.valueOf(dto.status()),  codeRepository.getStatus());
+        assertEquals(new FullName(dto.owner(), dto.name()), codeRepository.getFullName());
+        assertEquals(CodeRepositoryStatus.valueOf(dto.status()), codeRepository.getStatus());
         assertEquals(TokenId.from(dto.tokenId()), codeRepository.getTokenId());
     }
 
@@ -65,5 +65,51 @@ public class CodeRepositoryMapperTest {
 
         assertEquals(codeRepository.getId().value(), dto.id());
         assertNull(dto.tokenId());
+    }
+
+    @Test
+    void toDomain_whenLastCheckedAtIsSet_shouldMapLastCheckedAt() {
+        CodeRepositoryMapper mapper = new CodeRepositoryMapper();
+        Instant lastCheckedAt = Instant.parse("2026-05-13T10:00:00Z");
+
+        CodeRepositoryDto dto = aCodeRepositoryDto().withLastCheckedAt(lastCheckedAt.toString()).build();
+
+        CodeRepository codeRepository = mapper.toDomain(dto);
+
+        assertEquals(lastCheckedAt, codeRepository.getLastCheckedAt());
+    }
+
+    @Test
+    void toDomain_whenLastCheckedAtIsNull_shouldMapLastCheckedAtToNull() {
+        CodeRepositoryMapper mapper = new CodeRepositoryMapper();
+
+        CodeRepositoryDto dto = aCodeRepositoryDto().withLastCheckedAt(null).build();
+
+        CodeRepository codeRepository = mapper.toDomain(dto);
+
+        assertNull(codeRepository.getLastCheckedAt());
+    }
+
+    @Test
+    void toDto_whenLastCheckedAtIsSet_shouldMapLastCheckedAt() {
+        CodeRepositoryMapper mapper = new CodeRepositoryMapper();
+        Instant lastCheckedAt = Instant.parse("2026-05-13T10:00:00Z");
+
+        CodeRepository codeRepository = aCodeRepository().withLastCheckedAt(lastCheckedAt).build();
+
+        CodeRepositoryDto dto = mapper.toDto(codeRepository);
+
+        assertEquals(lastCheckedAt.toString(), dto.lastCheckedAt());
+    }
+
+    @Test
+    void toDto_whenLastCheckedAtIsNull_shouldMapLastCheckedAtToNull() {
+        CodeRepositoryMapper mapper = new CodeRepositoryMapper();
+
+        CodeRepository codeRepository = aCodeRepository().withLastCheckedAt(null).build();
+
+        CodeRepositoryDto dto = mapper.toDto(codeRepository);
+
+        assertNull(dto.lastCheckedAt());
     }
 }

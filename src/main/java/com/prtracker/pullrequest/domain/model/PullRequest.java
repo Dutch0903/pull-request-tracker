@@ -2,14 +2,13 @@ package com.prtracker.pullrequest.domain.model;
 
 import com.prtracker.pullrequest.domain.enums.CiStatus;
 import com.prtracker.pullrequest.domain.enums.PullRequestStatus;
-import com.prtracker.pullrequest.domain.enums.ReviewState;
+import com.prtracker.pullrequest.domain.enums.ReviewStatus;
 import com.prtracker.shared.kernel.CodeRepositoryId;
 import lombok.Getter;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Getter
 public class PullRequest {
@@ -25,16 +24,16 @@ public class PullRequest {
     private int commentCount;
     private List<String> labels;
     private List<String> requestedReviewers;
-    private final List<Review> reviews;
+    private List<Review> reviews;
+    private ReviewStatus reviewStatus;
     private Instant updatedAt;
     private String mergedBy;
     private Instant mergedAt;
 
-    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId,
-                String title, String author, boolean draft, PullRequestStatus status,
-                CiStatus ciStatus, int commentCount, List<String> labels,
-                List<String> requestedReviewers, List<Review> reviews,
-                Instant createdAt, Instant updatedAt, String mergedBy, Instant mergedAt) {
+    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, String title, String author,
+            boolean draft, PullRequestStatus status, CiStatus ciStatus, int commentCount, List<String> labels,
+            List<String> requestedReviewers, List<Review> reviews, ReviewStatus reviewStatus, Instant createdAt,
+            Instant updatedAt, String mergedBy, Instant mergedAt) {
         this.id = id;
         this.codeRepositoryId = codeRepositoryId;
         this.externalId = externalId;
@@ -47,48 +46,65 @@ public class PullRequest {
         this.labels = new ArrayList<>(labels);
         this.requestedReviewers = new ArrayList<>(requestedReviewers);
         this.reviews = new ArrayList<>(reviews);
+        this.reviewStatus = reviewStatus;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.mergedBy = mergedBy;
         this.mergedAt = mergedAt;
     }
 
-    public Optional<Review> addReview(Review review) {
+    public void sync(PullRequestSyncData syncData) {
+        updateTitle(syncData.title(), syncData.updatedAt());
+        updateCiStatus(syncData.ciStatus(), syncData.updatedAt());
+        updateLabels(syncData.labels(), syncData.updatedAt());
+        updateCommentCount(syncData.commentCount());
+        syncData.reviews().forEach(this::addReview);
+
+        if (syncData.status() == PullRequestStatus.MERGED) {
+            merge(syncData.mergedBy(), syncData.mergedAt());
+        } else if (syncData.status() == PullRequestStatus.CLOSED) {
+            close(syncData.updatedAt());
+        } else if (!syncData.isDraft()) {
+            undraft(syncData.updatedAt());
+        }
+    }
+
+    public void addReview(Review review) {
         boolean alreadyExists = reviews.stream()
                 .anyMatch(r -> r.reviewer().equals(review.reviewer()) && r.submittedAt().equals(review.submittedAt()));
-        if (alreadyExists) return Optional.empty();
+        if (alreadyExists)
+            return;
         reviews.add(review);
-        return Optional.of(review);
     }
 
-    public boolean updateCiStatus(CiStatus newCiStatus, Instant updatedAt) {
-        if (this.ciStatus == newCiStatus) return false;
+    public void updateCiStatus(CiStatus newCiStatus, Instant updatedAt) {
+        if (this.ciStatus == newCiStatus)
+            return;
         this.ciStatus = newCiStatus;
         this.updatedAt = updatedAt;
-        return true;
     }
 
-    public boolean merge(String mergedBy, Instant mergedAt) {
-        if (this.status == PullRequestStatus.MERGED) return false;
+    public void merge(String mergedBy, Instant mergedAt) {
+        if (this.status == PullRequestStatus.MERGED)
+            return;
         this.status = PullRequestStatus.MERGED;
         this.mergedBy = mergedBy;
         this.mergedAt = mergedAt;
         this.updatedAt = mergedAt;
-        return true;
     }
 
-    public boolean close(Instant updatedAt) {
-        if (this.status == PullRequestStatus.CLOSED || this.status == PullRequestStatus.IGNORED) return false;
+    public void close(Instant updatedAt) {
+        if (this.status == PullRequestStatus.CLOSED || this.status == PullRequestStatus.IGNORED)
+            return;
         this.status = PullRequestStatus.CLOSED;
         this.updatedAt = updatedAt;
-        return true;
     }
 
-    public boolean undraft(Instant updatedAt) {
-        if (!this.draft) return false;
+    public void undraft(Instant updatedAt) {
+        if (!this.draft)
+            return;
         this.draft = false;
         this.updatedAt = updatedAt;
-        return true;
     }
 
     public void updateTitle(String title, Instant updatedAt) {
@@ -111,22 +127,6 @@ public class PullRequest {
     }
 
     public int approvalCount() {
-        return (int) reviews.stream()
-                .filter(r -> r.state() == ReviewState.APPROVED)
-                .count();
-    }
-
-    public ReviewState effectiveReviewState() {
-        if (reviews.isEmpty()) return ReviewState.PENDING;
-
-        if (reviews.stream().anyMatch(r -> r.state() == ReviewState.CHANGES_REQUESTED)) {
-            return ReviewState.CHANGES_REQUESTED;
-        }
-
-        if (reviews.stream().allMatch(r -> r.state() == ReviewState.APPROVED)) {
-            return ReviewState.APPROVED;
-        }
-
-        return ReviewState.PENDING;
+        return (int) reviews.stream().filter(r -> r.state() == ReviewStatus.APPROVED).count();
     }
 }

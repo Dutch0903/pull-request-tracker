@@ -1,6 +1,5 @@
 package com.prtracker.coderepository.application.command;
 
-import com.prtracker.coderepository.application.command.CreateCodeRepositoryDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

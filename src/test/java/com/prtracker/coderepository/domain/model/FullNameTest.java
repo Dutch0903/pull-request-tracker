@@ -1,7 +1,6 @@
 package com.prtracker.coderepository.domain.model;
 
 import com.prtracker.coderepository.domain.exception.InvalidFullNameException;
-import com.prtracker.coderepository.domain.model.FullName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +42,6 @@ public class FullNameTest {
         FullName fullName = new FullName(owner, name);
 
         assertNotNull(fullName);
-        assertEquals(owner + "/"  + name, fullName.toString());
+        assertEquals(owner + "/" + name, fullName.toString());
     }
 }

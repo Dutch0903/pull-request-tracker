@@ -1,6 +1,5 @@
 package com.prtracker.coderepository.application.query;
 
-import com.prtracker.coderepository.application.query.CodeRepositoryProjection;
 import com.prtracker.coderepository.domain.model.CodeRepository;
 import org.junit.jupiter.api.Test;
 

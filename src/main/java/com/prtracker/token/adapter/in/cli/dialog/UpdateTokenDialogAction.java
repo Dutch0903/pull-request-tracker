@@ -27,7 +27,8 @@ public class UpdateTokenDialogAction implements DialogAction {
         }
 
         FormDialogHandler handler = values -> {
-            updateToken.execute(new UpdateTokenDto(token.id(), values.get(TokenFormFields.NAME), values.get(TokenFormFields.VALUE)));
+            updateToken.execute(new UpdateTokenDto(token.id(), values.get(TokenFormFields.NAME),
+                    values.get(TokenFormFields.VALUE)));
             tokenManagerState.refreshTokens();
         };
 

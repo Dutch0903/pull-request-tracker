@@ -1,7 +1,6 @@
 package com.prtracker.shared.kernel;
 
 import com.prtracker.coderepository.domain.exception.InvalidCodeRepositoryIdException;
-import com.prtracker.shared.kernel.CodeRepositoryId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -21,7 +20,8 @@ public class CodeRepositoryIdTest {
 
     @Test
     void from_whenValueIsNull_shouldThrowInvalidCodeRepositoryIdException() {
-        InvalidCodeRepositoryIdException exception = assertThrows(InvalidCodeRepositoryIdException.class, () -> CodeRepositoryId.from(null));
+        InvalidCodeRepositoryIdException exception = assertThrows(InvalidCodeRepositoryIdException.class,
+                () -> CodeRepositoryId.from(null));
 
         assertEquals("Invalid code repository ID: Code repository ID cannot be null", exception.getMessage());
     }

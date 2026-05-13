@@ -1,0 +1,45 @@
+query pullRequests($searchQuery: String!) {
+  search(query: $searchQuery, type: ISSUE, first: 100) {
+    nodes {
+      ... on PullRequest {
+        number
+        title
+        state
+        isDraft
+        createdAt
+        updatedAt
+        merged
+        mergedBy { login }
+        mergedAt
+        closed
+        author { login }
+        totalCommentsCount
+        reviewDecision
+        labels(first: 20) { nodes { name } }
+        reviewRequests(first: 20) {
+          nodes {
+            requestedReviewer {
+              ... on User { login }
+            }
+          }
+        }
+        latestReviews(first: 50) {
+          nodes {
+            state
+            author { login }
+            submittedAt
+          }
+        }
+        commits(last: 1) {
+          nodes {
+            commit {
+              statusCheckRollup {
+                state
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

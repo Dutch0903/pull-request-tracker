@@ -31,8 +31,7 @@ public class AsyncSchedulingConfiguration implements AsyncConfigurer {
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return (ex, method, params) ->
-                log.error("Uncaught exception in async method {}: {}", method.getName(), ex.getMessage(),
-                        ex);
+        return (ex, method, params) -> log.error("Uncaught exception in async method {}: {}", method.getName(),
+                ex.getMessage(), ex);
     }
 }
