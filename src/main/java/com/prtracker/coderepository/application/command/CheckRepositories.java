@@ -17,13 +17,10 @@ public class CheckRepositories {
     private final RepositoryCheckerPort repositoryCheckerPort;
 
     public void execute() {
-        List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll()
-                .stream()
-                .map(repo -> {
-                    log.info("Checking for repository {}", repo);
-                    return repositoryCheckerPort.check(repo);
-                })
-                .toList();
+        List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll().stream().map(repo -> {
+            log.info("Checking for repository {}", repo);
+            return repositoryCheckerPort.check(repo);
+        }).toList();
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }

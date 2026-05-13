@@ -1,8 +1,5 @@
 package com.prtracker.coderepository.adapter.out.persistence;
 
-import com.prtracker.coderepository.adapter.out.persistence.CodeRepositoryDto;
-import com.prtracker.coderepository.adapter.out.persistence.CodeRepositoryMapper;
-import com.prtracker.coderepository.adapter.out.persistence.InMemoryCodeRepositoryRepository;
 import com.prtracker.coderepository.application.query.CodeRepositoryProjection;
 import com.prtracker.coderepository.domain.model.CodeRepository;
 import com.prtracker.coderepository.domain.model.FullName;

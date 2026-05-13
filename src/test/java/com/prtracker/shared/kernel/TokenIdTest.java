@@ -1,6 +1,5 @@
 package com.prtracker.shared.kernel;
 
-import com.prtracker.shared.kernel.TokenId;
 import com.prtracker.token.domain.exception.InvalidTokenIdException;
 import org.junit.jupiter.api.Test;
 

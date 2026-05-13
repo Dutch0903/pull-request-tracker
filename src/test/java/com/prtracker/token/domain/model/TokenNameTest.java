@@ -1,7 +1,6 @@
 package com.prtracker.token.domain.model;
 
 import com.prtracker.token.domain.exception.InvalidTokenNameException;
-import com.prtracker.token.domain.model.TokenName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -31,7 +31,8 @@ public class CreateRepositoryDialogAction implements DialogAction {
 
             UUID tokenId = selectedToken.map(TokenProjection::id).orElse(null);
 
-            createCodeRepository.execute(new CreateCodeRepositoryDto(values.get(RepositoryFormFields.REFERENCE), tokenId));
+            createCodeRepository
+                    .execute(new CreateCodeRepositoryDto(values.get(RepositoryFormFields.REFERENCE), tokenId));
         };
 
         dialogManager.openDialog(DialogType.FORM, new CreateRepositoryDialogConfiguration(tokens), handler);

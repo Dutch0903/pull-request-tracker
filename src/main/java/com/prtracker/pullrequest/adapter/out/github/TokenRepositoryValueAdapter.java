@@ -14,7 +14,6 @@ public class TokenRepositoryValueAdapter implements TokenValuePort {
     @Override
     public String getTokenValue(TokenId tokenId) {
         return tokenRepository.findById(tokenId)
-                .orElseThrow(() -> new GitHubApiException("Token not found: " + tokenId.value(), null))
-                .getValue();
+                .orElseThrow(() -> new GitHubApiException("Token not found: " + tokenId.value(), null)).getValue();
     }
 }

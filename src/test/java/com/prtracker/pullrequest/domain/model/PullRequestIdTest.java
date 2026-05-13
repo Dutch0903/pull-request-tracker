@@ -1,7 +1,6 @@
 package com.prtracker.pullrequest.domain.model;
 
 import com.prtracker.pullrequest.domain.exception.InvalidPullRequestIdException;
-import com.prtracker.pullrequest.domain.model.PullRequestId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -21,7 +20,8 @@ public class PullRequestIdTest {
 
     @Test
     void from_whenValueIsNull_shouldThrowInvalidTokenIdException() {
-        InvalidPullRequestIdException exception = assertThrows(InvalidPullRequestIdException.class, () -> PullRequestId.from(null));
+        InvalidPullRequestIdException exception = assertThrows(InvalidPullRequestIdException.class,
+                () -> PullRequestId.from(null));
 
         assertEquals("Invalid pull request ID: Pull request ID cannot be null", exception.getMessage());
     }

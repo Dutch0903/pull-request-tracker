@@ -1,7 +1,5 @@
 package com.prtracker.coderepository.application.parser;
 
-import com.prtracker.coderepository.application.parser.CodeRepositoryReferenceParser;
-import com.prtracker.coderepository.application.parser.ParsedCodeRepositoryReference;
 import com.prtracker.coderepository.domain.model.CodeRepositoryReferenceType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

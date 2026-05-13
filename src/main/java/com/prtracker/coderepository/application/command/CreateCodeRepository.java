@@ -19,11 +19,9 @@ public class CreateCodeRepository {
     public void execute(CreateCodeRepositoryDto dto) {
         ParsedCodeRepositoryReference parsedReference = parser.parse(dto.repositoryReference());
 
-        CodeRepository codeRepository = new CodeRepository(
-                CodeRepositoryId.create(),
+        CodeRepository codeRepository = new CodeRepository(CodeRepositoryId.create(),
                 new FullName(parsedReference.owner(), parsedReference.name()),
-                dto.tokenId() != null ? TokenId.from(dto.tokenId()) : null
-        );
+                dto.tokenId() != null ? TokenId.from(dto.tokenId()) : null);
 
         codeRepositoryDomainService.add(codeRepository);
     }

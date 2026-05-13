@@ -37,7 +37,8 @@ public class LifeCycleManager {
     @PreDestroy
     public void persist() {
         try {
-            log.info("Persisting {} tokens, {} repositories and {} pull requests", tokenRepository.count(), codeRepositoryRepository.count(), pullRequestRepository.count());
+            log.info("Persisting {} tokens, {} repositories and {} pull requests", tokenRepository.count(),
+                    codeRepositoryRepository.count(), pullRequestRepository.count());
             codeRepositoryRepository.persist();
             tokenRepository.persist();
             pullRequestRepository.persist();

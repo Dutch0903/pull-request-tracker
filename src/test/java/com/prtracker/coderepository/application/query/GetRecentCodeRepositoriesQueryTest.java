@@ -1,6 +1,5 @@
 package com.prtracker.coderepository.application.query;
 
-import com.prtracker.coderepository.application.query.GetRecentCodeRepositories;
 import com.prtracker.coderepository.application.query.port.CodeRepositoryReadPort;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
