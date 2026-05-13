@@ -70,10 +70,17 @@ public class PullRequest {
     }
 
     public void addReview(Review review) {
-        boolean alreadyExists = reviews.stream()
-                .anyMatch(r -> r.reviewer().equals(review.reviewer()) && r.submittedAt().equals(review.submittedAt()));
-        if (alreadyExists)
-            return;
+        for (int i = 0; i < reviews.size(); i++) {
+            Review existingReview = reviews.get(i);
+
+            if (existingReview.reviewer().equals(review.reviewer())) {
+                if (existingReview.submittedAt().isBefore(review.submittedAt())) {
+                    reviews.set(i, review);
+                }
+                return;
+            }
+        }
+
         reviews.add(review);
     }
 
@@ -127,6 +134,6 @@ public class PullRequest {
     }
 
     public int approvalCount() {
-        return (int) reviews.stream().filter(r -> r.state() == ReviewStatus.APPROVED).count();
+        return (int) reviews.stream().filter(r -> r.status() == ReviewStatus.APPROVED).count();
     }
 }
