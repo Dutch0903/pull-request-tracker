@@ -11,7 +11,7 @@ spring:
     timeout-per-shutdown-phase: 10s
 
 repository-check:
-  interval-ms: 6000
+  interval-ms: 600000
   thread-pool-size: 4
 
 logging:
@@ -20,3 +20,4 @@ logging:
 
   pattern:
     file: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+    console: ''
