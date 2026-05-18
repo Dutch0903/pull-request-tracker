@@ -1,7 +1,7 @@
-package com.prtracker.app.cli.pullrequest;
+package com.prtracker.app.cli.view.dashboard;
 
-import com.prtracker.app.cli.ViewComponent;
-import com.prtracker.app.cli.ViewName;
+import com.prtracker.app.cli.navigation.ViewComponent;
+import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.coderepository.application.query.CodeRepositoryProjection;
 import dev.tamboui.layout.Rect;
 import dev.tamboui.style.Color;

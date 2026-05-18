@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.view;
+package com.prtracker.app.cli.navigation;
 
 import com.prtracker.app.cli.dialog.DialogManager;
 import dev.tamboui.layout.Rect;

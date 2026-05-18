@@ -1,9 +1,9 @@
-package com.prtracker.app.cli.repository;
+package com.prtracker.app.cli.view.repository;
 
-import com.prtracker.app.cli.ViewComponent;
-import com.prtracker.app.cli.ViewName;
+import com.prtracker.app.cli.navigation.ViewComponent;
+import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.app.cli.dialog.DialogManager;
-import com.prtracker.app.cli.view.View;
+import com.prtracker.app.cli.navigation.View;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;

@@ -1,6 +1,6 @@
-package com.prtracker.app.cli.pullrequest;
+package com.prtracker.app.cli.view.dashboard;
 
-import com.prtracker.app.cli.ViewName;
+import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.app.cli.event.NavigationEventPublisher;
 import com.prtracker.coderepository.application.command.CheckRepositories;
 import dev.tamboui.toolkit.event.EventResult;

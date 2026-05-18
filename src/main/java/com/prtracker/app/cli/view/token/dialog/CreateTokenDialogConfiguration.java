@@ -1,8 +1,9 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token.dialog;
 
 import com.prtracker.app.cli.dialog.form.Field;
 import com.prtracker.app.cli.dialog.form.FormDialogConfiguration;
 import com.prtracker.app.cli.dialog.form.TextField;
+import com.prtracker.app.cli.view.token.TokenFormFields;
 
 import java.util.List;
 

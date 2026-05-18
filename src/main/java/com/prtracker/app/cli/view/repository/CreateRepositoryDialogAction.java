@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.repository;
+package com.prtracker.app.cli.view.repository;
 
 import com.prtracker.app.cli.dialog.DialogAction;
 import com.prtracker.app.cli.dialog.DialogManager;

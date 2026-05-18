@@ -1,7 +1,10 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token;
 
-import com.prtracker.app.cli.ViewName;
+import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.app.cli.event.NavigationEventPublisher;
+import com.prtracker.app.cli.view.token.dialog.CreateTokenDialogAction;
+import com.prtracker.app.cli.view.token.dialog.DeleteTokenDialogAction;
+import com.prtracker.app.cli.view.token.dialog.UpdateTokenDialogAction;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;

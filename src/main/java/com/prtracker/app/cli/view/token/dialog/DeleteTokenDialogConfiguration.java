@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token.dialog;
 
 import com.prtracker.app.cli.dialog.confirm.ConfirmDialogConfiguration;
 import com.prtracker.token.application.query.TokenProjection;

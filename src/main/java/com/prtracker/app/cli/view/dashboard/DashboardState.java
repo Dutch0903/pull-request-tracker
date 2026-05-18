@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.pullrequest;
+package com.prtracker.app.cli.view.dashboard;
 
 import com.prtracker.coderepository.application.query.CodeRepositoryProjection;
 import org.springframework.stereotype.Component;

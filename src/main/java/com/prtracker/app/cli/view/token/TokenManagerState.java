@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token;
 
 import com.prtracker.token.application.query.GetTokens;
 import com.prtracker.token.application.query.TokenProjection;

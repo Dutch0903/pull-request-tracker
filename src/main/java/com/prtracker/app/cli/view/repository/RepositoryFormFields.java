@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.repository;
+package com.prtracker.app.cli.view.repository;
 
 public class RepositoryFormFields {
     public static final String REFERENCE = "reference";

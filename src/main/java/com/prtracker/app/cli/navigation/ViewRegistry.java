@@ -1,4 +1,4 @@
-package com.prtracker.app.cli;
+package com.prtracker.app.cli.navigation;
 
 import dev.tamboui.toolkit.element.Element;
 import org.springframework.stereotype.Component;

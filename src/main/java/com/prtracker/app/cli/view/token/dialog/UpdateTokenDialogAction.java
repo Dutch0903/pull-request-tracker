@@ -1,9 +1,11 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token.dialog;
 
 import com.prtracker.app.cli.dialog.DialogAction;
 import com.prtracker.app.cli.dialog.DialogManager;
 import com.prtracker.app.cli.dialog.DialogType;
 import com.prtracker.app.cli.dialog.form.FormDialogHandler;
+import com.prtracker.app.cli.view.token.TokenFormFields;
+import com.prtracker.app.cli.view.token.TokenManagerState;
 import com.prtracker.token.application.command.UpdateToken;
 import com.prtracker.token.application.command.UpdateTokenDto;
 import com.prtracker.token.application.query.TokenProjection;

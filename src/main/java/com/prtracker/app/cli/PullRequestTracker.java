@@ -1,9 +1,11 @@
 package com.prtracker.app.cli;
 
+import com.prtracker.app.cli.navigation.ViewManager;
 import dev.tamboui.toolkit.app.ToolkitRunner;
 import dev.tamboui.tui.TuiConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -12,6 +14,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class PullRequestTracker implements SmartInitializingSingleton {
     private final ViewManager viewManager;
+    private final ConfigurableApplicationContext context;
 
     public void afterSingletonsInstantiated() {
         Thread tuiThread = new Thread(() -> {
@@ -20,7 +23,7 @@ public class PullRequestTracker implements SmartInitializingSingleton {
             } catch (Exception e) {
                 throw new RuntimeException(e);
             } finally {
-                System.exit(0);
+                context.close();
             }
         }, "tui-thread");
         tuiThread.setDaemon(true);

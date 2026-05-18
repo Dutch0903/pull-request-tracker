@@ -1,9 +1,10 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token.dialog;
 
 import com.prtracker.app.cli.dialog.DialogAction;
 import com.prtracker.app.cli.dialog.DialogManager;
 import com.prtracker.app.cli.dialog.DialogType;
 import com.prtracker.app.cli.dialog.confirm.ConfirmDialogHandler;
+import com.prtracker.app.cli.view.token.TokenManagerState;
 import com.prtracker.token.application.command.DeleteToken;
 import com.prtracker.token.application.command.DeleteTokenDto;
 import com.prtracker.token.application.query.TokenProjection;

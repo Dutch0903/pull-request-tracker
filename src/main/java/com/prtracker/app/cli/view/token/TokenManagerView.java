@@ -1,9 +1,9 @@
-package com.prtracker.app.cli.token;
+package com.prtracker.app.cli.view.token;
 
-import com.prtracker.app.cli.ViewComponent;
-import com.prtracker.app.cli.ViewName;
+import com.prtracker.app.cli.navigation.ViewComponent;
+import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.app.cli.dialog.DialogManager;
-import com.prtracker.app.cli.view.View;
+import com.prtracker.app.cli.navigation.View;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;

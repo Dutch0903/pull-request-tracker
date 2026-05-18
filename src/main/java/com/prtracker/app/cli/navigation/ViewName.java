@@ -1,4 +1,4 @@
-package com.prtracker.app.cli;
+package com.prtracker.app.cli.navigation;
 
 public class ViewName {
     public static final String DASHBOARD = "dashboard";

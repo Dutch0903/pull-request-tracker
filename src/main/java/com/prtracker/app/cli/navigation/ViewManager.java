@@ -1,4 +1,4 @@
-package com.prtracker.app.cli;
+package com.prtracker.app.cli.navigation;
 
 import com.prtracker.app.cli.event.NavigationEvent;
 import dev.tamboui.toolkit.element.Element;
