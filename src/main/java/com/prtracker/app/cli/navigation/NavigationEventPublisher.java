@@ -1,4 +1,4 @@
-package com.prtracker.app.cli.event;
+package com.prtracker.app.cli.navigation;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

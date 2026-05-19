@@ -1,7 +1,7 @@
 package com.prtracker.app.cli.view.repository;
 
 import com.prtracker.app.cli.navigation.ViewName;
-import com.prtracker.app.cli.event.NavigationEventPublisher;
+import com.prtracker.app.cli.navigation.NavigationEventPublisher;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;

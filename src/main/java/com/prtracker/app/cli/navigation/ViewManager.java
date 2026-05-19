@@ -1,6 +1,5 @@
 package com.prtracker.app.cli.navigation;
 
-import com.prtracker.app.cli.event.NavigationEvent;
 import dev.tamboui.toolkit.element.Element;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
