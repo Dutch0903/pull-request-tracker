@@ -7,8 +7,6 @@ import com.prtracker.app.cli.navigation.View;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;
-import dev.tamboui.toolkit.event.EventResult;
-import dev.tamboui.tui.event.KeyEvent;
 
 import static dev.tamboui.toolkit.Toolkit.*;
 

@@ -30,6 +30,6 @@ public class OpenDeleteTokenDialog implements KeyAction {
 
     @Override
     public void execute() {
-deleteTokenDialogAction.open();
+        deleteTokenDialogAction.open();
     }
 }

@@ -9,9 +9,7 @@ import java.util.List;
 @Component
 public class DashboardKeyHandler extends KeyHandler {
 
-    public DashboardKeyHandler(
-            NavigateToRepositoriesAction navigateToRepositoriesAction
-    ) {
+    public DashboardKeyHandler(NavigateToRepositoriesAction navigateToRepositoriesAction) {
         super(List.of(navigateToRepositoriesAction));
     }
 }

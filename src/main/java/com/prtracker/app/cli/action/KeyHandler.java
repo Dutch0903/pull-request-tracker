@@ -17,13 +17,9 @@ public abstract class KeyHandler {
     }
 
     public EventResult handle(KeyEvent event) {
-        return actions.stream()
-                .filter(keyAction -> keyAction.matches(event))
-                .findFirst()
-                .map(keyAction -> {
-                    keyAction.execute();
-                    return EventResult.HANDLED;
-                        }
-                ).orElse(EventResult.UNHANDLED);
+        return actions.stream().filter(keyAction -> keyAction.matches(event)).findFirst().map(keyAction -> {
+            keyAction.execute();
+            return EventResult.HANDLED;
+        }).orElse(EventResult.UNHANDLED);
     }
 }
