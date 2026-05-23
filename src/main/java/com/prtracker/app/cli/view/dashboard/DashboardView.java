@@ -1,5 +1,7 @@
 package com.prtracker.app.cli.view.dashboard;
 
+import com.prtracker.app.cli.dialog.DialogManager;
+import com.prtracker.app.cli.navigation.View;
 import com.prtracker.app.cli.navigation.ViewComponent;
 import com.prtracker.app.cli.navigation.ViewName;
 import com.prtracker.coderepository.application.query.CodeRepositoryProjection;
@@ -20,24 +22,17 @@ import static dev.tamboui.toolkit.Toolkit.dock;
 import static dev.tamboui.toolkit.Toolkit.text;
 
 @ViewComponent(name = ViewName.DASHBOARD, isStartView = true)
-public class DashboardView implements Element {
+public class DashboardView extends View {
     private final DashboardController controller;
     private final DashboardState state;
-    private final DashboardKeyHandler keyHandler;
 
-    public DashboardView(DashboardController controller, DashboardState state, DashboardKeyHandler keyHandler) {
+    public DashboardView(DialogManager dialogManager, DashboardController controller, DashboardState state, DashboardKeyHandler keyHandler) {
+        super(dialogManager, keyHandler);
+
         this.controller = controller;
         this.state = state;
-        this.keyHandler = keyHandler;
 
         this.controller.loadRecentRepositories();
-    }
-
-    @Override
-    public void render(Frame frame, Rect area, RenderContext context) {
-        Element ui = dock().top(header()).center(content()).bottom(footer());
-
-        ui.render(frame, area, context);
     }
 
     @Override
@@ -46,15 +41,7 @@ public class DashboardView implements Element {
     }
 
     @Override
-    public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
-        return keyHandler.handle(event);
-    }
-
-    private Element header() {
-        return text("Header");
-    }
-
-    private Element content() {
+    protected Element renderBody() {
         ListElement<?> list = list().highlightColor(Color.CYAN).highlightSymbol("> ");
         List<CodeRepositoryProjection> repos = state.getRecentRepositories();
         for (CodeRepositoryProjection repo : repos) {
@@ -62,9 +49,5 @@ public class DashboardView implements Element {
         }
 
         return list;
-    }
-
-    private Element footer() {
-        return text("Footer");
     }
 }

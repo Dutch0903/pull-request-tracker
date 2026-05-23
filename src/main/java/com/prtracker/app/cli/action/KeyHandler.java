@@ -18,7 +18,7 @@ public abstract class KeyHandler {
 
     public EventResult handle(KeyEvent event) {
         return actions.stream()
-                .filter(keyAction -> event.isCharIgnoreCase(keyAction.getKey()))
+                .filter(keyAction -> keyAction.matches(event))
                 .findFirst()
                 .map(keyAction -> {
                     keyAction.execute();

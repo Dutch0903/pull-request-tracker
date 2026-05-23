@@ -15,13 +15,11 @@ import static dev.tamboui.toolkit.Toolkit.*;
 
 @ViewComponent(name = ViewName.TOKENS)
 public class TokenManagerView extends View {
-    private final TokenManagerKeyHandler keyHandler;
     private final TokenManagerState state;
 
     public TokenManagerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler, TokenManagerState state) {
-        super(dialogManager);
+        super(dialogManager, keyHandler);
 
-        this.keyHandler = keyHandler;
         this.state = state;
     }
 
@@ -36,7 +34,7 @@ public class TokenManagerView extends View {
             return renderedDialog.handleKeyEvent(event, true);
         }
 
-        return keyHandler.handle(event);
+        return super.handleKeyEvent(event, focused);
     }
 
     @Override

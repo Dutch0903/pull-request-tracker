@@ -14,12 +14,8 @@ import static dev.tamboui.toolkit.Toolkit.*;
 
 @ViewComponent(name = ViewName.REPOSITORIES)
 public class RepositoryListView extends View {
-    private final RepositoryListKeyHandler keyHandler;
-
     public RepositoryListView(DialogManager dialogManager, RepositoryListKeyHandler keyHandler) {
-        super(dialogManager);
-
-        this.keyHandler = keyHandler;
+        super(dialogManager, keyHandler);
     }
 
     @Override
@@ -30,11 +26,6 @@ public class RepositoryListView extends View {
     @Override
     public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
         return Size.UNKNOWN;
-    }
-
-    @Override
-    public EventResult handleKeyEvent(KeyEvent event, boolean focused) {
-        return keyHandler.handle(event);
     }
 
     public Element renderRepositoryStats() {

@@ -1,4 +1,8 @@
 package com.prtracker.app.cli.action;
 
-public record KeyBinding(char key, String label) {
+public record KeyBinding(String key, String label) {
+    @Override
+    public String toString() {
+        return "[" + key + "] " + label;
+    }
 }
