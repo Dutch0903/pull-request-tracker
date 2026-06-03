@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.dashboard;
 
-import com.pullrequesttracker.application.query.CodeRepositoryProjection;
+import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -36,8 +36,8 @@ public class DashboardView extends View {
     @Override
     protected Element renderBody() {
         ListElement<?> listEl = list().highlightColor(Color.CYAN).highlightSymbol("> ");
-        List<CodeRepositoryProjection> repos = state.getRecentRepositories();
-        for (CodeRepositoryProjection repo : repos) {
+        List<CodeRepositoryDto> repos = state.getRecentRepositories();
+        for (CodeRepositoryDto repo : repos) {
             listEl.add(repo.owner() + "/" + repo.name());
         }
         return listEl;

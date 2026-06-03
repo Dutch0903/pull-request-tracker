@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.repository.component;
 
-import com.pullrequesttracker.application.query.CodeRepositoryProjection;
+import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.elements.Panel;
@@ -9,9 +9,9 @@ import static dev.tamboui.toolkit.Toolkit.panel;
 import static dev.tamboui.toolkit.Toolkit.text;
 
 public class RepositoryDetailPanel {
-    private final CodeRepositoryProjection projection;
+    private final CodeRepositoryDto projection;
 
-    public RepositoryDetailPanel(CodeRepositoryProjection projection) {
+    public RepositoryDetailPanel(CodeRepositoryDto projection) {
         this.projection = projection;
     }
 

@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.dashboard;
 
-import com.pullrequesttracker.application.query.CodeRepositoryProjection;
+import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,15 +8,15 @@ import java.util.List;
 
 @Component
 public class DashboardState {
-    private List<CodeRepositoryProjection> recentRepositories = new ArrayList<>();
+    private List<CodeRepositoryDto> recentRepositories = new ArrayList<>();
     private int selectedRepoIndex = 0;
 
-    public void setRecentRepositories(List<CodeRepositoryProjection> repositories) {
+    public void setRecentRepositories(List<CodeRepositoryDto> repositories) {
         this.recentRepositories = new ArrayList<>(repositories);
         this.selectedRepoIndex = Math.min(selectedRepoIndex, repositories.size() - 1);
     }
 
-    public List<CodeRepositoryProjection> getRecentRepositories() {
+    public List<CodeRepositoryDto> getRecentRepositories() {
         return new ArrayList<>(recentRepositories);
     }
 
@@ -29,7 +29,7 @@ public class DashboardState {
         selectedRepoIndex = Math.max(0, Math.min(recentRepositories.size() - 1, selectedRepoIndex + delta));
     }
 
-    public CodeRepositoryProjection getSelectedRepository() {
+    public CodeRepositoryDto getSelectedRepository() {
         if (recentRepositories.isEmpty()) return null;
         return recentRepositories.get(selectedRepoIndex);
     }

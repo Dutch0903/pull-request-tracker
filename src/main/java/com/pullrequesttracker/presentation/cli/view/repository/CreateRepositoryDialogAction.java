@@ -1,7 +1,7 @@
 package com.pullrequesttracker.presentation.cli.view.repository;
 
-import com.pullrequesttracker.application.query.GetTokens;
-import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.application.dto.TokenDto;
+import com.pullrequesttracker.application.usecase.FetchAllTokens;
 import com.pullrequesttracker.application.usecase.CreateCodeRepository;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.presentation.cli.dialog.DialogAction;
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class CreateRepositoryDialogAction implements DialogAction {
     private final DialogManager dialogManager;
     private final CreateCodeRepository createCodeRepository;
-    private final GetTokens getTokens;
+    private final FetchAllTokens getTokens;
 
     @Override
     public void open() {
-        List<TokenProjection> tokens = getTokens.execute();
+        List<TokenDto> tokens = getTokens.execute();
         FormDialogHandler handler = values -> {
-            Optional<TokenProjection> selectedToken = tokens.stream()
+            Optional<TokenDto> selectedToken = tokens.stream()
                     .filter(t -> t.name().equals(values.get(RepositoryFormFields.TOKEN)))
                     .findFirst();
 

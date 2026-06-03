@@ -1,12 +1,12 @@
 package com.pullrequesttracker.presentation.cli.view.token.dialog;
 
-import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.application.dto.TokenDto;
 import com.pullrequesttracker.presentation.cli.dialog.confirm.ConfirmDialogConfiguration;
 
 public class DeleteTokenDialogConfiguration implements ConfirmDialogConfiguration {
-    private final TokenProjection token;
+    private final TokenDto token;
 
-    public DeleteTokenDialogConfiguration(TokenProjection token) {
+    public DeleteTokenDialogConfiguration(TokenDto token) {
         this.token = token;
     }
 

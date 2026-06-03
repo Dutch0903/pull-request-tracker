@@ -1,12 +1,12 @@
 package com.pullrequesttracker.infrastructure.external.github;
 
+import com.pullrequesttracker.application.provider.PlatformPullRequestProvider;
 import com.pullrequesttracker.domain.model.CodeRepository;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.FullName;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
-import com.pullrequesttracker.infrastructure.external.PlatformSynchronizer;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.GithubPullRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GitHubRepositorySynchronizer implements PlatformSynchronizer {
+public class GitHubPullRequestProvider implements PlatformPullRequestProvider {
     private static final long FALLBACK_LOOKBACK_HOURS = 24;
     private static final long OVERLAP_MINUTES = 1;
 
@@ -35,7 +35,7 @@ public class GitHubRepositorySynchronizer implements PlatformSynchronizer {
     }
 
     @Override
-    public List<PullRequestSyncData> synchronize(CodeRepository codeRepository) {
+    public List<PullRequestSyncData> fetch(CodeRepository codeRepository) {
         List<GithubPullRequest> pullRequests = fetchPullRequests(codeRepository);
         log.info("Found {} pull requests", pullRequests.size());
         return pullRequests.stream().map(mapper::toSyncData).toList();

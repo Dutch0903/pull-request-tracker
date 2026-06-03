@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.repository;
 
-import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.application.dto.TokenDto;
 import com.pullrequesttracker.presentation.cli.dialog.form.Field;
 import com.pullrequesttracker.presentation.cli.dialog.form.FormDialogConfiguration;
 import com.pullrequesttracker.presentation.cli.dialog.form.SelectField;
@@ -12,7 +12,7 @@ import java.util.List;
 public class CreateRepositoryDialogConfiguration implements FormDialogConfiguration {
     private final List<String> tokenOptions;
 
-    public CreateRepositoryDialogConfiguration(List<TokenProjection> tokens) {
+    public CreateRepositoryDialogConfiguration(List<TokenDto> tokens) {
         List<String> options = new ArrayList<>();
         options.add("None");
         tokens.forEach(token -> options.add(token.name()));

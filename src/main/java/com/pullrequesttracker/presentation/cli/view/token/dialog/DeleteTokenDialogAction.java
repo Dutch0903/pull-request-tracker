@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.token.dialog;
 
-import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.application.dto.TokenDto;
 import com.pullrequesttracker.application.usecase.DeleteToken;
 import com.pullrequesttracker.presentation.cli.dialog.DialogAction;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
@@ -20,7 +20,7 @@ public class DeleteTokenDialogAction implements DialogAction {
 
     @Override
     public void open() {
-        TokenProjection token = tokenManagerState.getSelectedToken();
+        TokenDto token = tokenManagerState.getSelectedToken();
         if (token == null) return;
 
         ConfirmDialogHandler handler = () -> {

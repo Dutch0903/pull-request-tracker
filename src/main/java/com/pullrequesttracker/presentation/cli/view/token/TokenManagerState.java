@@ -1,7 +1,7 @@
 package com.pullrequesttracker.presentation.cli.view.token;
 
-import com.pullrequesttracker.application.query.GetTokens;
-import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.application.dto.TokenDto;
+import com.pullrequesttracker.application.usecase.FetchAllTokens;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +12,10 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TokenManagerState {
-    private final GetTokens getTokens;
+    private final FetchAllTokens getTokens;
 
     @Getter
-    private List<TokenProjection> tokens;
+    private List<TokenDto> tokens;
 
     @Getter
     private int selectedIndex = 0;
@@ -30,7 +30,7 @@ public class TokenManagerState {
         selectedIndex = Math.clamp(selectedIndex, 0, tokens.isEmpty() ? 0 : tokens.size() - 1);
     }
 
-    public TokenProjection getSelectedToken() {
+    public TokenDto getSelectedToken() {
         if (tokens.isEmpty()) return null;
         return tokens.get(selectedIndex);
     }

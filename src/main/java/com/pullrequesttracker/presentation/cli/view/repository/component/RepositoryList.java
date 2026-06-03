@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.repository.component;
 
-import com.pullrequesttracker.application.query.CodeRepositoryProjection;
+import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import com.pullrequesttracker.presentation.cli.view.repository.RepositoryListState;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
@@ -18,8 +18,8 @@ public class RepositoryList {
     private final RepositoryListState state;
 
     @SuppressWarnings("unchecked")
-    private final ListElement<CodeRepositoryProjection> listElement =
-            (ListElement<CodeRepositoryProjection>) list()
+    private final ListElement<CodeRepositoryDto> listElement =
+            (ListElement<CodeRepositoryDto>) list()
                     .highlightColor(Color.LIGHT_GREEN)
                     .highlightSymbol(">> ")
                     .autoScroll();
@@ -28,7 +28,7 @@ public class RepositoryList {
         this.state = state;
     }
 
-    public CodeRepositoryProjection getSelectedRepository() {
+    public CodeRepositoryDto getSelectedRepository() {
         var repos = state.getRepositories();
         if (repos.isEmpty()) return null;
         int index = listElement.selected();

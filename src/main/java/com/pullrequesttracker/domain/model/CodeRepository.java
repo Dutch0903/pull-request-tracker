@@ -5,7 +5,7 @@ import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.FullName;
 import com.pullrequesttracker.domain.valueobject.TokenId;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.Objects;

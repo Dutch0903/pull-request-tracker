@@ -13,13 +13,13 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class CheckRepositories {
     private final CodeRepositoryRepository codeRepositoryRepository;
-    private final FetchRepositoryPullRequests fetchRepositoryPullRequests;
+    private final SynchronizeRepository synchronizeRepository;
 
     public void execute() {
         List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll().stream()
                 .map(repo -> {
-                    log.info("Checking repository {}/{}", repo.getFullName().owner(), repo.getFullName().name());
-                    return fetchRepositoryPullRequests.execute(repo);
+                    log.info("Checking {} repository {}/{}", repo.getPlatform(), repo.getFullName().owner(), repo.getFullName().name());
+                    return synchronizeRepository.execute(repo);
                 })
                 .toList();
 

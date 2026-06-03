@@ -1,11 +1,11 @@
 package com.pullrequesttracker.application.usecase;
 
-import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
-import com.pullrequesttracker.domain.repository.PullRequestRepository;
-import com.pullrequesttracker.application.synchronizer.RepositorySynchronizer;
+import com.pullrequesttracker.application.provider.PullRequestProvider;
 import com.pullrequesttracker.domain.model.CodeRepository;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestFactory;
+import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
+import com.pullrequesttracker.domain.repository.PullRequestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FetchRepositoryPullRequests {
-    private final RepositorySynchronizer repositorySynchronizer;
+public class SynchronizeRepository {
+    private final PullRequestProvider pullRequestProvider;
     private final PullRequestRepository pullRequestRepository;
     private final PullRequestFactory pullRequestFactory;
     private final CodeRepositoryRepository codeRepositoryRepository;
@@ -35,7 +35,7 @@ public class FetchRepositoryPullRequests {
                 .stream()
                 .collect(Collectors.toMap(PullRequest::getExternalId, pr -> pr));
 
-        repositorySynchronizer.synchronize(codeRepository).forEach(syncData -> {
+        pullRequestProvider.fetch(codeRepository).forEach(syncData -> {
             PullRequest pullRequest = Optional.ofNullable(existing.get(syncData.externalId()))
                     .orElseGet(() -> pullRequestFactory.create(codeRepository.getId(), syncData));
 
