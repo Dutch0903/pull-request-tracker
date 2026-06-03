@@ -3,14 +3,14 @@ package com.pullrequesttracker.infrastructure.external.github;
 import com.pullrequesttracker.application.parser.ParsedCodeRepositoryReference;
 import com.pullrequesttracker.domain.type.CodeRepositoryReferenceType;
 import com.pullrequesttracker.domain.type.Platform;
-import com.pullrequesttracker.infrastructure.external.PlatformReferenceParser;
+import com.pullrequesttracker.application.parser.PlatformCodeRepositoryReferenceParser;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class GitHubReferenceParser implements PlatformReferenceParser {
+public class GitHubReferenceParser implements PlatformCodeRepositoryReferenceParser {
     private static final Pattern HTTPS_PATTERN = Pattern.compile("https://github\\.com/([^/]+)/([^/]+?)(?:\\.git)?/?$");
     private static final Pattern SSH_PATTERN = Pattern.compile("git@github\\.com:([^/]+)/([^/]+?)(?:\\.git)?$");
     private static final Pattern OWNER_NAME_PATTERN = Pattern.compile("^([a-zA-Z0-9-]+)/([a-zA-Z0-9-_.]+)$");
