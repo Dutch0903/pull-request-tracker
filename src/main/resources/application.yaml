@@ -14,6 +14,10 @@ repository-check:
   interval-ms: 600000
   thread-pool-size: 4
 
+repository-stats:
+  stale-threshold-days: 14
+  recent-activity-max-entries: 3
+
 logging:
   file:
     name: logs/application.log

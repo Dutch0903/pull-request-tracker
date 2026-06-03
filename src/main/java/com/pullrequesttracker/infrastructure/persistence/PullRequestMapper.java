@@ -1,0 +1,58 @@
+package com.pullrequesttracker.infrastructure.persistence;
+
+import com.pullrequesttracker.domain.model.PullRequest;
+import com.pullrequesttracker.domain.model.PullRequestFactory;
+import com.pullrequesttracker.domain.type.CiStatus;
+import com.pullrequesttracker.domain.type.PullRequestStatus;
+import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
+import com.pullrequesttracker.domain.valueobject.MergeInfo;
+import com.pullrequesttracker.domain.valueobject.PullRequestId;
+import com.pullrequesttracker.domain.valueobject.Review;
+import com.pullrequesttracker.domain.valueobject.ReviewSummary;
+import com.pullrequesttracker.infrastructure.persistence.dto.PullRequestDto;
+import com.pullrequesttracker.infrastructure.persistence.dto.ReviewDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+@RequiredArgsConstructor
+public class PullRequestMapper {
+    private final PullRequestFactory pullRequestFactory;
+
+    public PullRequestDto toDto(PullRequest pullRequest) {
+        List<ReviewDto> reviewDtos = pullRequest.getReviewSummary().reviews().stream()
+                .map(r -> new ReviewDto(r.reviewer(), r.status().name(), r.submittedAt()))
+                .toList();
+
+        return new PullRequestDto(
+                pullRequest.getId().value(), pullRequest.getCodeRepositoryId().value(),
+                pullRequest.getExternalId(), pullRequest.getAuthor(), pullRequest.getCreatedAt(),
+                pullRequest.getTitle(), pullRequest.isDraft(), pullRequest.getStatus().name(),
+                pullRequest.getCiStatus().name(), List.copyOf(pullRequest.getLabels()),
+                reviewDtos, pullRequest.getReviewSummary().reviewStatus().name(),
+                pullRequest.getCommentCount(),
+                pullRequest.getMergeInfo().map(MergeInfo::mergedBy).orElse(null),
+                pullRequest.getMergeInfo().map(MergeInfo::mergedAt).orElse(null),
+                pullRequest.getUpdatedAt()
+        );
+    }
+
+    public PullRequest toDomain(PullRequestDto dto) {
+        List<Review> reviews = dto.reviews().stream()
+                .map(r -> new Review(r.reviewer(), ReviewStatus.valueOf(r.state()), r.submittedAt()))
+                .toList();
+
+        ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
+        MergeInfo mergeInfo = dto.mergedBy() != null ? new MergeInfo(dto.mergedBy(), dto.mergedAt()) : null;
+
+        return pullRequestFactory.reconstitute(
+                new PullRequestId(dto.id()), new CodeRepositoryId(dto.codeRepositoryId()),
+                dto.externalId(), dto.author(), dto.createdAt(), dto.title(), dto.draft(),
+                PullRequestStatus.valueOf(dto.status()), CiStatus.valueOf(dto.ciStatus()),
+                dto.labels(), reviewSummary, dto.commentCount(), mergeInfo, dto.updatedAt()
+        );
+    }
+}

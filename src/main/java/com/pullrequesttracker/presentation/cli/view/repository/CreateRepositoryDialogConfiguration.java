@@ -1,0 +1,38 @@
+package com.pullrequesttracker.presentation.cli.view.repository;
+
+import com.pullrequesttracker.application.query.TokenProjection;
+import com.pullrequesttracker.presentation.cli.dialog.form.Field;
+import com.pullrequesttracker.presentation.cli.dialog.form.FormDialogConfiguration;
+import com.pullrequesttracker.presentation.cli.dialog.form.SelectField;
+import com.pullrequesttracker.presentation.cli.dialog.form.TextField;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class CreateRepositoryDialogConfiguration implements FormDialogConfiguration {
+    private final List<String> tokenOptions;
+
+    public CreateRepositoryDialogConfiguration(List<TokenProjection> tokens) {
+        List<String> options = new ArrayList<>();
+        options.add("None");
+        tokens.forEach(token -> options.add(token.name()));
+        this.tokenOptions = options;
+    }
+
+    @Override
+    public List<Field> fields() {
+        return List.of(
+                new TextField(RepositoryFormFields.REFERENCE, "Reference", false, ""),
+                new SelectField(RepositoryFormFields.TOKEN, "Token", tokenOptions, "None"));
+    }
+
+    @Override
+    public String title() {
+        return "Register Repository";
+    }
+
+    @Override
+    public String description() {
+        return "Register a repository to track it's pull requests.";
+    }
+}
