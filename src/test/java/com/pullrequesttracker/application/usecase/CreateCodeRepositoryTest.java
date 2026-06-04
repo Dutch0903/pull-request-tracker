@@ -2,16 +2,23 @@ package com.pullrequesttracker.application.usecase;
 
 import com.pullrequesttracker.application.parser.CodeRepositoryReferenceParser;
 import com.pullrequesttracker.application.parser.ParsedCodeRepositoryReference;
-import com.pullrequesttracker.domain.service.CodeRepositoryDomainService;
+import com.pullrequesttracker.domain.model.Token;
+import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
+import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.type.CodeRepositoryReferenceType;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.TokenId;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -20,37 +27,82 @@ class CreateCodeRepositoryTest {
     private CodeRepositoryReferenceParser parser;
 
     @Mock
-    private CodeRepositoryDomainService codeRepositoryDomainService;
+    private CodeRepositoryRepository codeRepositoryRepository;
+
+    @Mock
+    private TokenRepository tokenRepository;
 
     @InjectMocks
     private CreateCodeRepository createCodeRepository;
 
+    private static final String OWNER = "owner";
+    private static final String NAME = "name";
+    private static final Platform PLATFORM = Platform.GITHUB;
+
+    @BeforeEach
+    void setUp() {
+        when(parser.parse(OWNER + "/" + NAME, PLATFORM))
+                .thenReturn(new ParsedCodeRepositoryReference(OWNER, NAME, CodeRepositoryReferenceType.OWNER_NAME));
+    }
+
     @Test
     void execute_whenCalled_shouldParseReferenceAndSave() {
-        String owner = "owner";
-        String name = "name";
         TokenId tokenId = TokenId.create();
+        when(tokenRepository.findById(tokenId)).thenReturn(Optional.of(mock(Token.class)));
 
-        when(parser.parse(owner + "/" + name, Platform.GITHUB))
-                .thenReturn(new ParsedCodeRepositoryReference(owner, name, CodeRepositoryReferenceType.OWNER_NAME));
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, tokenId);
 
-        createCodeRepository.execute(owner + "/" + name, Platform.GITHUB, tokenId);
-
-        verify(parser).parse(owner + "/" + name, Platform.GITHUB);
-        verify(codeRepositoryDomainService).add(argThat(repo ->
-                repo.getFullName().owner().equals(owner)
-                        && repo.getFullName().name().equals(name)
-                        && repo.getPlatform() == Platform.GITHUB
+        verify(codeRepositoryRepository).save(argThat(repo ->
+                repo.getFullName().owner().equals(OWNER)
+                        && repo.getFullName().name().equals(NAME)
+                        && repo.getPlatform() == PLATFORM
                         && repo.getTokenId().equals(tokenId)));
     }
 
     @Test
     void execute_whenTokenIdIsNull_shouldSaveWithoutToken() {
-        when(parser.parse("owner/name", Platform.GITHUB))
-                .thenReturn(new ParsedCodeRepositoryReference("owner", "name", CodeRepositoryReferenceType.OWNER_NAME));
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null);
 
-        createCodeRepository.execute("owner/name", Platform.GITHUB, null);
+        verify(codeRepositoryRepository).save(argThat(repo -> repo.getTokenId() == null));
+        verify(tokenRepository, never()).findById(any());
+    }
 
-        verify(codeRepositoryDomainService).add(argThat(repo -> repo.getTokenId() == null));
+    @Test
+    void execute_whenFullNameAlreadyExists_shouldThrowIllegalStateException() {
+        when(codeRepositoryRepository.exists(any())).thenReturn(true);
+
+        assertThrows(IllegalStateException.class,
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null));
+
+        verify(codeRepositoryRepository, never()).save(any());
+    }
+
+    @Test
+    void execute_whenFullNameAlreadyExists_shouldContainRepoNameInMessage() {
+        when(codeRepositoryRepository.exists(any())).thenReturn(true);
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class,
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null));
+
+        assertTrue(ex.getMessage().contains(OWNER + "/" + NAME));
+    }
+
+    @Test
+    void execute_whenTokenNotFound_shouldThrowIllegalStateException() {
+        TokenId tokenId = TokenId.create();
+        when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
+
+        assertThrows(IllegalStateException.class,
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, tokenId));
+
+        verify(codeRepositoryRepository, never()).save(any());
+    }
+
+    @Test
+    void execute_whenNoToken_shouldNotCheckTokenRepository() {
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null);
+
+        verify(tokenRepository, never()).findById(any());
+        verify(codeRepositoryRepository).save(any());
     }
 }

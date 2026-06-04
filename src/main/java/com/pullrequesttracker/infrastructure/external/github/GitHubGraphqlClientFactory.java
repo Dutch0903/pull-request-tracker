@@ -2,7 +2,7 @@ package com.pullrequesttracker.infrastructure.external.github;
 
 import com.pullrequesttracker.domain.valueobject.TokenValue;
 import org.springframework.graphql.client.HttpGraphQlClient;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 

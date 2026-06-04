@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class SynchronizeRepository {
     private final PullRequestProvider pullRequestProvider;
     private final PullRequestRepository pullRequestRepository;
-    private final PullRequestFactory pullRequestFactory;
     private final CodeRepositoryRepository codeRepositoryRepository;
 
     @Async("repositoryCheckExecutor")
@@ -37,7 +36,7 @@ public class SynchronizeRepository {
 
         pullRequestProvider.fetch(codeRepository).forEach(syncData -> {
             PullRequest pullRequest = Optional.ofNullable(existing.get(syncData.externalId()))
-                    .orElseGet(() -> pullRequestFactory.create(codeRepository.getId(), syncData));
+                    .orElseGet(() -> PullRequestFactory.create(codeRepository.getId(), syncData));
 
             pullRequest.sync(syncData);
             pullRequestRepository.save(pullRequest);

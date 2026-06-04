@@ -3,11 +3,8 @@ package com.pullrequesttracker.domain.service.stats;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
 public class ReviewStatsCalculator extends StatsCalculator {
 
     public ReviewStatsCalculator(StatsConfiguration config) {

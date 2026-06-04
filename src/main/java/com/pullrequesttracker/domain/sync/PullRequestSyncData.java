@@ -4,7 +4,7 @@ import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Review;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.List;

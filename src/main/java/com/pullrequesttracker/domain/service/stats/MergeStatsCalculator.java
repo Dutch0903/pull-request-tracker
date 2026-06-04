@@ -3,14 +3,11 @@ package com.pullrequesttracker.domain.service.stats;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
-import org.springframework.stereotype.Component;
-
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@Component
 public class MergeStatsCalculator extends StatsCalculator {
 
     public MergeStatsCalculator(StatsConfiguration config) {

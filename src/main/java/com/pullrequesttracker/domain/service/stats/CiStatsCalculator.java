@@ -3,11 +3,8 @@ package com.pullrequesttracker.domain.service.stats;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
 public class CiStatsCalculator extends StatsCalculator {
 
     public CiStatsCalculator(StatsConfiguration config) {

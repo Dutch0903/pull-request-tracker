@@ -9,7 +9,7 @@ import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.domain.valueobject.ReviewSummary;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.ArrayList;

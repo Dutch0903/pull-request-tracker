@@ -2,13 +2,10 @@ package com.pullrequesttracker.domain.service.stats;
 
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
-import org.springframework.stereotype.Component;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@Component
 public class OpenPrStatsCalculator extends StatsCalculator {
 
     public OpenPrStatsCalculator(StatsConfiguration config) {

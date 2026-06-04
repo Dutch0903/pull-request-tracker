@@ -12,15 +12,12 @@ import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.domain.valueobject.ReviewSummary;
 import com.pullrequesttracker.infrastructure.persistence.dto.PullRequestDto;
 import com.pullrequesttracker.infrastructure.persistence.dto.ReviewDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class PullRequestMapper {
-    private final PullRequestFactory pullRequestFactory;
 
     public PullRequestDto toDto(PullRequest pullRequest) {
         List<ReviewDto> reviewDtos = pullRequest.getReviewSummary().reviews().stream()
@@ -48,7 +45,7 @@ public class PullRequestMapper {
         ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
         MergeInfo mergeInfo = dto.mergedBy() != null ? new MergeInfo(dto.mergedBy(), dto.mergedAt()) : null;
 
-        return pullRequestFactory.reconstitute(
+        return PullRequestFactory.reconstitute(
                 new PullRequestId(dto.id()), new CodeRepositoryId(dto.codeRepositoryId()),
                 dto.externalId(), dto.author(), dto.createdAt(), dto.title(), dto.draft(),
                 PullRequestStatus.valueOf(dto.status()), CiStatus.valueOf(dto.ciStatus()),

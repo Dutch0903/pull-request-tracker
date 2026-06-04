@@ -6,13 +6,10 @@ import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.RecentActivityType;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Review;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-@Component
 public class RecentActivityCalculator extends StatsCalculator {
 
     public RecentActivityCalculator(StatsConfiguration config) {
