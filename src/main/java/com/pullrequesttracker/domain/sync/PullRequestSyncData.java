@@ -1,10 +1,9 @@
 package com.pullrequesttracker.domain.sync;
 
+import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
-import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Review;
-import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,9 +14,7 @@ public record PullRequestSyncData(
         String title,
         String author,
         boolean isDraft,
-        PullRequestStatus status,
-        @Nullable String mergedBy,
-        @Nullable Instant mergedAt,
+        PullRequestState state,
         CiStatus ciStatus,
         List<String> labels,
         List<Review> reviews,
@@ -30,7 +27,7 @@ public record PullRequestSyncData(
         if (externalId <= 0) throw new IllegalArgumentException("External id must be positive");
         Objects.requireNonNull(title, "Title must not be null");
         Objects.requireNonNull(author, "Author must not be null");
-        Objects.requireNonNull(status, "Status must not be null");
+        Objects.requireNonNull(state, "State must not be null");
         Objects.requireNonNull(ciStatus, "CI status must not be null");
         Objects.requireNonNull(labels, "Labels must not be null");
         Objects.requireNonNull(reviews, "Reviews must not be null");

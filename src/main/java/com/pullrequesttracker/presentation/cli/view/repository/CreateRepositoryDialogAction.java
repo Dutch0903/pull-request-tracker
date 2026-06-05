@@ -1,14 +1,15 @@
 package com.pullrequesttracker.presentation.cli.view.repository;
 
 import com.pullrequesttracker.application.dto.TokenDto;
-import com.pullrequesttracker.application.usecase.FetchAllTokens;
 import com.pullrequesttracker.application.usecase.CreateCodeRepository;
+import com.pullrequesttracker.application.usecase.FetchAllTokens;
+import com.pullrequesttracker.domain.model.RepositoryAccess;
 import com.pullrequesttracker.domain.type.Platform;
+import com.pullrequesttracker.domain.valueobject.TokenId;
 import com.pullrequesttracker.presentation.cli.dialog.DialogAction;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.dialog.DialogType;
 import com.pullrequesttracker.presentation.cli.dialog.form.FormDialogHandler;
-import com.pullrequesttracker.domain.valueobject.TokenId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +31,11 @@ public class CreateRepositoryDialogAction implements DialogAction {
                     .filter(t -> t.name().equals(values.get(RepositoryFormFields.TOKEN)))
                     .findFirst();
 
-            TokenId tokenId = selectedToken.map(t -> TokenId.from(t.id())).orElse(null);
-            createCodeRepository.execute(values.get(RepositoryFormFields.REFERENCE), Platform.GITHUB, tokenId);
+            RepositoryAccess access = selectedToken
+                    .map(t -> (RepositoryAccess) new RepositoryAccess.Authenticated(TokenId.from(t.id())))
+                    .orElse(new RepositoryAccess.Public());
+
+            createCodeRepository.execute(values.get(RepositoryFormFields.REFERENCE), Platform.GITHUB, access);
         };
 
         dialogManager.openDialog(DialogType.FORM, new CreateRepositoryDialogConfiguration(tokens), handler);

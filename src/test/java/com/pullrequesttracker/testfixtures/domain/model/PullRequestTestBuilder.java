@@ -2,8 +2,8 @@ package com.pullrequesttracker.testfixtures.domain.model;
 
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestFactory;
+import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
-import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
@@ -24,14 +24,12 @@ public class PullRequestTestBuilder {
     private Instant createdAt = Instant.now();
     private Instant updatedAt = Instant.now();
     private boolean draft = false;
-    private PullRequestStatus status = PullRequestStatus.OPEN;
+    private PullRequestState state = new PullRequestState.Open();
     private CiStatus ciStatus = CiStatus.PENDING;
     private int commentCount = 0;
     private List<String> labels = List.of("label1", "label2");
     private List<Review> reviews = new ArrayList<>();
     private ReviewStatus reviewStatus = ReviewStatus.REVIEW_REQUIRED;
-    private String mergedBy = null;
-    private Instant mergedAt = null;
 
     public static PullRequestTestBuilder aPullRequest() {
         return new PullRequestTestBuilder();
@@ -72,28 +70,19 @@ public class PullRequestTestBuilder {
         return this;
     }
 
-    public PullRequestTestBuilder withStatus(PullRequestStatus status) {
-        this.status = status;
+    public PullRequestTestBuilder withState(PullRequestState state) {
+        this.state = state;
         return this;
     }
 
-    public PullRequestTestBuilder withMergedBy(String mergedBy) {
-        this.mergedBy = mergedBy;
-        return this;
-    }
-
-    public PullRequestTestBuilder withMergedAt(Instant mergedAt) {
-        this.mergedAt = mergedAt;
+    public PullRequestTestBuilder withMergeInfo(MergeInfo mergeInfo) {
+        this.state = new PullRequestState.Merged(mergeInfo);
         return this;
     }
 
     public PullRequest build() {
         ReviewSummary reviewSummary = new ReviewSummary(reviews, reviewStatus);
-        MergeInfo mergeInfo = (status == PullRequestStatus.MERGED && mergedBy != null)
-                ? new MergeInfo(mergedBy, mergedAt)
-                : null;
-
-        return new PullRequestFactory().reconstitute(id, codeRepositoryId, externalId, author, createdAt,
-                title, draft, status, ciStatus, labels, reviewSummary, commentCount, mergeInfo, updatedAt);
+        return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt,
+                title, draft, state, ciStatus, labels, reviewSummary, commentCount, updatedAt);
     }
 }

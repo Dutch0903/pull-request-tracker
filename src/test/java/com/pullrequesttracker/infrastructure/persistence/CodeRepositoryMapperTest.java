@@ -9,6 +9,7 @@ import com.pullrequesttracker.infrastructure.persistence.dto.CodeRepositoryDto;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import static com.pullrequesttracker.testfixtures.domain.model.CodeRepositoryTestBuilder.aCodeRepository;
 import static com.pullrequesttracker.testfixtures.infrastructure.persistence.CodeRepositoryDtoTestBuilder.aCodeRepositoryDto;
@@ -26,14 +27,14 @@ class CodeRepositoryMapperTest {
         assertEquals(CodeRepositoryId.from(dto.id()), repo.getId());
         assertEquals(new FullName(dto.owner(), dto.name()), repo.getFullName());
         assertEquals(Platform.valueOf(dto.platform()), repo.getPlatform());
-        assertEquals(TokenId.from(dto.tokenId()), repo.getTokenId());
+        assertEquals(Optional.of(TokenId.from(dto.tokenId())), repo.getTokenId());
     }
 
     @Test
-    void toDomain_whenTokenIdIsNull_shouldMapTokenIdToNull() {
+    void toDomain_whenTokenIdIsNull_shouldMapTokenIdToEmpty() {
         CodeRepositoryDto dto = aCodeRepositoryDto().withTokenId(null).build();
 
-        assertNull(mapper.toDomain(dto).getTokenId());
+        assertTrue(mapper.toDomain(dto).getTokenId().isEmpty());
     }
 
     @Test
@@ -41,14 +42,14 @@ class CodeRepositoryMapperTest {
         Instant ts = Instant.parse("2026-05-13T10:00:00Z");
         CodeRepositoryDto dto = aCodeRepositoryDto().withLastCheckedAt(ts.toString()).build();
 
-        assertEquals(ts, mapper.toDomain(dto).getLastCheckedAt());
+        assertEquals(Optional.of(ts), mapper.toDomain(dto).getLastCheckedAt());
     }
 
     @Test
-    void toDomain_whenLastCheckedAtIsNull_shouldLeaveLastCheckedAtNull() {
+    void toDomain_whenLastCheckedAtIsNull_shouldLeaveLastCheckedAtEmpty() {
         CodeRepositoryDto dto = aCodeRepositoryDto().withLastCheckedAt(null).build();
 
-        assertNull(mapper.toDomain(dto).getLastCheckedAt());
+        assertTrue(mapper.toDomain(dto).getLastCheckedAt().isEmpty());
     }
 
     @Test
@@ -61,7 +62,7 @@ class CodeRepositoryMapperTest {
         assertEquals(repo.getFullName().owner(), dto.owner());
         assertEquals(repo.getFullName().name(), dto.name());
         assertEquals(repo.getPlatform().name(), dto.platform());
-        assertEquals(repo.getTokenId().value(), dto.tokenId());
+        assertEquals(repo.getTokenId().map(TokenId::value).orElse(null), dto.tokenId());
     }
 
     @Test

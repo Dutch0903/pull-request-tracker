@@ -42,14 +42,14 @@ public class GitHubPullRequestProvider implements PlatformPullRequestProvider {
     }
 
     private List<GithubPullRequest> fetchPullRequests(CodeRepository codeRepository) {
-        TokenValue token = Optional.ofNullable(codeRepository.getTokenId())
+        TokenValue token = codeRepository.getTokenId()
                 .flatMap(tokenRepository::findTokenValue)
                 .orElse(null);
 
         HttpGraphQlClient graphQlClient = gitHubClientFactory.build(token);
 
         FullName fullName = codeRepository.getFullName();
-        String since = Optional.ofNullable(codeRepository.getLastCheckedAt())
+        String since = codeRepository.getLastCheckedAt()
                 .map(t -> t.minus(OVERLAP_MINUTES, ChronoUnit.MINUTES))
                 .orElse(Instant.now().minus(FALLBACK_LOOKBACK_HOURS, ChronoUnit.HOURS))
                 .truncatedTo(ChronoUnit.SECONDS)

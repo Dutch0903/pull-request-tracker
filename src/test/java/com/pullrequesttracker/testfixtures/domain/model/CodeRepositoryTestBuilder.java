@@ -1,6 +1,7 @@
 package com.pullrequesttracker.testfixtures.domain.model;
 
 import com.pullrequesttracker.domain.model.CodeRepository;
+import com.pullrequesttracker.domain.model.RepositoryAccess;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.FullName;
@@ -12,7 +13,7 @@ public class CodeRepositoryTestBuilder {
     private CodeRepositoryId id = CodeRepositoryId.create();
     private FullName fullName = new FullName("account", "repo");
     private Platform platform = Platform.GITHUB;
-    private TokenId tokenId = TokenId.create();
+    private RepositoryAccess access = new RepositoryAccess.Authenticated(TokenId.create());
     private Instant lastCheckedAt = null;
 
     public static CodeRepositoryTestBuilder aCodeRepository() {
@@ -34,8 +35,15 @@ public class CodeRepositoryTestBuilder {
         return this;
     }
 
+    public CodeRepositoryTestBuilder withAccess(RepositoryAccess access) {
+        this.access = access;
+        return this;
+    }
+
     public CodeRepositoryTestBuilder withTokenId(TokenId tokenId) {
-        this.tokenId = tokenId;
+        this.access = tokenId != null
+                ? new RepositoryAccess.Authenticated(tokenId)
+                : new RepositoryAccess.Public();
         return this;
     }
 
@@ -45,7 +53,7 @@ public class CodeRepositoryTestBuilder {
     }
 
     public CodeRepository build() {
-        CodeRepository repo = new CodeRepository(id, fullName, platform, tokenId);
+        CodeRepository repo = new CodeRepository(id, fullName, platform, access);
         if (lastCheckedAt != null) {
             repo.recordChecked(lastCheckedAt);
         }

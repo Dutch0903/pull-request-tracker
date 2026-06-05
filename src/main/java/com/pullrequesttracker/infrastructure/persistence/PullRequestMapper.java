@@ -2,6 +2,7 @@ package com.pullrequesttracker.infrastructure.persistence;
 
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestFactory;
+import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
@@ -43,13 +44,19 @@ public class PullRequestMapper {
                 .toList();
 
         ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
-        MergeInfo mergeInfo = dto.mergedBy() != null ? new MergeInfo(dto.mergedBy(), dto.mergedAt()) : null;
+
+        PullRequestState state = switch (PullRequestStatus.valueOf(dto.status())) {
+            case MERGED  -> new PullRequestState.Merged(new MergeInfo(dto.mergedBy(), dto.mergedAt()));
+            case CLOSED  -> new PullRequestState.Closed();
+            case IGNORED -> new PullRequestState.Ignored();
+            default      -> new PullRequestState.Open();
+        };
 
         return PullRequestFactory.reconstitute(
                 new PullRequestId(dto.id()), new CodeRepositoryId(dto.codeRepositoryId()),
                 dto.externalId(), dto.author(), dto.createdAt(), dto.title(), dto.draft(),
-                PullRequestStatus.valueOf(dto.status()), CiStatus.valueOf(dto.ciStatus()),
-                dto.labels(), reviewSummary, dto.commentCount(), mergeInfo, dto.updatedAt()
+                state, CiStatus.valueOf(dto.ciStatus()),
+                dto.labels(), reviewSummary, dto.commentCount(), dto.updatedAt()
         );
     }
 }

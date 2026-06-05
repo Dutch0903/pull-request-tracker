@@ -1,9 +1,10 @@
 package com.pullrequesttracker.infrastructure.external.github;
 
+import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
-import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.Commit;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.GithubPullRequest;
@@ -20,16 +21,16 @@ public class GitHubPullRequestMapper {
     public PullRequestSyncData toSyncData(GithubPullRequest pr) {
         return new PullRequestSyncData(
                 pr.number(), pr.title(), pr.author().login(), pr.isDraft(),
-                determineStatus(pr), pr.mergedBy() != null ? pr.mergedBy().login() : null, pr.mergedAt(),
+                determineState(pr),
                 determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr),
                 pr.totalCommentsCount(), pr.createdAt(), pr.updatedAt()
         );
     }
 
-    private PullRequestStatus determineStatus(GithubPullRequest pr) {
-        if (pr.merged()) return PullRequestStatus.MERGED;
-        if (pr.closed()) return PullRequestStatus.CLOSED;
-        return PullRequestStatus.OPEN;
+    private PullRequestState determineState(GithubPullRequest pr) {
+        if (pr.merged()) return new PullRequestState.Merged(new MergeInfo(pr.mergedBy().login(), pr.mergedAt()));
+        if (pr.closed()) return new PullRequestState.Closed();
+        return new PullRequestState.Open();
     }
 
     private CiStatus determineCiStatus(GithubPullRequest pr) {

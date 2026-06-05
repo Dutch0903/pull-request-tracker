@@ -2,6 +2,7 @@ package com.pullrequesttracker.application.usecase;
 
 import com.pullrequesttracker.application.parser.CodeRepositoryReferenceParser;
 import com.pullrequesttracker.application.parser.ParsedCodeRepositoryReference;
+import com.pullrequesttracker.domain.model.RepositoryAccess;
 import com.pullrequesttracker.domain.model.Token;
 import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
 import com.pullrequesttracker.domain.repository.TokenRepository;
@@ -50,20 +51,20 @@ class CreateCodeRepositoryTest {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.of(mock(Token.class)));
 
-        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, tokenId);
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Authenticated(tokenId));
 
         verify(codeRepositoryRepository).save(argThat(repo ->
                 repo.getFullName().owner().equals(OWNER)
                         && repo.getFullName().name().equals(NAME)
                         && repo.getPlatform() == PLATFORM
-                        && repo.getTokenId().equals(tokenId)));
+                        && repo.getTokenId().equals(Optional.of(tokenId))));
     }
 
     @Test
     void execute_whenTokenIdIsNull_shouldSaveWithoutToken() {
-        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null);
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public());
 
-        verify(codeRepositoryRepository).save(argThat(repo -> repo.getTokenId() == null));
+        verify(codeRepositoryRepository).save(argThat(repo -> repo.getTokenId().isEmpty()));
         verify(tokenRepository, never()).findById(any());
     }
 
@@ -72,7 +73,7 @@ class CreateCodeRepositoryTest {
         when(codeRepositoryRepository.exists(any())).thenReturn(true);
 
         assertThrows(IllegalStateException.class,
-                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null));
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
         verify(codeRepositoryRepository, never()).save(any());
     }
@@ -82,7 +83,7 @@ class CreateCodeRepositoryTest {
         when(codeRepositoryRepository.exists(any())).thenReturn(true);
 
         IllegalStateException ex = assertThrows(IllegalStateException.class,
-                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null));
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
         assertTrue(ex.getMessage().contains(OWNER + "/" + NAME));
     }
@@ -93,14 +94,14 @@ class CreateCodeRepositoryTest {
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
 
         assertThrows(IllegalStateException.class,
-                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, tokenId));
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Authenticated(tokenId)));
 
         verify(codeRepositoryRepository, never()).save(any());
     }
 
     @Test
     void execute_whenNoToken_shouldNotCheckTokenRepository() {
-        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, null);
+        createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public());
 
         verify(tokenRepository, never()).findById(any());
         verify(codeRepositoryRepository).save(any());

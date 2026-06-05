@@ -1,5 +1,6 @@
 package com.pullrequesttracker.domain.model;
 
+import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
@@ -7,9 +8,7 @@ import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.PullRequestId;
 import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.domain.valueobject.ReviewSummary;
-import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import lombok.Getter;
-import org.jspecify.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,31 +25,25 @@ public class PullRequest {
     private final Instant createdAt;
     private String title;
     private boolean draft;
-    private PullRequestStatus status;
+    private PullRequestState state;
     private CiStatus ciStatus;
     private List<String> labels;
     private ReviewSummary reviewSummary;
     private int commentCount;
-    @Nullable
-    private MergeInfo mergeInfo;
     private Instant updatedAt;
 
     PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, String author,
-                Instant createdAt, String title, boolean draft, PullRequestStatus status, CiStatus ciStatus,
-                List<String> labels, ReviewSummary reviewSummary, int commentCount, @Nullable MergeInfo mergeInfo,
-                Instant updatedAt) {
+                Instant createdAt, String title, boolean draft, PullRequestState state, CiStatus ciStatus,
+                List<String> labels, ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
         Objects.requireNonNull(id, "Pull request id must not be null");
         Objects.requireNonNull(codeRepositoryId, "Code repository id must not be null");
         if (externalId <= 0) throw new IllegalArgumentException("External id must be positive");
         Objects.requireNonNull(author, "Author must not be null");
         if (author.isBlank()) throw new IllegalArgumentException("Author must not be blank");
         Objects.requireNonNull(createdAt, "Created at must not be null");
-        Objects.requireNonNull(status, "Status must not be null");
+        Objects.requireNonNull(state, "State must not be null");
         Objects.requireNonNull(reviewSummary, "Review summary must not be null");
         Objects.requireNonNull(updatedAt, "Updated at must not be null");
-        if (status == PullRequestStatus.MERGED && mergeInfo == null) {
-            throw new IllegalArgumentException("Merge info must be present when status is MERGED");
-        }
 
         this.id = id;
         this.codeRepositoryId = codeRepositoryId;
@@ -58,9 +51,8 @@ public class PullRequest {
         this.author = author;
         this.createdAt = createdAt;
         this.draft = draft;
-        this.status = status;
+        this.state = state;
         this.reviewSummary = reviewSummary;
-        this.mergeInfo = mergeInfo;
         this.updatedAt = updatedAt;
         setTitle(title);
         setCiStatus(ciStatus);
@@ -76,17 +68,29 @@ public class PullRequest {
         syncData.reviews().forEach(this::addReview);
         reviewSummary.updateReviewStatus(syncData.reviewStatus());
 
-        if (syncData.status() == PullRequestStatus.MERGED) {
-            merge(syncData.mergedBy(), syncData.mergedAt());
-        } else if (syncData.status() == PullRequestStatus.CLOSED) {
+        if (syncData.state() instanceof PullRequestState.Merged m) {
+            merge(m.mergeInfo());
+        } else if (syncData.state() instanceof PullRequestState.Closed) {
             close(syncData.updatedAt());
         } else if (!syncData.isDraft()) {
             undraft(syncData.updatedAt());
         }
     }
 
+    public PullRequestStatus getStatus() {
+        return switch (state) {
+            case PullRequestState.Open o    -> PullRequestStatus.OPEN;
+            case PullRequestState.Merged m  -> PullRequestStatus.MERGED;
+            case PullRequestState.Closed c  -> PullRequestStatus.CLOSED;
+            case PullRequestState.Ignored i -> PullRequestStatus.IGNORED;
+        };
+    }
+
     public Optional<MergeInfo> getMergeInfo() {
-        return Optional.ofNullable(mergeInfo);
+        return switch (state) {
+            case PullRequestState.Merged m -> Optional.of(m.mergeInfo());
+            default -> Optional.empty();
+        };
     }
 
     public void addReview(Review review) {
@@ -104,17 +108,16 @@ public class PullRequest {
         this.updatedAt = updatedAt;
     }
 
-    public void merge(String mergedBy, Instant mergedAt) {
-        if (this.status == PullRequestStatus.MERGED) return;
-        this.mergeInfo = new MergeInfo(mergedBy, mergedAt);
-        this.status = PullRequestStatus.MERGED;
-        this.updatedAt = mergedAt;
+    public void merge(MergeInfo mergeInfo) {
+        if (state instanceof PullRequestState.Merged) return;
+        state = new PullRequestState.Merged(mergeInfo);
+        this.updatedAt = mergeInfo.mergedAt();
     }
 
     public void close(Instant updatedAt) {
         Objects.requireNonNull(updatedAt, "Updated at must not be null");
-        if (this.status == PullRequestStatus.CLOSED || this.status == PullRequestStatus.IGNORED) return;
-        this.status = PullRequestStatus.CLOSED;
+        if (state instanceof PullRequestState.Closed || state instanceof PullRequestState.Ignored) return;
+        state = new PullRequestState.Closed();
         this.updatedAt = updatedAt;
     }
 

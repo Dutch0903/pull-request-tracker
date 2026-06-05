@@ -1,6 +1,7 @@
 package com.pullrequesttracker.infrastructure.persistence;
 
 import com.pullrequesttracker.domain.model.CodeRepository;
+import com.pullrequesttracker.domain.model.RepositoryAccess;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.FullName;
@@ -19,18 +20,21 @@ public class CodeRepositoryMapper {
                 codeRepository.getFullName().owner(),
                 codeRepository.getFullName().name(),
                 codeRepository.getPlatform().name(),
-                codeRepository.getTokenId() != null ? codeRepository.getTokenId().value() : null,
-                codeRepository.getLastCheckedAt() != null ? codeRepository.getLastCheckedAt().toString() : null
+                codeRepository.getTokenId().map(TokenId::value).orElse(null),
+                codeRepository.getLastCheckedAt().map(Instant::toString).orElse(null)
         );
     }
 
     public CodeRepository toDomain(CodeRepositoryDto dto) {
-        TokenId tokenId = dto.tokenId() != null ? new TokenId(dto.tokenId()) : null;
+        RepositoryAccess access = dto.tokenId() != null
+                ? new RepositoryAccess.Authenticated(new TokenId(dto.tokenId()))
+                : new RepositoryAccess.Public();
+
         CodeRepository codeRepository = new CodeRepository(
                 new CodeRepositoryId(dto.id()),
                 new FullName(dto.owner(), dto.name()),
                 Platform.valueOf(dto.platform()),
-                tokenId
+                access
         );
 
         if (dto.lastCheckedAt() != null) {
