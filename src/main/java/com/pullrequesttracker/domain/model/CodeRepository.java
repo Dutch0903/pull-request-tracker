@@ -33,15 +33,25 @@ public class CodeRepository {
         this.syncStatus = new SyncStatus.SyncedAt(checkedAt);
     }
 
-    public CodeRepositoryId getId() { return id; }
+    public CodeRepositoryId getId() {
+        return id;
+    }
 
-    public FullName getFullName() { return fullName; }
+    public FullName getFullName() {
+        return fullName;
+    }
 
-    public Platform getPlatform() { return platform; }
+    public Platform getPlatform() {
+        return platform;
+    }
 
-    public RepositoryAccess getAccess() { return access; }
+    public RepositoryAccess getAccess() {
+        return access;
+    }
 
-    public SyncStatus getSyncStatus() { return syncStatus; }
+    public SyncStatus getSyncStatus() {
+        return syncStatus;
+    }
 
     public Optional<TokenId> getTokenId() {
         return switch (access) {

@@ -28,8 +28,7 @@ public class CreateRepositoryDialogAction implements DialogAction {
         List<TokenDto> tokens = getTokens.execute();
         FormDialogHandler handler = values -> {
             Optional<TokenDto> selectedToken = tokens.stream()
-                    .filter(t -> t.name().equals(values.get(RepositoryFormFields.TOKEN)))
-                    .findFirst();
+                    .filter(t -> t.name().equals(values.get(RepositoryFormFields.TOKEN))).findFirst();
 
             RepositoryAccess access = selectedToken
                     .map(t -> (RepositoryAccess) new RepositoryAccess.Authenticated(TokenId.from(t.id())))

@@ -37,13 +37,13 @@ class CodeRepositoryReferenceParserTest {
 
     @Test
     void parse_whenPlatformHasNoRegisteredParser_shouldThrowIllegalStateException() {
-        assertThrows(IllegalStateException.class,
-                () -> parser.parse("owner/repo", mock(Platform.class)));
+        assertThrows(IllegalStateException.class, () -> parser.parse("owner/repo", mock(Platform.class)));
     }
 
     @Test
     void parse_whenPlatformMatches_shouldDelegateToStrategy() {
-        ParsedCodeRepositoryReference expected = new ParsedCodeRepositoryReference("owner", "repo", CodeRepositoryReferenceType.OWNER_NAME);
+        ParsedCodeRepositoryReference expected = new ParsedCodeRepositoryReference("owner", "repo",
+                CodeRepositoryReferenceType.OWNER_NAME);
         when(githubParser.parse("owner/repo")).thenReturn(expected);
 
         ParsedCodeRepositoryReference result = parser.parse("owner/repo", Platform.GITHUB);

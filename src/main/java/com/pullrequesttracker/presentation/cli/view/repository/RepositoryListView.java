@@ -27,8 +27,7 @@ public class RepositoryListView extends View {
     @Override
     protected Element renderBody() {
         controller.loadRepositories();
-        return row(
-                repositoryList.render(),
+        return row(repositoryList.render(),
                 new RepositoryDetailPanel(repositoryList.getSelectedRepository()).render().fill());
     }
 

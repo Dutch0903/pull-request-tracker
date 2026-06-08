@@ -41,9 +41,7 @@ public class CodeRepositoryTestBuilder {
     }
 
     public CodeRepositoryTestBuilder withTokenId(TokenId tokenId) {
-        this.access = tokenId != null
-                ? new RepositoryAccess.Authenticated(tokenId)
-                : new RepositoryAccess.Public();
+        this.access = tokenId != null ? new RepositoryAccess.Authenticated(tokenId) : new RepositoryAccess.Public();
         return this;
     }
 

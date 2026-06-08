@@ -31,15 +31,18 @@ public class TokenManagerState {
     }
 
     public TokenDto getSelectedToken() {
-        if (tokens.isEmpty()) return null;
+        if (tokens.isEmpty())
+            return null;
         return tokens.get(selectedIndex);
     }
 
     public void selectPrevious() {
-        if (selectedIndex > 0) selectedIndex--;
+        if (selectedIndex > 0)
+            selectedIndex--;
     }
 
     public void selectNext() {
-        if (selectedIndex < tokens.size() - 1) selectedIndex++;
+        if (selectedIndex < tokens.size() - 1)
+            selectedIndex++;
     }
 }

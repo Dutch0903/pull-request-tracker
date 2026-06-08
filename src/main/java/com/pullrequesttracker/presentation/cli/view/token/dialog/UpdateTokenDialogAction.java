@@ -24,12 +24,11 @@ public class UpdateTokenDialogAction implements DialogAction {
     @Override
     public void open() {
         TokenDto token = tokenManagerState.getSelectedToken();
-        if (token == null) return;
+        if (token == null)
+            return;
 
         FormDialogHandler handler = values -> {
-            updateToken.execute(
-                    TokenId.from(token.id()),
-                    TokenName.from(values.get(TokenFormFields.NAME)),
+            updateToken.execute(TokenId.from(token.id()), TokenName.from(values.get(TokenFormFields.NAME)),
                     new TokenValue(values.get(TokenFormFields.VALUE)));
             tokenManagerState.refreshTokens();
         };

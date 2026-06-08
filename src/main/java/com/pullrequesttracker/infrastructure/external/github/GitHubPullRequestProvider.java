@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -42,27 +41,20 @@ public class GitHubPullRequestProvider implements PlatformPullRequestProvider {
     }
 
     private List<GithubPullRequest> fetchPullRequests(CodeRepository codeRepository) {
-        TokenValue token = codeRepository.getTokenId()
-                .flatMap(tokenRepository::findTokenValue)
-                .orElse(null);
+        TokenValue token = codeRepository.getTokenId().flatMap(tokenRepository::findTokenValue).orElse(null);
 
         HttpGraphQlClient graphQlClient = gitHubClientFactory.build(token);
 
         FullName fullName = codeRepository.getFullName();
-        String since = codeRepository.getLastCheckedAt()
-                .map(t -> t.minus(OVERLAP_MINUTES, ChronoUnit.MINUTES))
-                .orElse(Instant.now().minus(FALLBACK_LOOKBACK_HOURS, ChronoUnit.HOURS))
-                .truncatedTo(ChronoUnit.SECONDS)
+        String since = codeRepository.getLastCheckedAt().map(t -> t.minus(OVERLAP_MINUTES, ChronoUnit.MINUTES))
+                .orElse(Instant.now().minus(FALLBACK_LOOKBACK_HOURS, ChronoUnit.HOURS)).truncatedTo(ChronoUnit.SECONDS)
                 .toString();
 
         log.info("Fetching pull requests for {} since {}", fullName, since);
 
         String searchQuery = "repo:%s/%s is:pr updated:>%s".formatted(fullName.owner(), fullName.name(), since);
 
-        return graphQlClient.documentName("github-pull-requests")
-                .variable("searchQuery", searchQuery)
-                .retrieve("search.nodes")
-                .toEntityList(GithubPullRequest.class)
-                .block();
+        return graphQlClient.documentName("github-pull-requests").variable("searchQuery", searchQuery)
+                .retrieve("search.nodes").toEntityList(GithubPullRequest.class).block();
     }
 }

@@ -12,19 +12,18 @@ class ArchitectureTest {
 
     @ArchTest
     static final ArchRule layerDependenciesAreRespected = Architectures.layeredArchitecture()
-            .consideringOnlyDependenciesInLayers()
-            .layer("Presentation").definedBy("com.pullrequesttracker.presentation..")
-            .layer("Application").definedBy("com.pullrequesttracker.application..")
-            .layer("Infrastructure").definedBy("com.pullrequesttracker.infrastructure..")
-            .layer("Domain").definedBy("com.pullrequesttracker.domain..")
-            .whereLayer("Presentation").mayOnlyAccessLayers("Application", "Domain")
-            .whereLayer("Application").mayOnlyAccessLayers("Domain")
-            .whereLayer("Infrastructure").mayOnlyAccessLayers("Application", "Domain")
-            .whereLayer("Domain").mayNotAccessAnyLayer();
+            .consideringOnlyDependenciesInLayers().layer("Presentation")
+            .definedBy("com.pullrequesttracker.presentation..").layer("Application")
+            .definedBy("com.pullrequesttracker.application..").layer("Infrastructure")
+            .definedBy("com.pullrequesttracker.infrastructure..").layer("Domain")
+            .definedBy("com.pullrequesttracker.domain..").whereLayer("Presentation")
+            .mayOnlyAccessLayers("Application", "Domain").whereLayer("Application").mayOnlyAccessLayers("Domain")
+            .whereLayer("Infrastructure").mayOnlyAccessLayers("Application", "Domain").whereLayer("Domain")
+            .mayNotAccessAnyLayer();
 
     @ArchTest
-    static final ArchRule domainHasNoSpringDependencies = noClasses()
-            .that().resideInAPackage("com.pullrequesttracker.domain..")
-            .should().dependOnClassesThat().resideInAPackage("org.springframework..");
+    static final ArchRule domainHasNoSpringDependencies = noClasses().that()
+            .resideInAPackage("com.pullrequesttracker.domain..").should().dependOnClassesThat()
+            .resideInAPackage("org.springframework..");
 
 }

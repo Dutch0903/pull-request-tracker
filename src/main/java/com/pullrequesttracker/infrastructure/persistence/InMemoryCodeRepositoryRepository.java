@@ -31,8 +31,7 @@ public class InMemoryCodeRepositoryRepository implements CodeRepositoryRepositor
 
     @Override
     public boolean exists(FullName fullName) {
-        return repositories.values().stream()
-                .anyMatch(r -> r.getFullName().equals(fullName));
+        return repositories.values().stream().anyMatch(r -> r.getFullName().equals(fullName));
     }
 
     public Optional<CodeRepository> findById(CodeRepositoryId id) {

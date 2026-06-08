@@ -15,7 +15,8 @@ public class DialogFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends DialogConfiguration> Dialog create(DialogType type, T configuration, DialogHandler handler, Runnable closeDialog) {
+    public <T extends DialogConfiguration> Dialog create(DialogType type, T configuration, DialogHandler handler,
+            Runnable closeDialog) {
         DialogCreator<T> creator = (DialogCreator<T>) registry.get(type);
 
         if (creator == null) {

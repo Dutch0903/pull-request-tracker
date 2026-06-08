@@ -53,11 +53,9 @@ class CreateCodeRepositoryTest {
 
         createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Authenticated(tokenId));
 
-        verify(codeRepositoryRepository).save(argThat(repo ->
-                repo.getFullName().owner().equals(OWNER)
-                        && repo.getFullName().name().equals(NAME)
-                        && repo.getPlatform() == PLATFORM
-                        && repo.getTokenId().equals(Optional.of(tokenId))));
+        verify(codeRepositoryRepository)
+                .save(argThat(repo -> repo.getFullName().owner().equals(OWNER) && repo.getFullName().name().equals(NAME)
+                        && repo.getPlatform() == PLATFORM && repo.getTokenId().equals(Optional.of(tokenId))));
     }
 
     @Test
@@ -93,8 +91,8 @@ class CreateCodeRepositoryTest {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalStateException.class,
-                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Authenticated(tokenId)));
+        assertThrows(IllegalStateException.class, () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
+                new RepositoryAccess.Authenticated(tokenId)));
 
         verify(codeRepositoryRepository, never()).save(any());
     }

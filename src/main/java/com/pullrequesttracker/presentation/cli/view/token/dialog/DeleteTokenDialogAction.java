@@ -21,7 +21,8 @@ public class DeleteTokenDialogAction implements DialogAction {
     @Override
     public void open() {
         TokenDto token = tokenManagerState.getSelectedToken();
-        if (token == null) return;
+        if (token == null)
+            return;
 
         ConfirmDialogHandler handler = () -> {
             deleteToken.execute(TokenId.from(token.id()));

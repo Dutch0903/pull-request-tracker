@@ -32,14 +32,16 @@ public class PullRequest {
     private int commentCount;
     private Instant updatedAt;
 
-    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, String author,
-                Instant createdAt, String title, boolean draft, PullRequestState state, CiStatus ciStatus,
-                List<String> labels, ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
+    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, String author, Instant createdAt,
+            String title, boolean draft, PullRequestState state, CiStatus ciStatus, List<String> labels,
+            ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
         Objects.requireNonNull(id, "Pull request id must not be null");
         Objects.requireNonNull(codeRepositoryId, "Code repository id must not be null");
-        if (externalId <= 0) throw new IllegalArgumentException("External id must be positive");
+        if (externalId <= 0)
+            throw new IllegalArgumentException("External id must be positive");
         Objects.requireNonNull(author, "Author must not be null");
-        if (author.isBlank()) throw new IllegalArgumentException("Author must not be blank");
+        if (author.isBlank())
+            throw new IllegalArgumentException("Author must not be blank");
         Objects.requireNonNull(createdAt, "Created at must not be null");
         Objects.requireNonNull(state, "State must not be null");
         Objects.requireNonNull(reviewSummary, "Review summary must not be null");
@@ -79,9 +81,9 @@ public class PullRequest {
 
     public PullRequestStatus getStatus() {
         return switch (state) {
-            case PullRequestState.Open o    -> PullRequestStatus.OPEN;
-            case PullRequestState.Merged m  -> PullRequestStatus.MERGED;
-            case PullRequestState.Closed c  -> PullRequestStatus.CLOSED;
+            case PullRequestState.Open o -> PullRequestStatus.OPEN;
+            case PullRequestState.Merged m -> PullRequestStatus.MERGED;
+            case PullRequestState.Closed c -> PullRequestStatus.CLOSED;
             case PullRequestState.Ignored i -> PullRequestStatus.IGNORED;
         };
     }
@@ -103,27 +105,31 @@ public class PullRequest {
 
     public void updateCiStatus(CiStatus newCiStatus, Instant updatedAt) {
         Objects.requireNonNull(updatedAt, "Updated at must not be null");
-        if (this.ciStatus == newCiStatus) return;
+        if (this.ciStatus == newCiStatus)
+            return;
         setCiStatus(newCiStatus);
         this.updatedAt = updatedAt;
     }
 
     public void merge(MergeInfo mergeInfo) {
-        if (state instanceof PullRequestState.Merged) return;
+        if (state instanceof PullRequestState.Merged)
+            return;
         state = new PullRequestState.Merged(mergeInfo);
         this.updatedAt = mergeInfo.mergedAt();
     }
 
     public void close(Instant updatedAt) {
         Objects.requireNonNull(updatedAt, "Updated at must not be null");
-        if (state instanceof PullRequestState.Closed || state instanceof PullRequestState.Ignored) return;
+        if (state instanceof PullRequestState.Closed || state instanceof PullRequestState.Ignored)
+            return;
         state = new PullRequestState.Closed();
         this.updatedAt = updatedAt;
     }
 
     public void undraft(Instant updatedAt) {
         Objects.requireNonNull(updatedAt, "Updated at must not be null");
-        if (!this.draft) return;
+        if (!this.draft)
+            return;
         this.draft = false;
         this.updatedAt = updatedAt;
     }
@@ -142,7 +148,8 @@ public class PullRequest {
 
     private void setTitle(String title) {
         Objects.requireNonNull(title, "Title must not be null");
-        if (title.isBlank()) throw new IllegalArgumentException("Title must not be blank");
+        if (title.isBlank())
+            throw new IllegalArgumentException("Title must not be blank");
         this.title = title;
     }
 
@@ -157,7 +164,8 @@ public class PullRequest {
     }
 
     private void setCommentCount(int commentCount) {
-        if (commentCount < 0) throw new IllegalArgumentException("Comment count must not be negative");
+        if (commentCount < 0)
+            throw new IllegalArgumentException("Comment count must not be negative");
         this.commentCount = commentCount;
     }
 }

@@ -14,7 +14,6 @@ public class FetchAllTokens {
 
     public List<TokenDto> execute() {
         return tokenRepository.findAll().stream()
-                .map(t -> new TokenDto(t.id().value(), t.name().toString(), t.value().toString()))
-                .toList();
+                .map(t -> new TokenDto(t.id().value(), t.name().toString(), t.value().toString())).toList();
     }
 }

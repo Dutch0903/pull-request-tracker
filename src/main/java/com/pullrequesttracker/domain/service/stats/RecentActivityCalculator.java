@@ -21,22 +21,22 @@ public class RecentActivityCalculator extends StatsCalculator {
 
         for (PullRequest pr : prs) {
             if (pr.getStatus() == PullRequestStatus.MERGED) {
-                pr.getMergeInfo().ifPresent(info ->
-                        events.add(new RecentActivityEntry(info.mergedBy(), RecentActivityType.MERGED, pr.getExternalId(), info.mergedAt())));
+                pr.getMergeInfo().ifPresent(info -> events.add(new RecentActivityEntry(info.mergedBy(),
+                        RecentActivityType.MERGED, pr.getExternalId(), info.mergedAt())));
             }
             if (pr.getStatus() == PullRequestStatus.OPEN) {
-                events.add(new RecentActivityEntry(pr.getAuthor(), RecentActivityType.OPENED, pr.getExternalId(), pr.getCreatedAt()));
+                events.add(new RecentActivityEntry(pr.getAuthor(), RecentActivityType.OPENED, pr.getExternalId(),
+                        pr.getCreatedAt()));
             }
             for (Review review : pr.getReviewSummary().reviews()) {
                 if (review.status() == ReviewStatus.APPROVED) {
-                    events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.APPROVED, pr.getExternalId(), review.submittedAt()));
+                    events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.APPROVED,
+                            pr.getExternalId(), review.submittedAt()));
                 }
             }
         }
 
-        return events.stream()
-                .sorted(Comparator.comparing(RecentActivityEntry::occurredAt).reversed())
-                .limit(config.recentActivityMaxEntries())
-                .toList();
+        return events.stream().sorted(Comparator.comparing(RecentActivityEntry::occurredAt).reversed())
+                .limit(config.recentActivityMaxEntries()).toList();
     }
 }

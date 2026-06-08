@@ -21,9 +21,7 @@ public class ConfirmDialog implements Dialog {
     @Override
     public DialogElement render() {
         return dialog(configuration.title(), text(configuration.description()), text(errorMessage).red(),
-                text("[Enter] Confirm  [Esc] Cancel").dim())
-                .onConfirm(this::confirm)
-                .onCancel(closeDialog)
+                text("[Enter] Confirm  [Esc] Cancel").dim()).onConfirm(this::confirm).onCancel(closeDialog)
                 .width(Math.max(50, configuration.description().length()));
     }
 

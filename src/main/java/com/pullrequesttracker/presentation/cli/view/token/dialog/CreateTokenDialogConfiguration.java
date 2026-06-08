@@ -10,8 +10,7 @@ import java.util.List;
 public class CreateTokenDialogConfiguration implements FormDialogConfiguration {
     @Override
     public List<Field> fields() {
-        return List.of(
-                new TextField(TokenFormFields.NAME, "Name", false, ""),
+        return List.of(new TextField(TokenFormFields.NAME, "Name", false, ""),
                 new TextField(TokenFormFields.VALUE, "Value", true, ""));
     }
 

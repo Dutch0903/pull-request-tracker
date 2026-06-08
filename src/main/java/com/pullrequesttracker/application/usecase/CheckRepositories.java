@@ -16,12 +16,11 @@ public class CheckRepositories {
     private final SynchronizeRepository synchronizeRepository;
 
     public void execute() {
-        List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll().stream()
-                .map(repo -> {
-                    log.info("Checking {} repository {}/{}", repo.getPlatform(), repo.getFullName().owner(), repo.getFullName().name());
-                    return synchronizeRepository.execute(repo);
-                })
-                .toList();
+        List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll().stream().map(repo -> {
+            log.info("Checking {} repository {}/{}", repo.getPlatform(), repo.getFullName().owner(),
+                    repo.getFullName().name());
+            return synchronizeRepository.execute(repo);
+        }).toList();
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
     }

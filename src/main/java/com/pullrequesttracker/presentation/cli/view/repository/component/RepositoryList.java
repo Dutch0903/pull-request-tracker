@@ -18,11 +18,8 @@ public class RepositoryList {
     private final RepositoryListState state;
 
     @SuppressWarnings("unchecked")
-    private final ListElement<CodeRepositoryDto> listElement =
-            (ListElement<CodeRepositoryDto>) list()
-                    .highlightColor(Color.LIGHT_GREEN)
-                    .highlightSymbol(">> ")
-                    .autoScroll();
+    private final ListElement<CodeRepositoryDto> listElement = (ListElement<CodeRepositoryDto>) list()
+            .highlightColor(Color.LIGHT_GREEN).highlightSymbol(">> ").autoScroll();
 
     public RepositoryList(RepositoryListState state) {
         this.state = state;
@@ -30,7 +27,8 @@ public class RepositoryList {
 
     public CodeRepositoryDto getSelectedRepository() {
         var repos = state.getRepositories();
-        if (repos.isEmpty()) return null;
+        if (repos.isEmpty())
+            return null;
         int index = listElement.selected();
         return index < repos.size() ? repos.get(index) : null;
     }
@@ -38,15 +36,10 @@ public class RepositoryList {
     public Element render() {
         Element content = state.getRepositories().isEmpty()
                 ? text("No repositories configured.").dim()
-                : listElement.data(state.getRepositories(), repo -> row(
-                        text(repo.owner() + "/" + repo.name()),
-                        spacer()));
+                : listElement.data(state.getRepositories(),
+                        repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));
 
-        return panel("Repositories", content)
-                .id("repository-list")
-                .focusable()
-                .focusedBorderColor(Color.LIGHT_GREEN)
-                .rounded()
-                .onKeyEvent(event -> listElement.handleKeyEvent(event, true));
+        return panel("Repositories", content).id("repository-list").focusable().focusedBorderColor(Color.LIGHT_GREEN)
+                .rounded().onKeyEvent(event -> listElement.handleKeyEvent(event, true));
     }
 }

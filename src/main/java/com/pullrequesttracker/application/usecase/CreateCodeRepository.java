@@ -27,8 +27,7 @@ public class CreateCodeRepository {
             throw new IllegalStateException("Repository already exists: " + fullName);
         }
 
-        if (access instanceof RepositoryAccess.Authenticated a
-                && tokenRepository.findById(a.tokenId()).isEmpty()) {
+        if (access instanceof RepositoryAccess.Authenticated a && tokenRepository.findById(a.tokenId()).isEmpty()) {
             throw new IllegalStateException("Token not found: " + a.tokenId());
         }
 

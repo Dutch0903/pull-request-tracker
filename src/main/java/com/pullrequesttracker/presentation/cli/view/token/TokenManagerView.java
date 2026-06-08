@@ -46,9 +46,8 @@ public class TokenManagerView extends View {
 
     private Element renderTokenList() {
         return panel(column(text("Tokens"),
-                list().data(state.getTokens(), t -> text(t.name()))
-                        .highlightColor(Color.CYAN).highlightSymbol("> ").autoScroll().scrollbar()
-                        .onKeyEvent(keyHandler::handle).selected(state.getSelectedIndex())
+                list().data(state.getTokens(), t -> text(t.name())).highlightColor(Color.CYAN).highlightSymbol("> ")
+                        .autoScroll().scrollbar().onKeyEvent(keyHandler::handle).selected(state.getSelectedIndex())
                         .scrollbarThumbColor(Color.CYAN)))
                 .fill().borderless();
     }

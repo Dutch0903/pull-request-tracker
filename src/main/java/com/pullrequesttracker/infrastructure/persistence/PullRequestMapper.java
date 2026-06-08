@@ -22,41 +22,33 @@ public class PullRequestMapper {
 
     public PullRequestDto toDto(PullRequest pullRequest) {
         List<ReviewDto> reviewDtos = pullRequest.getReviewSummary().reviews().stream()
-                .map(r -> new ReviewDto(r.reviewer(), r.status().name(), r.submittedAt()))
-                .toList();
+                .map(r -> new ReviewDto(r.reviewer(), r.status().name(), r.submittedAt())).toList();
 
-        return new PullRequestDto(
-                pullRequest.getId().value(), pullRequest.getCodeRepositoryId().value(),
+        return new PullRequestDto(pullRequest.getId().value(), pullRequest.getCodeRepositoryId().value(),
                 pullRequest.getExternalId(), pullRequest.getAuthor(), pullRequest.getCreatedAt(),
                 pullRequest.getTitle(), pullRequest.isDraft(), pullRequest.getStatus().name(),
-                pullRequest.getCiStatus().name(), List.copyOf(pullRequest.getLabels()),
-                reviewDtos, pullRequest.getReviewSummary().reviewStatus().name(),
-                pullRequest.getCommentCount(),
+                pullRequest.getCiStatus().name(), List.copyOf(pullRequest.getLabels()), reviewDtos,
+                pullRequest.getReviewSummary().reviewStatus().name(), pullRequest.getCommentCount(),
                 pullRequest.getMergeInfo().map(MergeInfo::mergedBy).orElse(null),
-                pullRequest.getMergeInfo().map(MergeInfo::mergedAt).orElse(null),
-                pullRequest.getUpdatedAt()
-        );
+                pullRequest.getMergeInfo().map(MergeInfo::mergedAt).orElse(null), pullRequest.getUpdatedAt());
     }
 
     public PullRequest toDomain(PullRequestDto dto) {
         List<Review> reviews = dto.reviews().stream()
-                .map(r -> new Review(r.reviewer(), ReviewStatus.valueOf(r.state()), r.submittedAt()))
-                .toList();
+                .map(r -> new Review(r.reviewer(), ReviewStatus.valueOf(r.state()), r.submittedAt())).toList();
 
         ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
 
         PullRequestState state = switch (PullRequestStatus.valueOf(dto.status())) {
-            case MERGED  -> new PullRequestState.Merged(new MergeInfo(dto.mergedBy(), dto.mergedAt()));
-            case CLOSED  -> new PullRequestState.Closed();
+            case MERGED -> new PullRequestState.Merged(new MergeInfo(dto.mergedBy(), dto.mergedAt()));
+            case CLOSED -> new PullRequestState.Closed();
             case IGNORED -> new PullRequestState.Ignored();
-            default      -> new PullRequestState.Open();
+            default -> new PullRequestState.Open();
         };
 
-        return PullRequestFactory.reconstitute(
-                new PullRequestId(dto.id()), new CodeRepositoryId(dto.codeRepositoryId()),
-                dto.externalId(), dto.author(), dto.createdAt(), dto.title(), dto.draft(),
-                state, CiStatus.valueOf(dto.ciStatus()),
-                dto.labels(), reviewSummary, dto.commentCount(), dto.updatedAt()
-        );
+        return PullRequestFactory.reconstitute(new PullRequestId(dto.id()),
+                new CodeRepositoryId(dto.codeRepositoryId()), dto.externalId(), dto.author(), dto.createdAt(),
+                dto.title(), dto.draft(), state, CiStatus.valueOf(dto.ciStatus()), dto.labels(), reviewSummary,
+                dto.commentCount(), dto.updatedAt());
     }
 }

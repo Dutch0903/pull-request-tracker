@@ -22,10 +22,7 @@ public class RepositoryDetailPanel {
                 ? text("Loading stats...").dim()
                 : text("Select a repository to view details.").dim();
 
-        return panel(title, body)
-                .id("repository-detail-panel")
-                .focusable()
-                .focusedBorderColor(Color.LIGHT_GREEN)
+        return panel(title, body).id("repository-detail-panel").focusable().focusedBorderColor(Color.LIGHT_GREEN)
                 .rounded();
     }
 }

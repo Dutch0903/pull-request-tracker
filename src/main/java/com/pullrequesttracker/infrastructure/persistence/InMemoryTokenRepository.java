@@ -57,8 +57,7 @@ public class InMemoryTokenRepository implements TokenRepository {
 
     public void initialize() {
         List<TokenDto> loaded = fileStorage.load(FILE_NAME, TokenDto.class);
-        tokens.putAll(loaded.stream().map(mapper::toDomain)
-                .collect(Collectors.toMap(Token::id, Function.identity())));
+        tokens.putAll(loaded.stream().map(mapper::toDomain).collect(Collectors.toMap(Token::id, Function.identity())));
     }
 
     public void persist() throws IOException {

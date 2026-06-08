@@ -35,11 +35,8 @@ public class CalculateRepositoryStats {
         MergeStatsCalculator.MergeStats merge = mergeStatsCalculator.calculate(prs);
         List<RecentActivityEntry> recentActivity = recentActivityCalculator.calculate(prs);
 
-        return new RepositoryStats(codeRepositoryId,
-                open.open(), open.drafts(), open.stale(),
-                ci.passing(), ci.failing(), ci.pending(),
-                review.awaitingReview(), review.changesRequested(), review.approved(),
-                merge.lastMergedAt(), merge.lastMergedBy(),
-                recentActivity, Instant.now());
+        return new RepositoryStats(codeRepositoryId, open.open(), open.drafts(), open.stale(), ci.passing(),
+                ci.failing(), ci.pending(), review.awaitingReview(), review.changesRequested(), review.approved(),
+                merge.lastMergedAt(), merge.lastMergedBy(), recentActivity, Instant.now());
     }
 }

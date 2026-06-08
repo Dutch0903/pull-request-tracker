@@ -29,10 +29,8 @@ public class SynchronizeRepository {
     public CompletableFuture<Void> execute(CodeRepository codeRepository) {
         Instant checkTime = Instant.now();
 
-        Map<Integer, PullRequest> existing = pullRequestRepository
-                .findAllByCodeRepositoryId(codeRepository.getId())
-                .stream()
-                .collect(Collectors.toMap(PullRequest::getExternalId, pr -> pr));
+        Map<Integer, PullRequest> existing = pullRequestRepository.findAllByCodeRepositoryId(codeRepository.getId())
+                .stream().collect(Collectors.toMap(PullRequest::getExternalId, pr -> pr));
 
         pullRequestProvider.fetch(codeRepository).forEach(syncData -> {
             PullRequest pullRequest = Optional.ofNullable(existing.get(syncData.externalId()))

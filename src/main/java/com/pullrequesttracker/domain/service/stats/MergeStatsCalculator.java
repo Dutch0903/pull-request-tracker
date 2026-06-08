@@ -19,12 +19,10 @@ public class MergeStatsCalculator extends StatsCalculator {
                 .filter(pr -> pr.getStatus() == PullRequestStatus.MERGED && pr.getMergeInfo().isPresent())
                 .max(Comparator.comparing(pr -> pr.getMergeInfo().get().mergedAt()));
 
-        return lastMerged
-                .map(pr -> {
-                    MergeInfo info = pr.getMergeInfo().get();
-                    return new MergeStats(info.mergedAt(), info.mergedBy());
-                })
-                .orElse(new MergeStats(null, null));
+        return lastMerged.map(pr -> {
+            MergeInfo info = pr.getMergeInfo().get();
+            return new MergeStats(info.mergedAt(), info.mergedBy());
+        }).orElse(new MergeStats(null, null));
     }
 
     public record MergeStats(Instant lastMergedAt, String lastMergedBy) {

@@ -11,9 +11,8 @@ import java.util.List;
 
 @Component
 public class TokenManagerKeyHandler extends KeyHandler {
-    public TokenManagerKeyHandler(NavigateToDashboard navigateToDashboard,
-            OpenCreateTokenDialog openCreateTokenDialog, OpenUpdateTokenDialog openUpdateTokenDialog,
-            OpenDeleteTokenDialog openDeleteTokenDialog) {
+    public TokenManagerKeyHandler(NavigateToDashboard navigateToDashboard, OpenCreateTokenDialog openCreateTokenDialog,
+            OpenUpdateTokenDialog openUpdateTokenDialog, OpenDeleteTokenDialog openDeleteTokenDialog) {
         super(List.of(navigateToDashboard, openCreateTokenDialog, openUpdateTokenDialog, openDeleteTokenDialog));
     }
 }

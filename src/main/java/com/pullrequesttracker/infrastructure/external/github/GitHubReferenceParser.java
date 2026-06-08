@@ -24,17 +24,20 @@ public class GitHubReferenceParser implements PlatformCodeRepositoryReferencePar
     public ParsedCodeRepositoryReference parse(String input) {
         Matcher httpsMatcher = HTTPS_PATTERN.matcher(input.trim());
         if (httpsMatcher.matches()) {
-            return new ParsedCodeRepositoryReference(httpsMatcher.group(1), httpsMatcher.group(2), CodeRepositoryReferenceType.HTTPS_URL);
+            return new ParsedCodeRepositoryReference(httpsMatcher.group(1), httpsMatcher.group(2),
+                    CodeRepositoryReferenceType.HTTPS_URL);
         }
 
         Matcher sshMatcher = SSH_PATTERN.matcher(input.trim());
         if (sshMatcher.matches()) {
-            return new ParsedCodeRepositoryReference(sshMatcher.group(1), sshMatcher.group(2), CodeRepositoryReferenceType.SSH_URL);
+            return new ParsedCodeRepositoryReference(sshMatcher.group(1), sshMatcher.group(2),
+                    CodeRepositoryReferenceType.SSH_URL);
         }
 
         Matcher ownerNameMatcher = OWNER_NAME_PATTERN.matcher(input.trim());
         if (ownerNameMatcher.matches()) {
-            return new ParsedCodeRepositoryReference(ownerNameMatcher.group(1), ownerNameMatcher.group(2), CodeRepositoryReferenceType.OWNER_NAME);
+            return new ParsedCodeRepositoryReference(ownerNameMatcher.group(1), ownerNameMatcher.group(2),
+                    CodeRepositoryReferenceType.OWNER_NAME);
         }
 
         throw new IllegalArgumentException(

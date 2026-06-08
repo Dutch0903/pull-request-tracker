@@ -2,6 +2,7 @@ package com.pullrequesttracker.infrastructure.persistence;
 
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.repository.PullRequestRepository;
+import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.PullRequestId;
 import com.pullrequesttracker.infrastructure.persistence.dto.PullRequestDto;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -31,9 +33,13 @@ public class InMemoryPullRequestRepository implements PullRequestRepository {
 
     @Override
     public List<PullRequest> findAllByCodeRepositoryId(CodeRepositoryId codeRepositoryId) {
+        return pullRequests.values().stream().filter(pr -> pr.getCodeRepositoryId().equals(codeRepositoryId)).toList();
+    }
+
+    @Override
+    public Map<CodeRepositoryId, Integer> countAllByCodeRepositoryId() {
         return pullRequests.values().stream()
-                .filter(pr -> pr.getCodeRepositoryId().equals(codeRepositoryId))
-                .toList();
+                .collect(Collectors.groupingBy(PullRequest::getCodeRepositoryId, Collectors.summingInt(pr -> 1)));
     }
 
     public Optional<PullRequest> findById(PullRequestId id) {
@@ -42,6 +48,11 @@ public class InMemoryPullRequestRepository implements PullRequestRepository {
 
     public List<PullRequest> findAll() {
         return List.copyOf(pullRequests.values());
+    }
+
+    @Override
+    public List<PullRequest> findAllOpen() {
+        return pullRequests.values().stream().filter(pr -> pr.getStatus() == PullRequestStatus.OPEN).toList();
     }
 
     public void delete(PullRequestId id) {

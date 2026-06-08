@@ -15,14 +15,10 @@ import java.time.Instant;
 public class CodeRepositoryMapper {
 
     public CodeRepositoryDto toDto(CodeRepository codeRepository) {
-        return new CodeRepositoryDto(
-                codeRepository.getId().value(),
-                codeRepository.getFullName().owner(),
-                codeRepository.getFullName().name(),
-                codeRepository.getPlatform().name(),
+        return new CodeRepositoryDto(codeRepository.getId().value(), codeRepository.getFullName().owner(),
+                codeRepository.getFullName().name(), codeRepository.getPlatform().name(),
                 codeRepository.getTokenId().map(TokenId::value).orElse(null),
-                codeRepository.getLastCheckedAt().map(Instant::toString).orElse(null)
-        );
+                codeRepository.getLastCheckedAt().map(Instant::toString).orElse(null));
     }
 
     public CodeRepository toDomain(CodeRepositoryDto dto) {
@@ -30,12 +26,8 @@ public class CodeRepositoryMapper {
                 ? new RepositoryAccess.Authenticated(new TokenId(dto.tokenId()))
                 : new RepositoryAccess.Public();
 
-        CodeRepository codeRepository = new CodeRepository(
-                new CodeRepositoryId(dto.id()),
-                new FullName(dto.owner(), dto.name()),
-                Platform.valueOf(dto.platform()),
-                access
-        );
+        CodeRepository codeRepository = new CodeRepository(new CodeRepositoryId(dto.id()),
+                new FullName(dto.owner(), dto.name()), Platform.valueOf(dto.platform()), access);
 
         if (dto.lastCheckedAt() != null) {
             codeRepository.recordChecked(Instant.parse(dto.lastCheckedAt()));

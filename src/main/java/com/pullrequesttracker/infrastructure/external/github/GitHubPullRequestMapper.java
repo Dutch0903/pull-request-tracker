@@ -19,26 +19,27 @@ import java.util.List;
 public class GitHubPullRequestMapper {
 
     public PullRequestSyncData toSyncData(GithubPullRequest pr) {
-        return new PullRequestSyncData(
-                pr.number(), pr.title(), pr.author().login(), pr.isDraft(),
-                determineState(pr),
-                determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr),
-                pr.totalCommentsCount(), pr.createdAt(), pr.updatedAt()
-        );
+        return new PullRequestSyncData(pr.number(), pr.title(), pr.author().login(), pr.isDraft(), determineState(pr),
+                determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr), pr.totalCommentsCount(),
+                pr.createdAt(), pr.updatedAt());
     }
 
     private PullRequestState determineState(GithubPullRequest pr) {
-        if (pr.merged()) return new PullRequestState.Merged(new MergeInfo(pr.mergedBy().login(), pr.mergedAt()));
-        if (pr.closed()) return new PullRequestState.Closed();
+        if (pr.merged())
+            return new PullRequestState.Merged(new MergeInfo(pr.mergedBy().login(), pr.mergedAt()));
+        if (pr.closed())
+            return new PullRequestState.Closed();
         return new PullRequestState.Open();
     }
 
     private CiStatus determineCiStatus(GithubPullRequest pr) {
         List<Commit> commits = pr.commits().nodes();
-        if (commits.isEmpty()) return CiStatus.UNKNOWN;
+        if (commits.isEmpty())
+            return CiStatus.UNKNOWN;
 
         Commit latestCommit = commits.getFirst();
-        if (latestCommit.statusCheckRollup() == null) return CiStatus.UNKNOWN;
+        if (latestCommit.statusCheckRollup() == null)
+            return CiStatus.UNKNOWN;
 
         return switch (latestCommit.statusCheckRollup().state()) {
             case "ERROR", "FAILED" -> CiStatus.FAILED;
@@ -55,13 +56,13 @@ public class GitHubPullRequestMapper {
 
     private List<Review> mapReviews(GithubPullRequest pr) {
         return pr.latestReviews().nodes().stream()
-                .map(r -> new Review(r.author().login(), mapReviewStatus(r.state()), r.submittedAt()))
-                .toList();
+                .map(r -> new Review(r.author().login(), mapReviewStatus(r.state()), r.submittedAt())).toList();
     }
 
     private ReviewStatus mapReviewDecision(GithubPullRequest pr) {
         String reviewDecision = pr.reviewDecision();
-        if (reviewDecision == null) return ReviewStatus.REVIEW_REQUIRED;
+        if (reviewDecision == null)
+            return ReviewStatus.REVIEW_REQUIRED;
         return mapReviewStatus(reviewDecision);
     }
 

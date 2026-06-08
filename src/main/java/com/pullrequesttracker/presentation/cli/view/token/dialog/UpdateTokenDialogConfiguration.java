@@ -17,8 +17,7 @@ public class UpdateTokenDialogConfiguration implements FormDialogConfiguration {
 
     @Override
     public List<Field> fields() {
-        return List.of(
-                new TextField(TokenFormFields.NAME, "Name", false, token.name()),
+        return List.of(new TextField(TokenFormFields.NAME, "Name", false, token.name()),
                 new TextField(TokenFormFields.VALUE, "Value", true, token.value()));
     }
 

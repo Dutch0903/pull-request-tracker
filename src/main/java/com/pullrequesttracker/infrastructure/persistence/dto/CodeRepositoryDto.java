@@ -4,12 +4,6 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
-public record CodeRepositoryDto(
-        UUID id,
-        String owner,
-        String name,
-        String platform,
-        @Nullable UUID tokenId,
-        @Nullable String lastCheckedAt
-) {
+public record CodeRepositoryDto(UUID id, String owner, String name, String platform, @Nullable UUID tokenId,
+        @Nullable String lastCheckedAt) {
 }

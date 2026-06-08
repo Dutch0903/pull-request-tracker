@@ -14,19 +14,15 @@ public class PullRequestFactory {
 
     public static PullRequest create(CodeRepositoryId codeRepositoryId, PullRequestSyncData syncData) {
         ReviewSummary reviewSummary = new ReviewSummary(syncData.reviews(), syncData.reviewStatus());
-        return new PullRequest(
-                new PullRequestId(UUID.randomUUID()), codeRepositoryId, syncData.externalId(),
-                syncData.author(), syncData.createdAt(), syncData.title(), syncData.isDraft(),
-                syncData.state(), syncData.ciStatus(), syncData.labels(), reviewSummary,
-                syncData.commentCount(), syncData.updatedAt()
-        );
+        return new PullRequest(new PullRequestId(UUID.randomUUID()), codeRepositoryId, syncData.externalId(),
+                syncData.author(), syncData.createdAt(), syncData.title(), syncData.isDraft(), syncData.state(),
+                syncData.ciStatus(), syncData.labels(), reviewSummary, syncData.commentCount(), syncData.updatedAt());
     }
 
     public static PullRequest reconstitute(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId,
-                                    String author, Instant createdAt, String title, boolean draft,
-                                    PullRequestState state, CiStatus ciStatus, List<String> labels,
-                                    ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
-        return new PullRequest(id, codeRepositoryId, externalId, author, createdAt, title, draft,
-                state, ciStatus, labels, reviewSummary, commentCount, updatedAt);
+            String author, Instant createdAt, String title, boolean draft, PullRequestState state, CiStatus ciStatus,
+            List<String> labels, ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
+        return new PullRequest(id, codeRepositoryId, externalId, author, createdAt, title, draft, state, ciStatus,
+                labels, reviewSummary, commentCount, updatedAt);
     }
 }

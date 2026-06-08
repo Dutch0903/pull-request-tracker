@@ -5,7 +5,8 @@ import java.util.Objects;
 public record TokenName(String value) {
     public TokenName {
         Objects.requireNonNull(value, "Token name must not be null");
-        if (value.isBlank()) throw new IllegalArgumentException("Token name must not be blank");
+        if (value.isBlank())
+            throw new IllegalArgumentException("Token name must not be blank");
     }
 
     public static TokenName from(String name) {
