@@ -40,7 +40,8 @@ public class FormDialog implements Dialog {
 
     @Override
     public DialogElement render() {
-        DialogElement dialog = dialog(configuration.title(), column(buildElements()).margin(Margin.horizontal(HORIZONTAL_PADDING))).onConfirm(this::submit)
+        DialogElement dialog = dialog(configuration.title(),
+                column(buildElements()).margin(Margin.horizontal(HORIZONTAL_PADDING))).onConfirm(this::submit)
                 .onCancel(closeDialog);
 
         Size size = dialog.preferredSize(MAX_WIDTH, MAX_HEIGHT, null);
@@ -132,7 +133,8 @@ public class FormDialog implements Dialog {
 
         lines.add(text(remaining).red());
 
-        // margin(vertical 1) adds 1 row top + 1 row bottom; length must account for those
+        // margin(vertical 1) adds 1 row top + 1 row bottom; length must account for
+        // those
         // so the parent layout allocates enough space before the margin is applied
         return column(lines.toArray(new Element[0])).margin(Margin.vertical(1)).length(lines.size() + 2);
     }

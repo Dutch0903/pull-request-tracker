@@ -10,7 +10,6 @@ import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.TokenExpirationDate;
 import com.pullrequesttracker.domain.valueobject.TokenUsername;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
