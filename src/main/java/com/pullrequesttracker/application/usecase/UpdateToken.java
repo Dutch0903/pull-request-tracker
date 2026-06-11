@@ -1,9 +1,11 @@
 package com.pullrequesttracker.application.usecase;
 
+import com.pullrequesttracker.application.provider.UserProvider;
 import com.pullrequesttracker.domain.model.Token;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.valueobject.TokenId;
 import com.pullrequesttracker.domain.valueobject.TokenName;
+import com.pullrequesttracker.domain.valueobject.TokenUsername;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UpdateToken {
     private final TokenRepository tokenRepository;
+    private final UserProvider userProvider;
 
     public void execute(TokenId id, TokenName name, TokenValue value) {
         Token existing = tokenRepository.findById(id)
@@ -21,6 +24,7 @@ public class UpdateToken {
             throw new IllegalStateException("Token already exists with name: " + name);
         }
 
-        tokenRepository.save(new Token(id, name, value));
+        TokenUsername username = userProvider.fetchUsername(existing.platform(), value);
+        tokenRepository.save(new Token(id, name, value, existing.platform(), username));
     }
 }

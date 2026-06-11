@@ -2,7 +2,7 @@ package com.pullrequesttracker.presentation.cli.dialog.form;
 
 import dev.tamboui.toolkit.elements.FormFieldElement;
 
-public sealed interface Field permits SelectField, TextField {
+public sealed interface Field permits ReadOnlyField, SelectField, TextField {
     String id();
     String label();
     String initialValue();

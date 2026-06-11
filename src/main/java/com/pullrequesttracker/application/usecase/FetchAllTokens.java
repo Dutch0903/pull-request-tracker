@@ -13,7 +13,7 @@ public class FetchAllTokens {
     private final TokenRepository tokenRepository;
 
     public List<TokenDto> execute() {
-        return tokenRepository.findAll().stream()
-                .map(t -> new TokenDto(t.id().value(), t.name().toString(), t.value().toString())).toList();
+        return tokenRepository.findAll().stream().map(t -> new TokenDto(t.id().value(), t.name().toString(),
+                t.value().toString(), t.platform().name(), t.username().value())).toList();
     }
 }

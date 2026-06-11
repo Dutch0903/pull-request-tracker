@@ -3,6 +3,7 @@ package com.pullrequesttracker.presentation.cli.view.token.dialog;
 import com.pullrequesttracker.application.dto.TokenDto;
 import com.pullrequesttracker.presentation.cli.dialog.form.Field;
 import com.pullrequesttracker.presentation.cli.dialog.form.FormDialogConfiguration;
+import com.pullrequesttracker.presentation.cli.dialog.form.ReadOnlyField;
 import com.pullrequesttracker.presentation.cli.dialog.form.TextField;
 import com.pullrequesttracker.presentation.cli.view.token.TokenFormFields;
 
@@ -18,6 +19,7 @@ public class UpdateTokenDialogConfiguration implements FormDialogConfiguration {
     @Override
     public List<Field> fields() {
         return List.of(new TextField(TokenFormFields.NAME, "Name", false, token.name()),
+                new ReadOnlyField(TokenFormFields.PLATFORM, "Platform", token.platform()),
                 new TextField(TokenFormFields.VALUE, "Value", true, token.value()));
     }
 

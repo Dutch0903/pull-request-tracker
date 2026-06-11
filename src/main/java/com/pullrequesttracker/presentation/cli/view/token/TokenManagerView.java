@@ -4,31 +4,31 @@ import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
-import dev.tamboui.style.Color;
+import com.pullrequesttracker.presentation.cli.view.token.component.TokenList;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
 import dev.tamboui.toolkit.element.Size;
-import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
+import dev.tamboui.toolkit.event.EventResult;
 
-import static dev.tamboui.toolkit.Toolkit.column;
-import static dev.tamboui.toolkit.Toolkit.list;
-import static dev.tamboui.toolkit.Toolkit.panel;
 import static dev.tamboui.toolkit.Toolkit.row;
-import static dev.tamboui.toolkit.Toolkit.text;
 
 @ViewComponent(name = ViewName.TOKENS)
 public class TokenManagerView extends View {
-    private final TokenManagerState state;
+    private final TokenManagerController controller;
+    private final TokenList tokenList;
 
-    public TokenManagerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler, TokenManagerState state) {
+    public TokenManagerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler,
+            TokenManagerController controller, TokenList tokenList) {
         super(dialogManager, keyHandler);
-        this.state = state;
+        this.controller = controller;
+        this.tokenList = tokenList;
+        this.controller.loadTokens();
     }
 
     @Override
     protected Element renderBody() {
-        return row(renderTokenList());
+        return row(tokenList.render());
     }
 
     @Override
@@ -42,13 +42,5 @@ public class TokenManagerView extends View {
     @Override
     public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
         return Size.UNKNOWN;
-    }
-
-    private Element renderTokenList() {
-        return panel(column(text("Tokens"),
-                list().data(state.getTokens(), t -> text(t.name())).highlightColor(Color.CYAN).highlightSymbol("> ")
-                        .autoScroll().scrollbar().onKeyEvent(keyHandler::handle).selected(state.getSelectedIndex())
-                        .scrollbarThumbColor(Color.CYAN)))
-                .fill().borderless();
     }
 }

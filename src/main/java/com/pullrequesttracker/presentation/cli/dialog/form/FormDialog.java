@@ -38,11 +38,12 @@ public class FormDialog implements Dialog {
         Map<String, String> values = new HashMap<>();
 
         configuration.fields().forEach(field -> {
-            String value = switch (field) {
-                case TextField f -> state.textValue(f.id());
-                case SelectField f -> state.selectValue(f.id());
-            };
-            values.put(field.id(), value);
+            switch (field) {
+                case TextField f -> values.put(f.id(), state.textValue(f.id()));
+                case SelectField f -> values.put(f.id(), state.selectValue(f.id()));
+                case ReadOnlyField ignored -> {
+                }
+            }
         });
 
         try {
@@ -60,15 +61,21 @@ public class FormDialog implements Dialog {
         elements.add(text(configuration.description()));
 
         configuration.fields().forEach(field -> {
-            FormFieldElement element = field.fieldElement();
-            element.onSubmit(this::submit);
-
             switch (field) {
-                case TextField f -> element.state(state.textField(f.id()));
-                case SelectField f -> element.state(state.selectField(f.id()));
+                case ReadOnlyField f -> elements.add(text(f.label() + ": " + f.initialValue()).dim());
+                case TextField f -> {
+                    FormFieldElement element = f.fieldElement();
+                    element.onSubmit(this::submit);
+                    element.state(state.textField(f.id()));
+                    elements.add(element);
+                }
+                case SelectField f -> {
+                    FormFieldElement element = f.fieldElement();
+                    element.onSubmit(this::submit);
+                    element.state(state.selectField(f.id()));
+                    elements.add(element);
+                }
             }
-
-            elements.add(element);
         });
 
         if (errorMessage != null) {
@@ -85,6 +92,8 @@ public class FormDialog implements Dialog {
 
         configuration.fields().forEach(field -> {
             switch (field) {
+                case ReadOnlyField ignored -> {
+                }
                 case TextField f -> builder.textField(f.id(), f.initialValue());
                 case SelectField f -> builder.selectField(f.id(), f.options(), f.options().indexOf(f.initialValue()));
             }

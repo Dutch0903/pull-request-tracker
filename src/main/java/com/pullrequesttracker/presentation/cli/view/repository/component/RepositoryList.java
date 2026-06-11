@@ -17,9 +17,8 @@ import static dev.tamboui.toolkit.Toolkit.text;
 public class RepositoryList {
     private final RepositoryListState state;
 
-    @SuppressWarnings("unchecked")
-    private final ListElement<CodeRepositoryDto> listElement = (ListElement<CodeRepositoryDto>) list()
-            .highlightColor(Color.LIGHT_GREEN).highlightSymbol(">> ").autoScroll();
+    private final ListElement<?> listElement = list().highlightColor(Color.LIGHT_GREEN).highlightSymbol(">> ")
+            .autoScroll();
 
     public RepositoryList(RepositoryListState state) {
         this.state = state;

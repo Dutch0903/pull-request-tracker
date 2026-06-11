@@ -7,6 +7,7 @@ import com.pullrequesttracker.domain.valueobject.TokenName;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
 import com.pullrequesttracker.infrastructure.persistence.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class InMemoryTokenRepository implements TokenRepository {
     private static final String FILE_NAME = "tokens.json";
     private final FileStorage fileStorage;
