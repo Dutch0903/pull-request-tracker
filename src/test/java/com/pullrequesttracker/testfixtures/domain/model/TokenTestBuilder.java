@@ -2,10 +2,14 @@ package com.pullrequesttracker.testfixtures.domain.model;
 
 import com.pullrequesttracker.domain.model.Token;
 import com.pullrequesttracker.domain.type.Platform;
+import com.pullrequesttracker.domain.valueobject.TokenExpirationDate;
 import com.pullrequesttracker.domain.valueobject.TokenId;
 import com.pullrequesttracker.domain.valueobject.TokenName;
 import com.pullrequesttracker.domain.valueobject.TokenUsername;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class TokenTestBuilder {
     private TokenId id = TokenId.create();
@@ -13,6 +17,7 @@ public class TokenTestBuilder {
     private TokenValue value = new TokenValue("default-value");
     private Platform platform = Platform.GITHUB;
     private TokenUsername username = new TokenUsername("default-user");
+    private TokenExpirationDate expirationDate = new TokenExpirationDate(Instant.now().plus(90, ChronoUnit.DAYS));
 
     public static TokenTestBuilder aToken() {
         return new TokenTestBuilder();
@@ -43,7 +48,12 @@ public class TokenTestBuilder {
         return this;
     }
 
+    public TokenTestBuilder withExpirationDate(TokenExpirationDate expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
+    }
+
     public Token build() {
-        return new Token(id, name, value, platform, username);
+        return new Token(id, name, value, platform, username, expirationDate);
     }
 }

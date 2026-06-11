@@ -1,10 +1,10 @@
 package com.pullrequesttracker.application.provider;
 
 import com.pullrequesttracker.domain.type.Platform;
-import com.pullrequesttracker.domain.valueobject.TokenUsername;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
 
-public interface PlatformUserProvider {
+public interface PlatformTokenInfoProvider {
     Platform platform();
-    TokenUsername fetchUsername(TokenValue tokenValue);
+
+    TokenInfo fetchTokenInfo(TokenValue tokenValue);
 }

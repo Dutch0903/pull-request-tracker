@@ -2,22 +2,28 @@ package com.pullrequesttracker.presentation.cli.view.token.component;
 
 import com.pullrequesttracker.application.dto.TokenDto;
 import com.pullrequesttracker.presentation.cli.view.token.TokenManagerState;
+import dev.tamboui.layout.Margin;
+import dev.tamboui.layout.Padding;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.elements.ListElement;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
+import static dev.tamboui.toolkit.Toolkit.column;
 import static dev.tamboui.toolkit.Toolkit.list;
 import static dev.tamboui.toolkit.Toolkit.panel;
 import static dev.tamboui.toolkit.Toolkit.row;
-import static dev.tamboui.toolkit.Toolkit.spacer;
 import static dev.tamboui.toolkit.Toolkit.text;
 
 @Component
 public class TokenList {
     private final TokenManagerState state;
+
+    private static final int COL_USERNAME = 25;
 
     private final ListElement<?> listElement = list().highlightColor(Color.CYAN).highlightSymbol("> ").autoScroll();
 
@@ -39,9 +45,42 @@ public class TokenList {
             return panel(text("No tokens configured. Press c to create one.").dim()).fill().focusable()
                     .focusedBorderColor(Color.CYAN);
         }
-        Element content = listElement.data(tokens, t -> row(text("%-10s".formatted(t.platform())).dim(), text(t.name()),
-                spacer(), text("@" + t.username()).dim()));
-        return panel(content).fill().focusable().focusedBorderColor(Color.CYAN)
-                .onKeyEvent(event -> listElement.handleKeyEvent(event, true));
+
+        // left margin = 2 to align with the list's "> " / "  " highlight prefix
+        Element header = row(
+                text("%-10s".formatted("PLATFORM")).dim(),
+                text("NAME").dim().fill(),
+                text(("%-" + COL_USERNAME + "s").formatted("USERNAME")).dim(),
+                text("%-10s".formatted("EXPIRES")).dim()
+        ).spacing(2).margin(new Margin(0, 0, 0, 2)).length(1);
+
+        Element list = listElement.data(tokens, t -> row(
+                text("%-10s".formatted(t.platform())).dim(),
+                text(t.name()).fill(),
+                text(formatUsername(t.username())).dim(),
+                expiryElement(t.expirationDate())
+        ).spacing(2));
+
+        return panel(column(header, list)).fill().focusable().focusedBorderColor(Color.CYAN)
+                .onKeyEvent(event -> listElement.handleKeyEvent(event, true)).padding(Padding.symmetric(1, 2));
+    }
+
+    private static String formatUsername(String username) {
+        return username.length() <= COL_USERNAME
+                ? ("%-" + COL_USERNAME + "s").formatted(username)
+                : username.substring(0, COL_USERNAME);
+    }
+
+    private Element expiryElement(String expirationDate) {
+        Instant expiry = Instant.parse(expirationDate);
+        Duration remaining = Duration.between(Instant.now(), expiry);
+        String label = expiry.toString().substring(0, 10);
+        if (remaining.isNegative()) {
+            return text(label).red();
+        }
+        if (remaining.toDays() < 10) {
+            return text(label).yellow();
+        }
+        return text(label).dim();
     }
 }

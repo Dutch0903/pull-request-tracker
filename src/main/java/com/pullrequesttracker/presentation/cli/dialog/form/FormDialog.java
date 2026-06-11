@@ -1,20 +1,30 @@
 package com.pullrequesttracker.presentation.cli.dialog.form;
 
 import com.pullrequesttracker.presentation.cli.dialog.Dialog;
+import dev.tamboui.layout.Margin;
 import dev.tamboui.toolkit.element.Element;
+import dev.tamboui.toolkit.element.Size;
+import dev.tamboui.toolkit.elements.Column;
 import dev.tamboui.toolkit.elements.DialogElement;
 import dev.tamboui.toolkit.elements.FormFieldElement;
 import dev.tamboui.widgets.form.FormState;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static dev.tamboui.toolkit.Toolkit.dialog;
-import static dev.tamboui.toolkit.Toolkit.text;
+import static dev.tamboui.toolkit.Toolkit.*;
 
+@Slf4j
 public class FormDialog implements Dialog {
+    private static final int MAX_WIDTH = 50;
+    private static final int MAX_HEIGHT = 50;
+    private static final int HORIZONTAL_PADDING = 1;
+    // Dialog border = 2, column margin = HORIZONTAL_PADDING * 2
+    private static final int WRAP_WIDTH = MAX_WIDTH - 2 - HORIZONTAL_PADDING * 2;
+
     private final FormDialogConfiguration configuration;
     private final FormDialogHandler handler;
     private final Runnable closeDialog;
@@ -30,8 +40,14 @@ public class FormDialog implements Dialog {
 
     @Override
     public DialogElement render() {
-        return dialog(configuration.title(), buildElements()).onConfirm(this::submit).onCancel(closeDialog)
-                .width(Math.max(50, configuration.description().length()));
+        DialogElement dialog = dialog(configuration.title(), column(buildElements()).margin(Margin.horizontal(HORIZONTAL_PADDING))).onConfirm(this::submit)
+                .onCancel(closeDialog);
+
+        Size size = dialog.preferredSize(MAX_WIDTH, MAX_HEIGHT, null);
+
+        dialog.width(MAX_WIDTH).length(size.height());
+
+        return dialog;
     }
 
     private void submit() {
@@ -79,7 +95,7 @@ public class FormDialog implements Dialog {
         });
 
         if (errorMessage != null) {
-            elements.add(text(errorMessage).red());
+            elements.add(buildErrorElements(errorMessage));
         }
 
         elements.add(text("[Enter] Confirm  [Esc] Cancel").dim());
@@ -100,5 +116,24 @@ public class FormDialog implements Dialog {
         });
 
         this.state = builder.build();
+    }
+
+    private static Column buildErrorElements(String message) {
+        List<Element> lines = new ArrayList<>();
+        String remaining = message;
+        while (remaining.length() > WRAP_WIDTH) {
+            int breakAt = remaining.lastIndexOf(' ', WRAP_WIDTH);
+            if (breakAt <= 0) {
+                breakAt = WRAP_WIDTH;
+            }
+            lines.add(text(remaining.substring(0, breakAt)).red());
+            remaining = remaining.substring(breakAt).stripLeading();
+        }
+
+        lines.add(text(remaining).red());
+
+        // margin(vertical 1) adds 1 row top + 1 row bottom; length must account for those
+        // so the parent layout allocates enough space before the margin is applied
+        return column(lines.toArray(new Element[0])).margin(Margin.vertical(1)).length(lines.size() + 2);
     }
 }

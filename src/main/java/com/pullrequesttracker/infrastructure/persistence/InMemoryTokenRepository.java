@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -59,7 +57,11 @@ public class InMemoryTokenRepository implements TokenRepository {
 
     public void initialize() {
         List<TokenDto> loaded = fileStorage.load(FILE_NAME, TokenDto.class);
-        tokens.putAll(loaded.stream().map(mapper::toDomain).collect(Collectors.toMap(Token::id, Function.identity())));
+        for (TokenDto dto : loaded) {
+            mapper.toDomain(dto).ifPresentOrElse(token -> tokens.put(token.id(), token), () -> log.warn(
+                    "Skipping token with id={} — missing required fields (platform, username, or expirationDate)",
+                    dto.id()));
+        }
     }
 
     public void persist() throws IOException {
