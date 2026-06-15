@@ -1,7 +1,6 @@
 package com.pullrequesttracker.infrastructure.config;
 
 import com.pullrequesttracker.domain.service.stats.CiStatsCalculator;
-import com.pullrequesttracker.domain.service.stats.MergeStatsCalculator;
 import com.pullrequesttracker.domain.service.stats.OpenPrStatsCalculator;
 import com.pullrequesttracker.domain.service.stats.RecentActivityCalculator;
 import com.pullrequesttracker.domain.service.stats.ReviewStatsCalculator;
@@ -23,11 +22,6 @@ public class StatsCalculatorConfiguration {
     @Bean
     public CiStatsCalculator ciStatsCalculator(StatsConfiguration config) {
         return new CiStatsCalculator(config);
-    }
-
-    @Bean
-    public MergeStatsCalculator mergeStatsCalculator(StatsConfiguration config) {
-        return new MergeStatsCalculator(config);
     }
 
     @Bean

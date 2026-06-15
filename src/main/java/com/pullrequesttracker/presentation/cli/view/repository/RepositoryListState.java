@@ -1,19 +1,19 @@
 package com.pullrequesttracker.presentation.cli.view.repository;
 
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
+import com.pullrequesttracker.application.dto.RepositoryStatsDto;
+import com.pullrequesttracker.presentation.cli.state.SnapshotKey;
+import com.pullrequesttracker.presentation.cli.state.StateManager;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.List;
 
 @Component
-public class RepositoryListState {
-    private List<CodeRepositoryDto> repositories = List.of();
+public class RepositoryListState extends StateManager {
+    public static final SnapshotKey<List<CodeRepositoryDto>> REPOSITORIES =
+            new SnapshotKey<>("repositories", Duration.ofMinutes(10));
 
-    public List<CodeRepositoryDto> getRepositories() {
-        return repositories;
-    }
-
-    public void setRepositories(List<CodeRepositoryDto> repositories) {
-        this.repositories = repositories;
-    }
+    public static final SnapshotKey<RepositoryStatsDto> REPOSITORY_STATS =
+            new SnapshotKey<>("repositoryStats", Duration.ofMinutes(5));
 }

@@ -2,6 +2,7 @@ package com.pullrequesttracker.presentation.cli.view.dashboard;
 
 import com.pullrequesttracker.application.dto.CodeRepositorySummaryDto;
 import com.pullrequesttracker.application.dto.PullRequestSummaryDto;
+import com.pullrequesttracker.presentation.cli.component.CharSpacer;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -70,6 +71,6 @@ public class DashboardView extends View {
     }
 
     private Element overviewRow(String label, String value) {
-        return row(text(label), spacer(), text(value));
+        return row(text(label), CharSpacer.of('.'), text(value));
     }
 }

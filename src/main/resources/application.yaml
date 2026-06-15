@@ -16,7 +16,7 @@ repository-check:
 
 repository-stats:
   stale-threshold-days: 14
-  recent-activity-max-entries: 3
+  recent-activity-max-entries: 5
 
 logging:
   file:

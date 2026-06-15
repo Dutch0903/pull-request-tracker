@@ -2,7 +2,10 @@ package com.pullrequesttracker.presentation.cli.view.repository.component;
 
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import com.pullrequesttracker.presentation.cli.view.repository.RepositoryListState;
+import dev.tamboui.layout.Padding;
 import dev.tamboui.style.Color;
+
+import java.util.List;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.elements.ListElement;
 import org.springframework.stereotype.Component;
@@ -25,7 +28,7 @@ public class RepositoryList {
     }
 
     public CodeRepositoryDto getSelectedRepository() {
-        var repos = state.getRepositories();
+        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(List.of());
         if (repos.isEmpty())
             return null;
         int index = listElement.selected();
@@ -33,12 +36,13 @@ public class RepositoryList {
     }
 
     public Element render() {
-        Element content = state.getRepositories().isEmpty()
+        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(List.of());
+        Element content = repos.isEmpty()
                 ? text("No repositories configured.").dim()
-                : listElement.data(state.getRepositories(),
+                : listElement.data(repos,
                         repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));
 
         return panel("Repositories", content).id("repository-list").focusable().focusedBorderColor(Color.LIGHT_GREEN)
-                .rounded().onKeyEvent(event -> listElement.handleKeyEvent(event, true));
+                .rounded().onKeyEvent(event -> listElement.handleKeyEvent(event, true)).padding(Padding.symmetric(1, 2));
     }
 }

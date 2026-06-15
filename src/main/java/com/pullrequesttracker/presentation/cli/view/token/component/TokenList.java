@@ -23,7 +23,10 @@ import static dev.tamboui.toolkit.Toolkit.text;
 public class TokenList {
     private final TokenManagerState state;
 
+    private static final int COL_PLATFORM = 10;
+    private static final int COL_NAME = 20;
     private static final int COL_USERNAME = 25;
+    private static final int COL_EXPIRATION_DATE = 10;
 
     private final ListElement<?> listElement = list().highlightColor(Color.CYAN).highlightSymbol("> ").autoScroll();
 
@@ -47,13 +50,13 @@ public class TokenList {
         }
 
         // left margin = 2 to align with the list's "> " / " " highlight prefix
-        Element header = row(text("%-10s".formatted("PLATFORM")).dim(), text("NAME").dim().fill(),
-                text(("%-" + COL_USERNAME + "s").formatted("USERNAME")).dim(), text("%-10s".formatted("EXPIRES")).dim())
+        Element header = row(text(("%-" + COL_PLATFORM + "s").formatted("PLATFORM")).dim(), text("NAME").dim().fill(),
+                text(("%-" + COL_USERNAME + "s").formatted("USERNAME")).dim(), text(("%-" + COL_EXPIRATION_DATE + "s").formatted("EXPIRES")).dim())
                 .spacing(2).margin(new Margin(0, 0, 0, 2)).length(1);
 
         Element list = listElement
                 .data(tokens,
-                        t -> row(text("%-10s".formatted(t.platform())).dim(), text(t.name()).fill(),
+                        t -> row(text(("%-" + COL_PLATFORM + "s").formatted(t.platform())).dim(), text(t.name()).fill(),
                                 text(formatUsername(t.username())).dim(), expiryElement(t.expirationDate()))
                                 .spacing(2));
 

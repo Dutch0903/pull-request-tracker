@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class RepositoryStats {
+public class CodeRepositoryStats {
     private CodeRepositoryId codeRepositoryId;
     // Open PRs
     private int openPrCount;
@@ -23,9 +23,6 @@ public class RepositoryStats {
     private int awaitingReviewCount;
     private int changesRequestedCount;
     private int approvedCount;
-    // Last merge
-    private Instant lastMergedAt;
-    private String lastMergedBy;
     // Recent activity
     private List<RecentActivityEntry> recentActivity;
     private Instant calculatedAt;
