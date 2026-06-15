@@ -1,5 +1,6 @@
 package com.pullrequesttracker.application.usecase;
 
+import com.pullrequesttracker.application.exception.CreateCodeRepositoryException;
 import com.pullrequesttracker.application.parser.CodeRepositoryReferenceParser;
 import com.pullrequesttracker.application.parser.ParsedCodeRepositoryReference;
 import com.pullrequesttracker.domain.model.RepositoryAccess;
@@ -67,10 +68,10 @@ class CreateCodeRepositoryTest {
     }
 
     @Test
-    void execute_whenFullNameAlreadyExists_shouldThrowIllegalStateException() {
+    void execute_whenFullNameAlreadyExists_shouldThrowCreateCodeRepositoryException() {
         when(codeRepositoryRepository.exists(any())).thenReturn(true);
 
-        assertThrows(IllegalStateException.class,
+        assertThrows(CreateCodeRepositoryException.class,
                 () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
         verify(codeRepositoryRepository, never()).save(any());
@@ -80,18 +81,18 @@ class CreateCodeRepositoryTest {
     void execute_whenFullNameAlreadyExists_shouldContainRepoNameInMessage() {
         when(codeRepositoryRepository.exists(any())).thenReturn(true);
 
-        IllegalStateException ex = assertThrows(IllegalStateException.class,
+        CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class,
                 () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
         assertTrue(ex.getMessage().contains(OWNER + "/" + NAME));
     }
 
     @Test
-    void execute_whenTokenNotFound_shouldThrowIllegalStateException() {
+    void execute_whenTokenNotFound_shouldThrowCreateCodeRepositoryException() {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
 
-        assertThrows(IllegalStateException.class, () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
+        assertThrows(CreateCodeRepositoryException.class, () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
                 new RepositoryAccess.Authenticated(tokenId)));
 
         verify(codeRepositoryRepository, never()).save(any());

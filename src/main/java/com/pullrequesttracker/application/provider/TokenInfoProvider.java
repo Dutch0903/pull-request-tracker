@@ -1,6 +1,5 @@
 package com.pullrequesttracker.application.provider;
 
-import com.pullrequesttracker.domain.exception.TokenProviderNotFoundException;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.TokenValue;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,7 @@ public class TokenInfoProvider {
     public TokenInfo fetchTokenInfo(Platform platform, TokenValue tokenValue) {
         PlatformTokenInfoProvider provider = providers.get(platform);
         if (provider == null) {
-            throw new TokenProviderNotFoundException("No token info provider registered for platform: " + platform);
+            throw new TokenInfoException("No token info provider registered for platform: " + platform);
         }
         return provider.fetchTokenInfo(tokenValue);
     }

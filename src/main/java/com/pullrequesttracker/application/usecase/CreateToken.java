@@ -1,8 +1,9 @@
 package com.pullrequesttracker.application.usecase;
 
+import com.pullrequesttracker.application.exception.CreateTokenException;
 import com.pullrequesttracker.application.provider.TokenInfo;
+import com.pullrequesttracker.application.provider.TokenInfoException;
 import com.pullrequesttracker.application.provider.TokenInfoProvider;
-import com.pullrequesttracker.domain.exception.DuplicateTokenNameException;
 import com.pullrequesttracker.domain.model.Token;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.type.Platform;
@@ -20,11 +21,15 @@ public class CreateToken {
 
     public void execute(TokenName name, TokenValue value, Platform platform) {
         if (tokenRepository.existsByName(name)) {
-            throw new DuplicateTokenNameException("Token already exists with name: " + name);
+            throw new CreateTokenException("Token already exists with name: " + name);
         }
 
-        TokenInfo info = tokenInfoProvider.fetchTokenInfo(platform, value);
-        tokenRepository
-                .save(new Token(TokenId.create(), name, value, platform, info.username(), info.expirationDate()));
+        try {
+            TokenInfo info = tokenInfoProvider.fetchTokenInfo(platform, value);
+            tokenRepository
+                    .save(new Token(TokenId.create(), name, value, platform, info.username(), info.expirationDate()));
+        } catch (TokenInfoException e) {
+            throw new CreateTokenException(e.getMessage(), e);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.pullrequesttracker.application.usecase;
 
+import com.pullrequesttracker.application.exception.CreateCodeRepositoryException;
 import com.pullrequesttracker.application.parser.CodeRepositoryReferenceParser;
 import com.pullrequesttracker.application.parser.ParsedCodeRepositoryReference;
 import com.pullrequesttracker.domain.model.CodeRepository;
@@ -24,11 +25,11 @@ public class CreateCodeRepository {
         FullName fullName = new FullName(parsed.owner(), parsed.name());
 
         if (codeRepositoryRepository.exists(fullName)) {
-            throw new IllegalStateException("Repository already exists: " + fullName);
+            throw new CreateCodeRepositoryException("Repository already exists: " + fullName);
         }
 
         if (access instanceof RepositoryAccess.Authenticated a && tokenRepository.findById(a.tokenId()).isEmpty()) {
-            throw new IllegalStateException("Token not found: " + a.tokenId());
+            throw new CreateCodeRepositoryException("Token not found: " + a.tokenId());
         }
 
         codeRepositoryRepository.save(new CodeRepository(CodeRepositoryId.create(), fullName, platform, access));

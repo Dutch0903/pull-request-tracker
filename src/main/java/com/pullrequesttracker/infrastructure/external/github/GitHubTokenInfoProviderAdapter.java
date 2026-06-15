@@ -2,10 +2,7 @@ package com.pullrequesttracker.infrastructure.external.github;
 
 import com.pullrequesttracker.application.provider.PlatformTokenInfoProvider;
 import com.pullrequesttracker.application.provider.TokenInfo;
-import com.pullrequesttracker.domain.exception.InvalidTokenValueException;
-import com.pullrequesttracker.domain.exception.TokenApiException;
-import com.pullrequesttracker.domain.exception.TokenException;
-import com.pullrequesttracker.domain.exception.TokenWithoutExpirationException;
+import com.pullrequesttracker.application.provider.TokenInfoException;
 import com.pullrequesttracker.domain.type.Platform;
 import com.pullrequesttracker.domain.valueobject.TokenExpirationDate;
 import com.pullrequesttracker.domain.valueobject.TokenUsername;
@@ -37,17 +34,17 @@ public class GitHubTokenInfoProviderAdapter implements PlatformTokenInfoProvider
                     .block();
 
             if (response == null || response.getBody() == null) {
-                throw new TokenApiException("Could not reach the GitHub API", null);
+                throw new TokenInfoException("Could not reach the GitHub API");
             }
 
             String login = response.getBody().login();
             if (login == null || login.isBlank()) {
-                throw new InvalidTokenValueException("Could not retrieve username — token may be invalid");
+                throw new TokenInfoException("Could not retrieve username — token may be invalid");
             }
 
             String expirationHeader = response.getHeaders().getFirst("github-authentication-token-expiration");
             if (expirationHeader == null) {
-                throw new TokenWithoutExpirationException(
+                throw new TokenInfoException(
                         "This token has no expiration date — only tokens with an expiration are accepted");
             }
 
@@ -56,13 +53,13 @@ public class GitHubTokenInfoProviderAdapter implements PlatformTokenInfoProvider
 
         } catch (WebClientResponseException e) {
             if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                throw new InvalidTokenValueException("GitHub rejected this token — check the value");
+                throw new TokenInfoException("GitHub rejected this token — check the value");
             }
-            throw new TokenApiException("GitHub API returned an error (HTTP " + e.getStatusCode().value() + ")", e);
-        } catch (TokenException e) {
+            throw new TokenInfoException("GitHub API returned an error (HTTP " + e.getStatusCode().value() + ")", e);
+        } catch (TokenInfoException e) {
             throw e;
         } catch (RuntimeException e) {
-            throw new TokenApiException("Could not reach the GitHub API — check your connection", e);
+            throw new TokenInfoException("Could not reach the GitHub API — check your connection", e);
         }
     }
 

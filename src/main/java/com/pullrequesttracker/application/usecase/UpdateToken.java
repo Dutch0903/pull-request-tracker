@@ -1,9 +1,9 @@
 package com.pullrequesttracker.application.usecase;
 
+import com.pullrequesttracker.application.exception.UpdateTokenException;
 import com.pullrequesttracker.application.provider.TokenInfo;
+import com.pullrequesttracker.application.provider.TokenInfoException;
 import com.pullrequesttracker.application.provider.TokenInfoProvider;
-import com.pullrequesttracker.domain.exception.DuplicateTokenNameException;
-import com.pullrequesttracker.domain.exception.TokenNotFoundException;
 import com.pullrequesttracker.domain.model.Token;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.valueobject.TokenId;
@@ -20,13 +20,17 @@ public class UpdateToken {
 
     public void execute(TokenId id, TokenName name, TokenValue value) {
         Token existing = tokenRepository.findById(id)
-                .orElseThrow(() -> new TokenNotFoundException("Token not found: " + id));
+                .orElseThrow(() -> new UpdateTokenException("Token not found: " + id));
 
         if (!existing.name().equals(name) && tokenRepository.existsByName(name)) {
-            throw new DuplicateTokenNameException("Token already exists with name: " + name);
+            throw new UpdateTokenException("Token already exists with name: " + name);
         }
 
-        TokenInfo info = tokenInfoProvider.fetchTokenInfo(existing.platform(), value);
-        tokenRepository.save(new Token(id, name, value, existing.platform(), info.username(), info.expirationDate()));
+        try {
+            TokenInfo info = tokenInfoProvider.fetchTokenInfo(existing.platform(), value);
+            tokenRepository.save(new Token(id, name, value, existing.platform(), info.username(), info.expirationDate()));
+        } catch (TokenInfoException e) {
+            throw new UpdateTokenException(e.getMessage(), e);
+        }
     }
 }
