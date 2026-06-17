@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TokenRepository {
-    void save(Token token);
-    void delete(TokenId tokenId);
+    void save(Token token) throws TokenPersistenceException;
+    void delete(TokenId tokenId) throws TokenPersistenceException;
     Optional<Token> findById(TokenId tokenId);
     Optional<TokenValue> findTokenValue(TokenId tokenId);
     boolean existsByName(TokenName name);

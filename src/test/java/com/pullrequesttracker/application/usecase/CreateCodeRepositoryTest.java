@@ -19,8 +19,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,9 +71,10 @@ class CreateCodeRepositoryTest {
     void execute_whenFullNameAlreadyExists_shouldThrowCreateCodeRepositoryException() {
         when(codeRepositoryRepository.exists(any())).thenReturn(true);
 
-        assertThrows(CreateCodeRepositoryException.class,
+        CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class,
                 () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
+        assertEquals("Repository already exists: " + OWNER + "/" + NAME, ex.getMessage());
         verify(codeRepositoryRepository, never()).save(any());
     }
 
@@ -84,7 +85,7 @@ class CreateCodeRepositoryTest {
         CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class,
                 () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Public()));
 
-        assertTrue(ex.getMessage().contains(OWNER + "/" + NAME));
+        assertEquals("Repository already exists: " + OWNER + "/" + NAME, ex.getMessage());
     }
 
     @Test
@@ -92,9 +93,11 @@ class CreateCodeRepositoryTest {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
 
-        assertThrows(CreateCodeRepositoryException.class, () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
-                new RepositoryAccess.Authenticated(tokenId)));
+        CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class,
+                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
+                        new RepositoryAccess.Authenticated(tokenId)));
 
+        assertEquals("Token not found: " + tokenId, ex.getMessage());
         verify(codeRepositoryRepository, never()).save(any());
     }
 

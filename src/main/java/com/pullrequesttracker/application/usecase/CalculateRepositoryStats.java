@@ -13,6 +13,7 @@ import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.List;
 
@@ -24,11 +25,13 @@ public class CalculateRepositoryStats {
     private final OpenPrStatsCalculator openPrStatsCalculator;
     private final RecentActivityCalculator recentActivityCalculator;
     private final ReviewStatsCalculator reviewStatsCalculator;
+    private final Clock clock;
 
     public RepositoryStatsDto execute(CodeRepositoryId codeRepositoryId) {
         List<PullRequest> prs = pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId);
+        Instant now = Instant.now(clock);
 
-        OpenPrStatsCalculator.OpenPrStats open = openPrStatsCalculator.calculate(prs);
+        OpenPrStatsCalculator.OpenPrStats open = openPrStatsCalculator.calculate(prs, now);
         CiStatsCalculator.CiStats ci = ciStatsCalculator.calculate(prs);
         ReviewStatsCalculator.ReviewStats review = reviewStatsCalculator.calculate(prs);
         List<RecentActivityEntryDto> recentActivity = recentActivityCalculator.calculate(prs).stream()
@@ -46,7 +49,7 @@ public class CalculateRepositoryStats {
                 ci.passing(), ci.failing(), ci.pending(),
                 review.awaitingReview(), review.changesRequested(), review.approved(),
                 recentActivity,
-                Instant.now()
+                now
         );
     }
 }

@@ -1,6 +1,7 @@
 package com.pullrequesttracker.infrastructure.persistence;
 
 import com.pullrequesttracker.domain.model.Token;
+import com.pullrequesttracker.domain.repository.TokenPersistenceException;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.valueobject.TokenId;
 import com.pullrequesttracker.domain.valueobject.TokenName;
@@ -26,12 +27,12 @@ public class InMemoryTokenRepository implements TokenRepository {
     private final ConcurrentHashMap<TokenId, Token> tokens = new ConcurrentHashMap<>();
 
     @Override
-    public void save(Token token) {
+    public void save(Token token) throws TokenPersistenceException {
         tokens.put(token.id(), token);
     }
 
     @Override
-    public void delete(TokenId tokenId) {
+    public void delete(TokenId tokenId) throws TokenPersistenceException {
         tokens.remove(tokenId);
     }
 

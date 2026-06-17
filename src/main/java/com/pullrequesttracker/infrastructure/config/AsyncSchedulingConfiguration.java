@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import java.time.Clock;
+
 @Configuration
 @EnableScheduling
 @EnableAsync
@@ -18,8 +20,13 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @Slf4j
 public class AsyncSchedulingConfiguration implements AsyncConfigurer {
 
-    @Bean(name = "repositoryCheckExecutor")
-    public TaskExecutor repositoryCheckExecutor(RepositoryCheckProperties props) {
+    @Bean
+    public Clock clock() {
+        return Clock.systemUTC();
+    }
+
+    @Bean(name = "codeRepositoryCheckExecutor")
+    public TaskExecutor codeRepositoryCheckExecutor(RepositoryCheckProperties props) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(props.threadPoolSize());
         executor.setMaxPoolSize(props.threadPoolSize());

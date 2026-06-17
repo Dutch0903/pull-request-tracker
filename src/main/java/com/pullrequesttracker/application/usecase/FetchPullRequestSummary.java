@@ -8,6 +8,7 @@ import com.pullrequesttracker.domain.type.ReviewStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
@@ -15,15 +16,18 @@ import java.time.temporal.ChronoUnit;
 public class FetchPullRequestSummary {
     private final PullRequestRepository pullRequestRepository;
     private final int staleThresholdDays;
+    private final Clock clock;
 
     public FetchPullRequestSummary(PullRequestRepository pullRequestRepository,
-            @Value("${dashboard.stale-threshold-days:7}") int staleThresholdDays) {
+            @Value("${dashboard.stale-threshold-days:7}") int staleThresholdDays,
+            Clock clock) {
         this.pullRequestRepository = pullRequestRepository;
         this.staleThresholdDays = staleThresholdDays;
+        this.clock = clock;
     }
 
     public PullRequestSummaryDto execute() {
-        Instant staleThreshold = Instant.now().minus(staleThresholdDays, ChronoUnit.DAYS);
+        Instant staleThreshold = Instant.now(clock).minus(staleThresholdDays, ChronoUnit.DAYS);
 
         int open = 0, drafts = 0, readyForReview = 0, stale = 0, failingCi = 0;
 

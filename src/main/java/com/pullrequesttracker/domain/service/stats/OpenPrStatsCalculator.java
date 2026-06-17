@@ -12,8 +12,8 @@ public class OpenPrStatsCalculator extends StatsCalculator {
         super(config);
     }
 
-    public OpenPrStats calculate(List<PullRequest> prs) {
-        Instant staleThreshold = Instant.now().minus(config.staleThresholdDays(), ChronoUnit.DAYS);
+    public OpenPrStats calculate(List<PullRequest> prs, Instant now) {
+        Instant staleThreshold = now.minus(config.staleThresholdDays(), ChronoUnit.DAYS);
 
         int open = 0;
         int drafts = 0;

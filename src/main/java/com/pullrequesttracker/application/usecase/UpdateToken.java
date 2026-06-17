@@ -5,6 +5,7 @@ import com.pullrequesttracker.application.provider.TokenInfo;
 import com.pullrequesttracker.application.provider.TokenInfoException;
 import com.pullrequesttracker.application.provider.TokenInfoProvider;
 import com.pullrequesttracker.domain.model.Token;
+import com.pullrequesttracker.domain.repository.TokenPersistenceException;
 import com.pullrequesttracker.domain.repository.TokenRepository;
 import com.pullrequesttracker.domain.valueobject.TokenId;
 import com.pullrequesttracker.domain.valueobject.TokenName;
@@ -30,6 +31,8 @@ public class UpdateToken {
             TokenInfo info = tokenInfoProvider.fetchTokenInfo(existing.platform(), value);
             tokenRepository.save(new Token(id, name, value, existing.platform(), info.username(), info.expirationDate()));
         } catch (TokenInfoException e) {
+            throw new UpdateTokenException(e.getMessage(), e);
+        } catch (TokenPersistenceException e) {
             throw new UpdateTokenException(e.getMessage(), e);
         }
     }
