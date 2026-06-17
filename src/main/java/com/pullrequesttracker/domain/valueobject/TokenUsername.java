@@ -9,6 +9,10 @@ public record TokenUsername(String value) {
             throw new IllegalArgumentException("Token username must not be blank");
     }
 
+    public static TokenUsername from(String value) {
+        return new TokenUsername(value);
+    }
+
     @Override
     public String toString() {
         return value;

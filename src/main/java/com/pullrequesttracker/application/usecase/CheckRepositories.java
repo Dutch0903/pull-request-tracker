@@ -19,7 +19,11 @@ public class CheckRepositories {
         List<CompletableFuture<Void>> futures = codeRepositoryRepository.findAll().stream().map(repo -> {
             log.info("Checking {} repository {}/{}", repo.getPlatform(), repo.getFullName().owner(),
                     repo.getFullName().name());
-            return synchronizeCodeRepository.execute(repo);
+            return synchronizeCodeRepository.execute(repo).exceptionally(ex -> {
+                log.error("Failed to synchronize repository {}/{}", repo.getFullName().owner(),
+                        repo.getFullName().name(), ex);
+                return null;
+            });
         }).toList();
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
