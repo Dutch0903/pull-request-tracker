@@ -51,8 +51,9 @@ public class TokenList {
 
         // left margin = 2 to align with the list's "> " / " " highlight prefix
         Element header = row(text(("%-" + COL_PLATFORM + "s").formatted("PLATFORM")).dim(), text("NAME").dim().fill(),
-                text(("%-" + COL_USERNAME + "s").formatted("USERNAME")).dim(), text(("%-" + COL_EXPIRATION_DATE + "s").formatted("EXPIRES")).dim())
-                .spacing(2).margin(new Margin(0, 0, 0, 2)).length(1);
+                text(("%-" + COL_USERNAME + "s").formatted("USERNAME")).dim(),
+                text(("%-" + COL_EXPIRATION_DATE + "s").formatted("EXPIRES")).dim()).spacing(2)
+                .margin(new Margin(0, 0, 0, 2)).length(1);
 
         Element list = listElement
                 .data(tokens,

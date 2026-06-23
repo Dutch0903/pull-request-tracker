@@ -9,7 +9,8 @@ import java.util.List;
 
 @Component
 public class RepositoryListKeyHandler extends KeyHandler {
-    public RepositoryListKeyHandler(NavigateToDashboardAction navigateToDashboardAction, OpenCreateRepositoryDialog openCreateRepositoryDialog) {
+    public RepositoryListKeyHandler(NavigateToDashboardAction navigateToDashboardAction,
+            OpenCreateRepositoryDialog openCreateRepositoryDialog) {
         super(List.of(navigateToDashboardAction, openCreateRepositoryDialog));
     }
 }

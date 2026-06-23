@@ -39,10 +39,10 @@ public class RepositoryList {
         var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(List.of());
         Element content = repos.isEmpty()
                 ? text("No repositories configured.").dim()
-                : listElement.data(repos,
-                        repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));
+                : listElement.data(repos, repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));
 
         return panel("Repositories", content).id("repository-list").focusable().focusedBorderColor(Color.LIGHT_GREEN)
-                .rounded().onKeyEvent(event -> listElement.handleKeyEvent(event, true)).padding(Padding.symmetric(1, 2));
+                .rounded().onKeyEvent(event -> listElement.handleKeyEvent(event, true))
+                .padding(Padding.symmetric(1, 2));
     }
 }

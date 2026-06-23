@@ -1,7 +1,7 @@
 package com.pullrequesttracker.presentation.cli.view.repository;
 
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
-import com.pullrequesttracker.application.dto.RepositoryStatsDto;
+import com.pullrequesttracker.application.dto.CodeRepositoryStatisticsDto;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
@@ -33,11 +33,10 @@ public class RepositoryListView extends View {
     @Override
     protected Element renderBody() {
         CodeRepositoryDto selected = repositoryList.getSelectedRepository();
-        RepositoryStatsDto currentStats = state.get(RepositoryListState.REPOSITORY_STATS).data();
+        CodeRepositoryStatisticsDto currentStats = state.get(RepositoryListState.REPOSITORY_STATS).data();
 
         if (selected != null) {
-            boolean statsOutdated = currentStats == null
-                    || !currentStats.codeRepositoryId().equals(selected.id())
+            boolean statsOutdated = currentStats == null || !currentStats.codeRepositoryId().equals(selected.id())
                     || state.isStale(RepositoryListState.REPOSITORY_STATS);
             if (statsOutdated) {
                 controller.loadRepositoryStats(CodeRepositoryId.from(selected.id()));
@@ -45,8 +44,7 @@ public class RepositoryListView extends View {
             }
         }
 
-        return row(repositoryList.render(),
-                new RepositoryDetailPanel(selected, currentStats).render().fill());
+        return row(repositoryList.render(), new RepositoryDetailPanel(selected, currentStats).render().fill());
     }
 
     @Override

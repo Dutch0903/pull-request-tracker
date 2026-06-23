@@ -93,9 +93,8 @@ class CreateCodeRepositoryTest {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.empty());
 
-        CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class,
-                () -> createCodeRepository.execute(OWNER + "/" + NAME, PLATFORM,
-                        new RepositoryAccess.Authenticated(tokenId)));
+        CreateCodeRepositoryException ex = assertThrows(CreateCodeRepositoryException.class, () -> createCodeRepository
+                .execute(OWNER + "/" + NAME, PLATFORM, new RepositoryAccess.Authenticated(tokenId)));
 
         assertEquals("Token not found: " + tokenId, ex.getMessage());
         verify(codeRepositoryRepository, never()).save(any());

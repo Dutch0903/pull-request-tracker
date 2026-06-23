@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class RecentActivityCalculator extends StatsCalculator {
+public class RecentActivityCalculator extends StatisticsCalculator {
 
-    public RecentActivityCalculator(StatsConfiguration config) {
+    public RecentActivityCalculator(StatisticsConfiguration config) {
         super(config);
     }
 

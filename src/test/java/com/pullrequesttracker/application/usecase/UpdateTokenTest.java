@@ -1,6 +1,5 @@
 package com.pullrequesttracker.application.usecase;
 
-import com.pullrequesttracker.application.exception.CreateTokenException;
 import com.pullrequesttracker.application.exception.UpdateTokenException;
 import com.pullrequesttracker.application.provider.TokenInfo;
 import com.pullrequesttracker.application.provider.TokenInfoException;
@@ -47,10 +46,7 @@ class UpdateTokenTest {
         TokenUsername tokenUsername = TokenUsername.from(USERNAME);
         TokenExpirationDate tokenExpirationDate = TokenExpirationDate.from(Instant.now());
 
-        TokenInfo tokenInfo = new TokenInfo(
-                tokenUsername,
-                tokenExpirationDate
-        );
+        TokenInfo tokenInfo = new TokenInfo(tokenUsername, tokenExpirationDate);
 
         when(tokenRepository.findById(ID)).thenReturn(Optional.of(existingToken));
 
@@ -59,9 +55,8 @@ class UpdateTokenTest {
         updateToken.execute(ID, tokenName, tokenValue);
 
         verify(tokenInfoProvider).fetchTokenInfo(existingToken.platform(), TokenValue.from(VALUE));
-        verify(tokenRepository).save(argThat(
-                token -> token.name().equals(tokenName) && token.value().equals(tokenValue) && token.username().equals(tokenUsername) && token.expirationDate().equals(tokenExpirationDate)
-        ));
+        verify(tokenRepository).save(argThat(token -> token.name().equals(tokenName) && token.value().equals(tokenValue)
+                && token.username().equals(tokenUsername) && token.expirationDate().equals(tokenExpirationDate)));
     }
 
     @Test
@@ -71,7 +66,8 @@ class UpdateTokenTest {
 
         when(tokenRepository.findById(ID)).thenReturn(Optional.empty());
 
-        UpdateTokenException exception = assertThrows(UpdateTokenException.class, () -> updateToken.execute(ID, tokenName, tokenValue));
+        UpdateTokenException exception = assertThrows(UpdateTokenException.class,
+                () -> updateToken.execute(ID, tokenName, tokenValue));
 
         assertEquals("Token not found: " + ID, exception.getMessage());
 
@@ -87,10 +83,7 @@ class UpdateTokenTest {
         TokenUsername tokenUsername = TokenUsername.from(USERNAME);
         TokenExpirationDate tokenExpirationDate = TokenExpirationDate.from(Instant.now());
 
-        TokenInfo tokenInfo = new TokenInfo(
-                tokenUsername,
-                tokenExpirationDate
-        );
+        TokenInfo tokenInfo = new TokenInfo(tokenUsername, tokenExpirationDate);
 
         when(tokenRepository.findById(ID)).thenReturn(Optional.of(token));
 
@@ -111,7 +104,7 @@ class UpdateTokenTest {
         TokenUsername tokenUsername = TokenUsername.from(USERNAME);
         TokenExpirationDate tokenExpirationDate = TokenExpirationDate.from(Instant.now());
 
-        TokenInfo tokenInfo = new TokenInfo(tokenUsername,  tokenExpirationDate);
+        TokenInfo tokenInfo = new TokenInfo(tokenUsername, tokenExpirationDate);
 
         when(tokenRepository.findById(ID)).thenReturn(Optional.of(token));
         when(tokenRepository.existsByName(tokenName)).thenReturn(false);
@@ -129,11 +122,8 @@ class UpdateTokenTest {
 
         doThrow(new TokenInfoException("token info fetch failed")).when(tokenInfoProvider).fetchTokenInfo(any(), any());
 
-        UpdateTokenException ex = assertThrows(UpdateTokenException.class, () -> updateToken.execute(
-                ID,
-                TokenName.from(NAME),
-                TokenValue.from(VALUE)
-        ));
+        UpdateTokenException ex = assertThrows(UpdateTokenException.class,
+                () -> updateToken.execute(ID, TokenName.from(NAME), TokenValue.from(VALUE)));
 
         assertEquals("token info fetch failed", ex.getMessage());
         assertInstanceOf(TokenInfoException.class, ex.getCause());
@@ -144,18 +134,13 @@ class UpdateTokenTest {
     void execute_whenTokenSaveFailed_shouldThrowUpdateTokenException() throws TokenPersistenceException {
         when(tokenRepository.findById(ID)).thenReturn(Optional.of(aToken().build()));
 
-        when(tokenInfoProvider.fetchTokenInfo(any(), any())).thenReturn(new TokenInfo(
-                new TokenUsername(USERNAME),
-                new TokenExpirationDate(Instant.now())
-        ));
+        when(tokenInfoProvider.fetchTokenInfo(any(), any()))
+                .thenReturn(new TokenInfo(new TokenUsername(USERNAME), new TokenExpirationDate(Instant.now())));
 
         doThrow(new TokenPersistenceException("token save failed")).when(tokenRepository).save(any());
 
-        UpdateTokenException ex = assertThrows(UpdateTokenException.class, () -> updateToken.execute(
-                ID,
-                TokenName.from(NAME),
-                TokenValue.from(VALUE)
-        ));
+        UpdateTokenException ex = assertThrows(UpdateTokenException.class,
+                () -> updateToken.execute(ID, TokenName.from(NAME), TokenValue.from(VALUE)));
 
         assertEquals("token save failed", ex.getMessage());
         assertInstanceOf(TokenPersistenceException.class, ex.getCause());

@@ -1,17 +1,18 @@
 package com.pullrequesttracker.domain.service.stats;
 
 import com.pullrequesttracker.domain.model.PullRequest;
+import com.pullrequesttracker.domain.valueobject.ReviewStatistics;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import java.util.List;
 
-public class ReviewStatsCalculator extends StatsCalculator {
+public class ReviewStatisticsCalculator extends StatisticsCalculator {
 
-    public ReviewStatsCalculator(StatsConfiguration config) {
+    public ReviewStatisticsCalculator(StatisticsConfiguration config) {
         super(config);
     }
 
-    public ReviewStats calculate(List<PullRequest> prs) {
+    public ReviewStatistics calculate(List<PullRequest> prs) {
         int awaitingReview = 0;
         int changesRequested = 0;
         int approved = 0;
@@ -30,9 +31,6 @@ public class ReviewStatsCalculator extends StatsCalculator {
             }
         }
 
-        return new ReviewStats(awaitingReview, changesRequested, approved);
-    }
-
-    public record ReviewStats(int awaitingReview, int changesRequested, int approved) {
+        return new ReviewStatistics(awaitingReview, changesRequested, approved);
     }
 }

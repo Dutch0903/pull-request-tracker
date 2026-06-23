@@ -42,7 +42,6 @@ class CreateTokenTest {
     private static final String USERNAME = "username";
     private static final Platform PLATFORM = Platform.GITHUB;
 
-
     @Test
     void execute_whenCalled_shouldFetchTokenInfoAndSave() throws TokenPersistenceException {
         TokenName tokenName = TokenName.from(NAME);
@@ -53,10 +52,7 @@ class CreateTokenTest {
         TokenUsername tokenUsername = new TokenUsername(USERNAME);
         TokenExpirationDate tokenExpirationDate = new TokenExpirationDate(Instant.now());
 
-        TokenInfo tokenInfo = new TokenInfo(
-                tokenUsername,
-                tokenExpirationDate
-        );
+        TokenInfo tokenInfo = new TokenInfo(tokenUsername, tokenExpirationDate);
 
         when(tokenInfoProvider.fetchTokenInfo(PLATFORM, tokenValue)).thenReturn(tokenInfo);
 
@@ -65,19 +61,17 @@ class CreateTokenTest {
         verify(tokenRepository).existsByName(tokenName);
         verify(tokenInfoProvider).fetchTokenInfo(PLATFORM, tokenValue);
 
-        verify(tokenRepository).save(argThat(
-                token -> token.name().equals(tokenName) && token.value().equals(tokenValue) && token.platform().equals(PLATFORM) && token.username().equals(tokenUsername) && token.expirationDate().equals(tokenExpirationDate)
-        ));
+        verify(tokenRepository).save(argThat(token -> token.name().equals(tokenName) && token.value().equals(tokenValue)
+                && token.platform().equals(PLATFORM) && token.username().equals(tokenUsername)
+                && token.expirationDate().equals(tokenExpirationDate)));
     }
 
     @Test
     void execute_whenTokenNameAlreadyExists_shouldThrowException() throws TokenPersistenceException {
         when(tokenRepository.existsByName(any())).thenReturn(true);
 
-        CreateTokenException ex = assertThrows(
-                CreateTokenException.class,
-                () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), null)
-        );
+        CreateTokenException ex = assertThrows(CreateTokenException.class,
+                () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), null));
 
         assertEquals("Token already exists with name: " + NAME, ex.getMessage());
         verify(tokenInfoProvider, never()).fetchTokenInfo(any(), any());
@@ -90,11 +84,8 @@ class CreateTokenTest {
 
         doThrow(new TokenInfoException("token info fetch failed")).when(tokenInfoProvider).fetchTokenInfo(any(), any());
 
-        CreateTokenException ex = assertThrows(CreateTokenException.class, () -> createToken.execute(
-                TokenName.from(NAME),
-                TokenValue.from(VALUE),
-                PLATFORM
-        ));
+        CreateTokenException ex = assertThrows(CreateTokenException.class,
+                () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), PLATFORM));
 
         assertEquals("token info fetch failed", ex.getMessage());
         assertInstanceOf(TokenInfoException.class, ex.getCause());
@@ -105,18 +96,13 @@ class CreateTokenTest {
     void execute_whenTokenSaveFailed_shouldThrowException() throws TokenPersistenceException {
         when(tokenRepository.existsByName(any())).thenReturn(false);
 
-        when(tokenInfoProvider.fetchTokenInfo(any(), any())).thenReturn(new TokenInfo(
-                new TokenUsername(USERNAME),
-                new TokenExpirationDate(Instant.now())
-        ));
+        when(tokenInfoProvider.fetchTokenInfo(any(), any()))
+                .thenReturn(new TokenInfo(new TokenUsername(USERNAME), new TokenExpirationDate(Instant.now())));
 
         doThrow(new TokenPersistenceException("token save failed")).when(tokenRepository).save(any());
 
-        CreateTokenException ex = assertThrows(CreateTokenException.class, () -> createToken.execute(
-                TokenName.from(NAME),
-                TokenValue.from(VALUE),
-                PLATFORM
-        ));
+        CreateTokenException ex = assertThrows(CreateTokenException.class,
+                () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), PLATFORM));
 
         assertEquals("token save failed", ex.getMessage());
         assertInstanceOf(TokenPersistenceException.class, ex.getCause());

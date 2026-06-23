@@ -50,7 +50,8 @@ public final class CharSpacer implements Element {
 
     @Override
     public void render(Frame frame, Rect rect, RenderContext context) {
-        if (rect.isEmpty()) return;
+        if (rect.isEmpty())
+            return;
         Style style = context.currentStyle();
         String row = String.valueOf(fill).repeat(rect.width());
         for (int y = rect.top(); y < rect.bottom(); y++) {

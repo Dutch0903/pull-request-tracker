@@ -29,7 +29,8 @@ public class UpdateToken {
 
         try {
             TokenInfo info = tokenInfoProvider.fetchTokenInfo(existing.platform(), value);
-            tokenRepository.save(new Token(id, name, value, existing.platform(), info.username(), info.expirationDate()));
+            tokenRepository
+                    .save(new Token(id, name, value, existing.platform(), info.username(), info.expirationDate()));
         } catch (TokenInfoException | TokenPersistenceException e) {
             throw new UpdateTokenException(e.getMessage(), e);
         }

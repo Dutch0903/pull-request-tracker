@@ -19,8 +19,7 @@ public class FetchPullRequestSummary {
     private final Clock clock;
 
     public FetchPullRequestSummary(PullRequestRepository pullRequestRepository,
-            @Value("${dashboard.stale-threshold-days:7}") int staleThresholdDays,
-            Clock clock) {
+            @Value("${dashboard.stale-threshold-days:7}") int staleThresholdDays, Clock clock) {
         this.pullRequestRepository = pullRequestRepository;
         this.staleThresholdDays = staleThresholdDays;
         this.clock = clock;
@@ -29,7 +28,7 @@ public class FetchPullRequestSummary {
     public PullRequestSummaryDto execute() {
         Instant staleThreshold = Instant.now(clock).minus(staleThresholdDays, ChronoUnit.DAYS);
 
-        int open = 0, drafts = 0, readyForReview = 0, stale = 0, failingCi = 0;
+        int open = 0, drafts = 0, readyForReview = 0, stale = 0, failingContinuousIntegration = 0;
 
         for (PullRequest pr : pullRequestRepository.findAllOpen()) {
             if (pr.isDraft()) {
@@ -39,12 +38,12 @@ public class FetchPullRequestSummary {
                 if (pr.getReviewSummary().reviewStatus() == ReviewStatus.REVIEW_REQUIRED)
                     readyForReview++;
                 if (pr.getCiStatus() == CiStatus.FAILED)
-                    failingCi++;
+                    failingContinuousIntegration++;
             }
             if (pr.getUpdatedAt().isBefore(staleThreshold))
                 stale++;
         }
 
-        return new PullRequestSummaryDto(open, readyForReview, drafts, stale, failingCi);
+        return new PullRequestSummaryDto(open, readyForReview, drafts, stale, failingContinuousIntegration);
     }
 }

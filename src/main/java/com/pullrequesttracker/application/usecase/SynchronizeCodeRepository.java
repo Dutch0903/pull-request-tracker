@@ -36,9 +36,10 @@ public class SynchronizeCodeRepository {
                 .stream().collect(Collectors.toMap(PullRequest::getExternalId, Function.identity()));
 
         pullRequestProvider.fetch(codeRepository).forEach(syncData -> {
-            PullRequest pullRequest = Optional.ofNullable(existing.get(syncData.externalId()))
-                    .map(pr -> { pr.sync(syncData); return pr; })
-                    .orElseGet(() -> PullRequestFactory.create(codeRepository.getId(), syncData));
+            PullRequest pullRequest = Optional.ofNullable(existing.get(syncData.externalId())).map(pr -> {
+                pr.sync(syncData);
+                return pr;
+            }).orElseGet(() -> PullRequestFactory.create(codeRepository.getId(), syncData));
 
             pullRequestRepository.save(pullRequest);
         });

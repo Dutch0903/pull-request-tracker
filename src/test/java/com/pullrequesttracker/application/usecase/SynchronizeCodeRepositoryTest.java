@@ -45,7 +45,8 @@ public class SynchronizeCodeRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        synchronizeCodeRepository = new SynchronizeCodeRepository(pullRequestProvider, pullRequestRepository, codeRepositoryRepository, clock);
+        synchronizeCodeRepository = new SynchronizeCodeRepository(pullRequestProvider, pullRequestRepository,
+                codeRepositoryRepository, clock);
     }
 
     @Test
@@ -68,7 +69,8 @@ public class SynchronizeCodeRepositoryTest {
         CodeRepository codeRepository = aCodeRepository().withId(codeRepositoryId).build();
 
         when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of());
-        when(pullRequestProvider.fetch(codeRepository)).thenReturn(List.of(aPullRequestSyncData().withExternalId(1).build()));
+        when(pullRequestProvider.fetch(codeRepository))
+                .thenReturn(List.of(aPullRequestSyncData().withExternalId(1).build()));
 
         synchronizeCodeRepository.execute(codeRepository);
 
@@ -79,10 +81,12 @@ public class SynchronizeCodeRepositoryTest {
     void execute_whenProviderReturnsPullRequestAlreadyInRepository_shouldSyncAndSavePullRequest() {
         CodeRepositoryId codeRepositoryId = CodeRepositoryId.create();
         CodeRepository codeRepository = aCodeRepository().withId(codeRepositoryId).build();
-        PullRequest existing = aPullRequest().withCodeRepositoryId(codeRepositoryId).withExternalId(1).withTitle("old title").build();
+        PullRequest existing = aPullRequest().withCodeRepositoryId(codeRepositoryId).withExternalId(1)
+                .withTitle("old title").build();
 
         when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of(existing));
-        when(pullRequestProvider.fetch(codeRepository)).thenReturn(List.of(aPullRequestSyncData().withExternalId(1).withTitle("new title").build()));
+        when(pullRequestProvider.fetch(codeRepository))
+                .thenReturn(List.of(aPullRequestSyncData().withExternalId(1).withTitle("new title").build()));
 
         synchronizeCodeRepository.execute(codeRepository);
 
@@ -99,9 +103,7 @@ public class SynchronizeCodeRepositoryTest {
 
         when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of(existing));
         when(pullRequestProvider.fetch(codeRepository)).thenReturn(List.of(
-                aPullRequestSyncData().withExternalId(1).build(),
-                aPullRequestSyncData().withExternalId(2).build()
-        ));
+                aPullRequestSyncData().withExternalId(1).build(), aPullRequestSyncData().withExternalId(2).build()));
 
         synchronizeCodeRepository.execute(codeRepository);
 

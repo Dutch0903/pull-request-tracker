@@ -1,18 +1,19 @@
 package com.pullrequesttracker.domain.service.stats;
 
 import com.pullrequesttracker.domain.model.PullRequest;
+import com.pullrequesttracker.domain.valueobject.PullRequestStatistics;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class OpenPrStatsCalculator extends StatsCalculator {
+public class PullRequestStatisticsCalculator extends StatisticsCalculator {
 
-    public OpenPrStatsCalculator(StatsConfiguration config) {
+    public PullRequestStatisticsCalculator(StatisticsConfiguration config) {
         super(config);
     }
 
-    public OpenPrStats calculate(List<PullRequest> prs, Instant now) {
+    public PullRequestStatistics calculate(List<PullRequest> prs, Instant now) {
         Instant staleThreshold = now.minus(config.staleThresholdDays(), ChronoUnit.DAYS);
 
         int open = 0;
@@ -33,9 +34,6 @@ public class OpenPrStatsCalculator extends StatsCalculator {
             }
         }
 
-        return new OpenPrStats(open, drafts, stale);
-    }
-
-    public record OpenPrStats(int open, int drafts, int stale) {
+        return new PullRequestStatistics(open, drafts, stale);
     }
 }

@@ -39,7 +39,8 @@ class DeleteTokenTest {
 
         doThrow(toBeThrownException).when(tokenRepository).delete(tokenId);
 
-        DeleteTokenException thrownException = assertThrows(DeleteTokenException.class, () -> deleteToken.execute(tokenId));
+        DeleteTokenException thrownException = assertThrows(DeleteTokenException.class,
+                () -> deleteToken.execute(tokenId));
 
         assertEquals(thrownException.getMessage(), toBeThrownException.getMessage());
         assertEquals(thrownException.getCause(), toBeThrownException);

@@ -2,7 +2,6 @@ package com.pullrequesttracker.application.usecase;
 
 import com.pullrequesttracker.domain.model.CodeRepository;
 import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,7 +58,8 @@ public class CheckRepositoriesTest {
         CodeRepository repoB = aCodeRepository().build();
 
         when(codeRepositoryRepository.findAll()).thenReturn(List.of(repoA, repoB));
-        when(synchronizeCodeRepository.execute(repoA)).thenReturn(CompletableFuture.failedFuture(new RuntimeException("sync failed")));
+        when(synchronizeCodeRepository.execute(repoA))
+                .thenReturn(CompletableFuture.failedFuture(new RuntimeException("sync failed")));
         when(synchronizeCodeRepository.execute(repoB)).thenReturn(CompletableFuture.completedFuture(null));
 
         checkRepositories.execute();

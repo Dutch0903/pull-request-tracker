@@ -67,7 +67,7 @@ public class DashboardView extends View {
                         overviewRow("Ready for review", "" + summary.readyForReview()),
                         overviewRow("Drafts", "" + summary.drafts()),
                         overviewRow("Stale (no update >7d)", "" + summary.stale()),
-                        overviewRow("Failing CI", "" + summary.failingCi())));
+                        overviewRow("Failing CI", "" + summary.failingContinuousIntegration())));
     }
 
     private Element overviewRow(String label, String value) {

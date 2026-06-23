@@ -1,17 +1,18 @@
 package com.pullrequesttracker.domain.service.stats;
 
 import com.pullrequesttracker.domain.model.PullRequest;
+import com.pullrequesttracker.domain.valueobject.ContinuousIntegrationStatistics;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
 import java.util.List;
 
-public class CiStatsCalculator extends StatsCalculator {
+public class ContinuousIntegrationStatisticsCalculator extends StatisticsCalculator {
 
-    public CiStatsCalculator(StatsConfiguration config) {
+    public ContinuousIntegrationStatisticsCalculator(StatisticsConfiguration config) {
         super(config);
     }
 
-    public CiStats calculate(List<PullRequest> prs) {
+    public ContinuousIntegrationStatistics calculate(List<PullRequest> prs) {
         int passing = 0;
         int failing = 0;
         int pending = 0;
@@ -29,9 +30,6 @@ public class CiStatsCalculator extends StatsCalculator {
             }
         }
 
-        return new CiStats(passing, failing, pending);
-    }
-
-    public record CiStats(int passing, int failing, int pending) {
+        return new ContinuousIntegrationStatistics(passing, failing, pending);
     }
 }
