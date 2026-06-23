@@ -80,6 +80,21 @@ public class PullRequestTestBuilder {
         return this;
     }
 
+    public PullRequestTestBuilder withDraft(boolean draft) {
+        this.draft = draft;
+        return this;
+    }
+
+    public PullRequestTestBuilder withCiStatus(CiStatus ciStatus) {
+        this.ciStatus = ciStatus;
+        return this;
+    }
+
+    public PullRequestTestBuilder withUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+        return this;
+    }
+
     public PullRequest build() {
         ReviewSummary reviewSummary = new ReviewSummary(reviews, reviewStatus);
         return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft, state,

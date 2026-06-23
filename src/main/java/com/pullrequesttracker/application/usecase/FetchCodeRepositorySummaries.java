@@ -8,6 +8,7 @@ import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,11 @@ public class FetchCodeRepositorySummaries {
 
     public List<CodeRepositorySummaryDto> execute() {
         List<CodeRepository> codeRepositories = codeRepositoryRepository.findAll();
+
+        if (codeRepositories.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         Map<CodeRepositoryId, Integer> countAllByCodeRepositoryId = pullRequestRepository.countAllByCodeRepositoryId();
 
         return codeRepositories.stream()
