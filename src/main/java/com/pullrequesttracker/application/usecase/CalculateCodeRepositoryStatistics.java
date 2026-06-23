@@ -50,9 +50,12 @@ public class CalculateCodeRepositoryStatistics {
                 .toList();
 
         return new CodeRepositoryStatisticsDto(codeRepositoryId.value(),
-                new PullRequestStatisticsDto(pullRequestStatistics.open(), pullRequestStatistics.drafts(), pullRequestStatistics.stale()),
-                new ContinuousIntegrationStatisticsDto(ciStatistics.passing(), ciStatistics.failing(), ciStatistics.pending()),
-                new ReviewStatisticsDto(reviewStatistics.awaitingReview(), reviewStatistics.changesRequested(), reviewStatistics.approved()),
+                new PullRequestStatisticsDto(pullRequestStatistics.open(), pullRequestStatistics.drafts(),
+                        pullRequestStatistics.stale()),
+                new ContinuousIntegrationStatisticsDto(ciStatistics.passing(), ciStatistics.failing(),
+                        ciStatistics.pending()),
+                new ReviewStatisticsDto(reviewStatistics.awaitingReview(), reviewStatistics.changesRequested(),
+                        reviewStatistics.approved()),
                 recentActivity, now);
     }
 }

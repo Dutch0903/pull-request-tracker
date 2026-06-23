@@ -57,8 +57,8 @@ public class CalculateRepositoryStatisticsTest {
     @BeforeEach
     public void setup() {
         calculateRepositoryStatistics = new CalculateCodeRepositoryStatistics(pullRequestRepository,
-                continuousIntegrationStatisticsCalculator, pullRequestStatisticsCalculator,
-                recentActivityCalculator, reviewStatisticsCalculator, clock);
+                continuousIntegrationStatisticsCalculator, pullRequestStatisticsCalculator, recentActivityCalculator,
+                reviewStatisticsCalculator, clock);
     }
 
     @Test
@@ -93,11 +93,8 @@ public class CalculateRepositoryStatisticsTest {
                 .thenReturn(new PullRequestStatistics(3, 1, 2));
         when(continuousIntegrationStatisticsCalculator.calculate(stubPrs))
                 .thenReturn(new ContinuousIntegrationStatistics(4, 1, 0));
-        when(reviewStatisticsCalculator.calculate(stubPrs))
-                .thenReturn(new ReviewStatistics(2, 1, 3));
-        when(recentActivityCalculator.calculate(stubPrs)).thenReturn(List.of(
-            recentActivityEntry
-        ));
+        when(reviewStatisticsCalculator.calculate(stubPrs)).thenReturn(new ReviewStatistics(2, 1, 3));
+        when(recentActivityCalculator.calculate(stubPrs)).thenReturn(List.of(recentActivityEntry));
 
         CodeRepositoryStatisticsDto result = calculateRepositoryStatistics.execute(codeRepositoryId);
 

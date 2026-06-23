@@ -20,7 +20,8 @@ public class StatisticsCalculatorConfiguration {
     }
 
     @Bean
-    public ContinuousIntegrationStatisticsCalculator continuousIntegrationStatisticsCalculator(StatisticsConfiguration config) {
+    public ContinuousIntegrationStatisticsCalculator continuousIntegrationStatisticsCalculator(
+            StatisticsConfiguration config) {
         return new ContinuousIntegrationStatisticsCalculator(config);
     }
 

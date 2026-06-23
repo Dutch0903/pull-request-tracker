@@ -57,7 +57,8 @@ public class RepositoryDetailPanel {
 
     private Column ciStatusColumn() {
         return column(text("CI STATUS"), dotStatRow("Passing", stats.continuousIntegrationStatistics().passing()),
-                dotStatRow("Failing", stats.continuousIntegrationStatistics().failing()), dotStatRow("Pending", stats.continuousIntegrationStatistics().pending()));
+                dotStatRow("Failing", stats.continuousIntegrationStatistics().failing()),
+                dotStatRow("Pending", stats.continuousIntegrationStatistics().pending()));
     }
 
     private Column reviewStatusColumn() {
@@ -70,8 +71,8 @@ public class RepositoryDetailPanel {
         Column column = column(text("RECENT ACTIVITY")).fill();
 
         for (RecentActivityEntryDto entry : stats.recentActivity()) {
-            column.add(row(text(entry.author() + " " + entry.type() + " #" + entry.pullRequestNumber()), CharSpacer.of('.'),
-                    text(RelativeTimeFormatter.format(entry.occurredAt()))));
+            column.add(row(text(entry.author() + " " + entry.type() + " #" + entry.pullRequestNumber()),
+                    CharSpacer.of('.'), text(RelativeTimeFormatter.format(entry.occurredAt()))));
         }
 
         return column;
