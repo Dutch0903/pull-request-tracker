@@ -1,5 +1,5 @@
 package com.pullrequesttracker.domain.type;
 
 public enum RecentActivityType {
-    MERGED, APPROVED, OPENED
+    MERGED, APPROVED, OPENED, CHANGES_REQUESTED
 }

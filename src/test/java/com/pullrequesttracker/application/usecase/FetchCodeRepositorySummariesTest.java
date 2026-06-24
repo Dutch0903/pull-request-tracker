@@ -40,7 +40,7 @@ public class FetchCodeRepositorySummariesTest {
     }
 
     @Test
-    void execute_whenCalled_shouldReturnASummaryForEachCodeRepository() {
+    void execute_shouldReturnASummaryForEachCodeRepository() {
         CodeRepository codeRepository1 = aCodeRepository().build();
         CodeRepository codeRepository2 = aCodeRepository().build();
 

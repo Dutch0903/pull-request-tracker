@@ -25,7 +25,7 @@ public class FetchRecentCodeRepositoriesTest {
     private FetchRecentCodeRepositories fetchRecentCodeRepositories;
 
     @Test
-    public void execute_whenCalled_shouldReturnCodeRepositoryDtos() {
+    public void execute_shouldReturnCodeRepositoryDtos() {
         CodeRepository codeRepository1 = aCodeRepository().withFullName(new FullName("owner1", "name1")).build();
         CodeRepository codeRepository2 = aCodeRepository().withFullName(new FullName("owner2", "name2")).build();
 
@@ -34,8 +34,9 @@ public class FetchRecentCodeRepositoriesTest {
         List<CodeRepositoryDto> result = fetchRecentCodeRepositories.execute();
 
         assertThat(result).containsExactly(
-                new CodeRepositoryDto(codeRepository1.getId().value(), codeRepository1.getFullName().owner(), codeRepository1.getFullName().name()),
-                new CodeRepositoryDto(codeRepository2.getId().value(), codeRepository2.getFullName().owner(), codeRepository2.getFullName().name())
-        );
+                new CodeRepositoryDto(codeRepository1.getId().value(), codeRepository1.getFullName().owner(),
+                        codeRepository1.getFullName().name()),
+                new CodeRepositoryDto(codeRepository2.getId().value(), codeRepository2.getFullName().owner(),
+                        codeRepository2.getFullName().name()));
     }
 }

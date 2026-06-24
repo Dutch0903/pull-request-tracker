@@ -33,6 +33,11 @@ public class RecentActivityCalculator extends StatisticsCalculator {
                     events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.APPROVED,
                             pr.getExternalId(), review.submittedAt()));
                 }
+
+                if (review.status() == ReviewStatus.CHANGES_REQUESTED) {
+                    events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.CHANGES_REQUESTED,
+                            pr.getExternalId(), review.submittedAt()));
+                }
             }
         }
 

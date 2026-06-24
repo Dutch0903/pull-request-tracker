@@ -4,6 +4,7 @@ import com.pullrequesttracker.domain.valueobject.Review;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 import static com.pullrequesttracker.testfixtures.domain.model.PullRequestTestBuilder.aPullRequest;
@@ -14,7 +15,7 @@ class PullRequestTest {
     @Test
     void addReview_whenReviewHasNotBeenSubmitted_shouldAddReview() {
         Review review = aReview().build();
-        PullRequest pullRequest = aPullRequest().withReviews(List.of()).build();
+        PullRequest pullRequest = aPullRequest().withReviews(Collections.emptyList()).build();
 
         assertEquals(0, pullRequest.getReviewSummary().reviews().size());
 

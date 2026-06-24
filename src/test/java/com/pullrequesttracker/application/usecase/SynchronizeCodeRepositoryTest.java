@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,8 @@ public class SynchronizeCodeRepositoryTest {
         CodeRepositoryId codeRepositoryId = CodeRepositoryId.create();
         CodeRepository codeRepository = aCodeRepository().withId(codeRepositoryId).build();
 
-        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of());
-        when(pullRequestProvider.fetch(codeRepository)).thenReturn(List.of());
+        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(Collections.emptyList());
+        when(pullRequestProvider.fetch(codeRepository)).thenReturn(Collections.emptyList());
 
         synchronizeCodeRepository.execute(codeRepository);
 
@@ -68,7 +69,7 @@ public class SynchronizeCodeRepositoryTest {
         CodeRepositoryId codeRepositoryId = CodeRepositoryId.create();
         CodeRepository codeRepository = aCodeRepository().withId(codeRepositoryId).build();
 
-        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of());
+        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(Collections.emptyList());
         when(pullRequestProvider.fetch(codeRepository))
                 .thenReturn(List.of(aPullRequestSyncData().withExternalId(1).build()));
 

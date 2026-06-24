@@ -26,7 +26,7 @@ public class GitHubTokenInfoProviderAdapter implements PlatformTokenInfoProvider
     }
 
     @Override
-    public TokenInfo fetchTokenInfo(TokenValue tokenValue) {
+    public TokenInfo fetch(TokenValue tokenValue) {
         try {
             ResponseEntity<GitHubUserResponse> response = WebClient.builder().baseUrl("https://api.github.com").build()
                     .get().uri("/user").header("Authorization", "Bearer " + tokenValue)

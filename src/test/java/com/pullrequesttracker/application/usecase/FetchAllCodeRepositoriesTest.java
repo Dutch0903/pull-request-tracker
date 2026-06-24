@@ -24,7 +24,7 @@ class FetchAllCodeRepositoriesTest {
     private FetchAllCodeRepositories fetchAllCodeRepositories;
 
     @Test
-    void execute_whenCalled_shouldMapCodeRepositoryToDto() {
+    void execute_shouldMapCodeRepositoryToDto() {
         CodeRepository codeRepository1 = aCodeRepository().build();
         CodeRepository codeRepository2 = aCodeRepository().build();
 

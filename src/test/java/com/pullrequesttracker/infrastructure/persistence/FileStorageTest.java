@@ -8,6 +8,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ class FileStorageTest {
     @Test
     void load_whenFileDoesNotExist_shouldReturnEmptyList() {
         String file = "non-existent.json";
-        assertEquals(List.of(), fileStorage.load(file, Dto.class));
+        assertEquals(Collections.emptyList(), fileStorage.load(file, Dto.class));
         assertFalse(Files.exists(tempDir.resolve(file)));
     }
 

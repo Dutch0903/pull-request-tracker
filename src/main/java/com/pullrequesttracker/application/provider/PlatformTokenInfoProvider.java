@@ -6,5 +6,5 @@ import com.pullrequesttracker.domain.valueobject.TokenValue;
 public interface PlatformTokenInfoProvider {
     Platform platform();
 
-    TokenInfo fetchTokenInfo(TokenValue tokenValue);
+    TokenInfo fetch(TokenValue tokenValue);
 }

@@ -5,7 +5,7 @@ import com.pullrequesttracker.presentation.cli.view.repository.RepositoryListSta
 import dev.tamboui.layout.Padding;
 import dev.tamboui.style.Color;
 
-import java.util.List;
+import java.util.Collections;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.elements.ListElement;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class RepositoryList {
     }
 
     public CodeRepositoryDto getSelectedRepository() {
-        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(List.of());
+        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(Collections.emptyList());
         if (repos.isEmpty())
             return null;
         int index = listElement.selected();
@@ -36,7 +36,7 @@ public class RepositoryList {
     }
 
     public Element render() {
-        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(List.of());
+        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(Collections.emptyList());
         Element content = repos.isEmpty()
                 ? text("No repositories configured.").dim()
                 : listElement.data(repos, repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));

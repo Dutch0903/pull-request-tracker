@@ -18,11 +18,11 @@ public class TokenInfoProvider {
                 .collect(Collectors.toMap(PlatformTokenInfoProvider::platform, Function.identity()));
     }
 
-    public TokenInfo fetchTokenInfo(Platform platform, TokenValue tokenValue) {
+    public TokenInfo fetch(Platform platform, TokenValue tokenValue) {
         PlatformTokenInfoProvider provider = providers.get(platform);
         if (provider == null) {
             throw new TokenInfoException("No token info provider registered for platform: " + platform);
         }
-        return provider.fetchTokenInfo(tokenValue);
+        return provider.fetch(tokenValue);
     }
 }

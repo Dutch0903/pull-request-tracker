@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.List;
 
 import static com.pullrequesttracker.testfixtures.domain.model.RecentActivityEntryTestBuilder.aRecentActivityEntry;
@@ -64,7 +65,7 @@ public class CalculateRepositoryStatisticsTest {
     @Test
     void execute_whenNoPullRequestExists_shouldReturnEmptyStatistics() {
         CodeRepositoryId codeRepositoryId = CodeRepositoryId.create();
-        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(List.of());
+        when(pullRequestRepository.findAllByCodeRepositoryId(codeRepositoryId)).thenReturn(Collections.emptyList());
 
         CodeRepositoryStatisticsDto result = calculateRepositoryStatistics.execute(codeRepositoryId);
 

@@ -21,16 +21,18 @@ public class PullRequestStatisticsCalculator extends StatisticsCalculator {
         int stale = 0;
 
         for (PullRequest pr : prs) {
+            if (pr.getStatus() != PullRequestStatus.OPEN) {
+                continue;
+            }
+
             if (pr.isDraft()) {
                 drafts++;
+            } else {
+                open++;
             }
-            if (pr.getStatus() == PullRequestStatus.OPEN) {
-                if (!pr.isDraft()) {
-                    open++;
-                }
-                if (pr.getUpdatedAt().isBefore(staleThreshold)) {
-                    stale++;
-                }
+
+            if (config.staleThresholdDays() > 0 && pr.getUpdatedAt().isBefore(staleThreshold)) {
+                stale++;
             }
         }
 

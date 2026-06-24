@@ -19,7 +19,7 @@ class CodeRepositoryMapperTest {
     private final CodeRepositoryMapper mapper = new CodeRepositoryMapper();
 
     @Test
-    void toDomain_whenCalled_shouldMapValuesCorrectly() {
+    void toDomain_shouldMapValuesCorrectly() {
         CodeRepositoryDto dto = aCodeRepositoryDto().build();
 
         CodeRepository repo = mapper.toDomain(dto);
@@ -53,7 +53,7 @@ class CodeRepositoryMapperTest {
     }
 
     @Test
-    void toDto_whenCalled_shouldMapValuesCorrectly() {
+    void toDto_shouldMapValuesCorrectly() {
         CodeRepository repo = aCodeRepository().build();
 
         CodeRepositoryDto dto = mapper.toDto(repo);

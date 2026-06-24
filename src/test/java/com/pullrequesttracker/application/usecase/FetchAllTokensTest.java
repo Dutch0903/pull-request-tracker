@@ -24,7 +24,7 @@ class FetchAllTokensTest {
     private FetchAllTokens fetchAllTokens;
 
     @Test
-    void execute_whenCalled_shouldMapTokenToDto() {
+    void execute_shouldMapTokenToDto() {
         Token token1 = aToken().build();
         Token token2 = aToken().build();
 

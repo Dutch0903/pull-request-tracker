@@ -1,5 +1,6 @@
 package com.pullrequesttracker.application.provider;
 
+import com.pullrequesttracker.application.exception.FetchPullRequestException;
 import com.pullrequesttracker.domain.model.CodeRepository;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.Platform;
@@ -24,7 +25,7 @@ public class PullRequestProvider {
         Platform platform = codeRepository.getPlatform();
         PlatformPullRequestProvider provider = providers.get(platform);
         if (provider == null) {
-            throw new IllegalStateException("No provider registered for platform: " + platform);
+            throw new FetchPullRequestException("No provider registered for platform: " + platform);
         }
         return provider.fetch(codeRepository);
     }

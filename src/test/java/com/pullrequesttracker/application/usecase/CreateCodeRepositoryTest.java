@@ -48,7 +48,7 @@ class CreateCodeRepositoryTest {
     }
 
     @Test
-    void execute_whenCalled_shouldParseReferenceAndSave() {
+    void execute_shouldParseReferenceAndSave() {
         TokenId tokenId = TokenId.create();
         when(tokenRepository.findById(tokenId)).thenReturn(Optional.of(mock(Token.class)));
 

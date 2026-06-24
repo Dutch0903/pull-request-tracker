@@ -7,6 +7,7 @@ import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Review;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 public class PullRequestSyncDataTestBuilder {
@@ -16,8 +17,8 @@ public class PullRequestSyncDataTestBuilder {
     private boolean isDraft = false;
     private PullRequestState state = new PullRequestState.Open();
     private CiStatus ciStatus = CiStatus.PENDING;
-    private List<String> labels = List.of();
-    private List<Review> reviews = List.of();
+    private List<String> labels = Collections.emptyList();
+    private List<Review> reviews = Collections.emptyList();
     private ReviewStatus reviewStatus = ReviewStatus.REVIEW_REQUIRED;
     private int commentCount = 0;
     private Instant createdAt = Instant.now();

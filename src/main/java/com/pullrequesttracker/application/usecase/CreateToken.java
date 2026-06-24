@@ -26,7 +26,7 @@ public class CreateToken {
         }
 
         try {
-            TokenInfo info = tokenInfoProvider.fetchTokenInfo(platform, value);
+            TokenInfo info = tokenInfoProvider.fetch(platform, value);
             tokenRepository
                     .save(new Token(TokenId.create(), name, value, platform, info.username(), info.expirationDate()));
         } catch (TokenInfoException | TokenPersistenceException e) {

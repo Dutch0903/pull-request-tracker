@@ -7,7 +7,6 @@ import com.pullrequesttracker.domain.model.PullRequestFactory;
 import com.pullrequesttracker.domain.repository.CodeRepositoryRepository;
 import com.pullrequesttracker.domain.repository.PullRequestRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class SynchronizeCodeRepository {
     private final PullRequestProvider pullRequestProvider;
     private final PullRequestRepository pullRequestRepository;

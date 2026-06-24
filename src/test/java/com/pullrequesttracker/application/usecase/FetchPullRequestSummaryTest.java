@@ -48,7 +48,7 @@ public class FetchPullRequestSummaryTest {
     }
 
     @Test
-    void execute_whenCalled_shouldReturnAnAccurateSummary() {
+    void execute_shouldReturnAnAccurateSummary() {
         Instant staleInstant = Instant.parse("2026-06-10T00:00:00Z");
 
         PullRequest pr1 = aPullRequest().withDraft(true).withUpdatedAt(fixedNow).build();

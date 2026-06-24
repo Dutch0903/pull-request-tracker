@@ -24,7 +24,7 @@ class DeleteTokenTest {
     private DeleteToken deleteToken;
 
     @Test
-    void execute_whenCalled_shouldDeleteToken() throws TokenPersistenceException {
+    void execute_shouldDeleteToken() throws TokenPersistenceException {
         TokenId tokenId = TokenId.create();
 
         deleteToken.execute(tokenId);

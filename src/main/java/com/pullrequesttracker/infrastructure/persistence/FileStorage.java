@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -26,7 +27,7 @@ public class FileStorage {
         Path path = Path.of(directory, file);
 
         if (Files.notExists(path)) {
-            return List.of();
+            return Collections.emptyList();
         }
 
         CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(List.class, expectedClass);

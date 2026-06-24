@@ -43,7 +43,7 @@ class CreateTokenTest {
     private static final Platform PLATFORM = Platform.GITHUB;
 
     @Test
-    void execute_whenCalled_shouldFetchTokenInfoAndSave() throws TokenPersistenceException {
+    void execute_shouldFetchTokenInfoAndSave() throws TokenPersistenceException {
         TokenName tokenName = TokenName.from(NAME);
         TokenValue tokenValue = TokenValue.from(VALUE);
 
@@ -54,12 +54,12 @@ class CreateTokenTest {
 
         TokenInfo tokenInfo = new TokenInfo(tokenUsername, tokenExpirationDate);
 
-        when(tokenInfoProvider.fetchTokenInfo(PLATFORM, tokenValue)).thenReturn(tokenInfo);
+        when(tokenInfoProvider.fetch(PLATFORM, tokenValue)).thenReturn(tokenInfo);
 
         createToken.execute(tokenName, tokenValue, PLATFORM);
 
         verify(tokenRepository).existsByName(tokenName);
-        verify(tokenInfoProvider).fetchTokenInfo(PLATFORM, tokenValue);
+        verify(tokenInfoProvider).fetch(PLATFORM, tokenValue);
 
         verify(tokenRepository).save(argThat(token -> token.name().equals(tokenName) && token.value().equals(tokenValue)
                 && token.platform().equals(PLATFORM) && token.username().equals(tokenUsername)
@@ -74,7 +74,7 @@ class CreateTokenTest {
                 () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), null));
 
         assertEquals("Token already exists with name: " + NAME, ex.getMessage());
-        verify(tokenInfoProvider, never()).fetchTokenInfo(any(), any());
+        verify(tokenInfoProvider, never()).fetch(any(), any());
         verify(tokenRepository, never()).save(any());
     }
 
@@ -82,7 +82,7 @@ class CreateTokenTest {
     void execute_whenTokenInfoFailed_shouldThrowException() throws TokenPersistenceException {
         when(tokenRepository.existsByName(any())).thenReturn(false);
 
-        doThrow(new TokenInfoException("token info fetch failed")).when(tokenInfoProvider).fetchTokenInfo(any(), any());
+        doThrow(new TokenInfoException("token info fetch failed")).when(tokenInfoProvider).fetch(any(), any());
 
         CreateTokenException ex = assertThrows(CreateTokenException.class,
                 () -> createToken.execute(TokenName.from(NAME), TokenValue.from(VALUE), PLATFORM));
@@ -96,7 +96,7 @@ class CreateTokenTest {
     void execute_whenTokenSaveFailed_shouldThrowException() throws TokenPersistenceException {
         when(tokenRepository.existsByName(any())).thenReturn(false);
 
-        when(tokenInfoProvider.fetchTokenInfo(any(), any()))
+        when(tokenInfoProvider.fetch(any(), any()))
                 .thenReturn(new TokenInfo(new TokenUsername(USERNAME), new TokenExpirationDate(Instant.now())));
 
         doThrow(new TokenPersistenceException("token save failed")).when(tokenRepository).save(any());

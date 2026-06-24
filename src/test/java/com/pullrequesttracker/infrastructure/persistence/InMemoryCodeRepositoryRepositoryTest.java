@@ -30,7 +30,7 @@ class InMemoryCodeRepositoryRepositoryTest {
     private InMemoryCodeRepositoryRepository repository;
 
     @Test
-    void save_whenCalled_shouldAddToRepository() {
+    void save_shouldAddToRepository() {
         CodeRepository repo = aCodeRepository().build();
 
         repository.save(repo);
@@ -74,7 +74,7 @@ class InMemoryCodeRepositoryRepositoryTest {
     }
 
     @Test
-    void initialize_whenCalled_shouldLoadFromFile() {
+    void initialize_shouldLoadFromFile() {
         CodeRepositoryDto dto = aCodeRepositoryDto().build();
         CodeRepository repo = aCodeRepository().build();
 
@@ -87,7 +87,7 @@ class InMemoryCodeRepositoryRepositoryTest {
     }
 
     @Test
-    void persist_whenCalled_shouldSaveToFile() throws IOException {
+    void persist_shouldSaveToFile() throws IOException {
         CodeRepository repo = aCodeRepository().build();
         CodeRepositoryDto dto = aCodeRepositoryDto().build();
         repository.save(repo);
