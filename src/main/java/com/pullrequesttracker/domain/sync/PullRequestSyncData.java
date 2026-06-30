@@ -3,13 +3,14 @@ package com.pullrequesttracker.domain.sync;
 import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.Review;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
-public record PullRequestSyncData(int externalId, String title, String author, boolean isDraft, PullRequestState state,
+public record PullRequestSyncData(int externalId, String title, Actor author, boolean isDraft, PullRequestState state,
         CiStatus ciStatus, List<String> labels, List<Review> reviews, ReviewStatus reviewStatus, int commentCount,
         Instant createdAt, Instant updatedAt) {
     public PullRequestSyncData {

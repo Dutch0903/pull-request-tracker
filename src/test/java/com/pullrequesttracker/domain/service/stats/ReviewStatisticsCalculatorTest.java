@@ -3,6 +3,7 @@ package com.pullrequesttracker.domain.service.stats;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.ReviewStatistics;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class ReviewStatisticsCalculatorTest {
         List<PullRequest> list = List.of(
                 aPullRequest().withState(new PullRequestState.Ignored()).withReviewStatus(ReviewStatus.APPROVED)
                         .build(),
-                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo("user", Instant.now())))
+                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo(Actor.from("user"), Instant.now())))
                         .withReviewStatus(ReviewStatus.APPROVED).build(),
                 aPullRequest().withState(new PullRequestState.Closed()).withReviewStatus(ReviewStatus.APPROVED)
                         .build());

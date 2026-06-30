@@ -4,6 +4,7 @@ import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.Commit;
@@ -19,14 +20,14 @@ import java.util.List;
 public class GitHubPullRequestMapper {
 
     public PullRequestSyncData toSyncData(GithubPullRequest pr) {
-        return new PullRequestSyncData(pr.number(), pr.title(), pr.author().login(), pr.isDraft(), determineState(pr),
-                determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr), pr.totalCommentsCount(),
-                pr.createdAt(), pr.updatedAt());
+        return new PullRequestSyncData(pr.number(), pr.title(), Actor.from(pr.author().login()), pr.isDraft(),
+                determineState(pr), determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr),
+                pr.totalCommentsCount(), pr.createdAt(), pr.updatedAt());
     }
 
     private PullRequestState determineState(GithubPullRequest pr) {
         if (pr.merged())
-            return new PullRequestState.Merged(new MergeInfo(pr.mergedBy().login(), pr.mergedAt()));
+            return new PullRequestState.Merged(new MergeInfo(Actor.from(pr.mergedBy().login()), pr.mergedAt()));
         if (pr.closed())
             return new PullRequestState.Closed();
         return new PullRequestState.Open();
@@ -56,7 +57,8 @@ public class GitHubPullRequestMapper {
 
     private List<Review> mapReviews(GithubPullRequest pr) {
         return pr.latestReviews().nodes().stream()
-                .map(r -> new Review(r.author().login(), mapReviewStatus(r.state()), r.submittedAt())).toList();
+                .map(r -> new Review(Actor.from(r.author().login()), mapReviewStatus(r.state()), r.submittedAt()))
+                .toList();
     }
 
     private ReviewStatus mapReviewDecision(GithubPullRequest pr) {

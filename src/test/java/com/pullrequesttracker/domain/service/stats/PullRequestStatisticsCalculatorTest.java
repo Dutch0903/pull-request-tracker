@@ -2,6 +2,7 @@ package com.pullrequesttracker.domain.service.stats;
 
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestState;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.PullRequestStatistics;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class PullRequestStatisticsCalculatorTest {
         PullRequestStatisticsCalculator calculator = new PullRequestStatisticsCalculator(
                 new StatisticsConfiguration(0, 0));
         List<PullRequest> list = List.of(aPullRequest().withState(new PullRequestState.Ignored()).build(),
-                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo("user", Instant.now()))).build(),
+                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo(Actor.from("user"), Instant.now()))).build(),
                 aPullRequest().withState(new PullRequestState.Closed()).build(),
                 aPullRequest().withState(new PullRequestState.Open()).withDraft(false).build());
 

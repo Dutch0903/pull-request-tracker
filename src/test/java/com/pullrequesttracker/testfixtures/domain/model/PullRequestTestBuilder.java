@@ -5,11 +5,15 @@ import com.pullrequesttracker.domain.model.PullRequestFactory;
 import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.PullRequestId;
+import com.pullrequesttracker.domain.valueobject.Title;
 import com.pullrequesttracker.domain.valueobject.Review;
 import com.pullrequesttracker.domain.valueobject.ReviewSummary;
+import com.pullrequesttracker.testfixtures.domain.valueobject.ActorTestBuilder;
+import com.pullrequesttracker.testfixtures.domain.valueobject.PullRequestTitleTestBuilder;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,8 +23,8 @@ public class PullRequestTestBuilder {
     private PullRequestId id = PullRequestId.create();
     private CodeRepositoryId codeRepositoryId = CodeRepositoryId.create();
     private int externalId = 1;
-    private String author = "author";
-    private String title = "title";
+    private Actor author = ActorTestBuilder.anActor().build();
+    private Title title = PullRequestTitleTestBuilder.aPullRequestTitle().build();
     private Instant createdAt = Instant.now();
     private Instant updatedAt = Instant.now();
     private boolean draft = false;
@@ -51,11 +55,21 @@ public class PullRequestTestBuilder {
     }
 
     public PullRequestTestBuilder withAuthor(String author) {
+        this.author = new Actor(author);
+        return this;
+    }
+
+    public PullRequestTestBuilder withAuthor(Actor author) {
         this.author = author;
         return this;
     }
 
     public PullRequestTestBuilder withTitle(String title) {
+        this.title = new Title(title);
+        return this;
+    }
+
+    public PullRequestTestBuilder withTitle(Title title) {
         this.title = title;
         return this;
     }
@@ -97,7 +111,7 @@ public class PullRequestTestBuilder {
 
     public PullRequest build() {
         ReviewSummary reviewSummary = new ReviewSummary(reviews, reviewStatus);
-        return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft, state,
-                ciStatus, labels, reviewSummary, commentCount, updatedAt);
+        return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft,
+                state, ciStatus, labels, reviewSummary, commentCount, updatedAt);
     }
 }

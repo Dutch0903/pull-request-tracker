@@ -4,6 +4,7 @@ import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.Review;
 
 import java.time.Instant;
@@ -89,7 +90,7 @@ public class PullRequestSyncDataTestBuilder {
     }
 
     public PullRequestSyncData build() {
-        return new PullRequestSyncData(externalId, title, author, isDraft, state, ciStatus, labels, reviews,
+        return new PullRequestSyncData(externalId, title, Actor.from(author), isDraft, state, ciStatus, labels, reviews,
                 reviewStatus, commentCount, createdAt, updatedAt);
     }
 }

@@ -93,7 +93,7 @@ public class SynchronizeCodeRepositoryTest {
 
         ArgumentCaptor<PullRequest> captor = ArgumentCaptor.forClass(PullRequest.class);
         verify(pullRequestRepository).save(captor.capture());
-        assertThat(captor.getValue().getTitle()).isEqualTo("new title");
+        assertThat(captor.getValue().getTitle().value()).isEqualTo("new title");
     }
 
     @Test

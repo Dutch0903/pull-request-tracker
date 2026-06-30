@@ -4,6 +4,7 @@ import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.valueobject.ContinuousIntegrationStatistics;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ public class ContinuousIntegrationStatisticsCalculatorTest {
                 new StatisticsConfiguration(0, 0));
         List<PullRequest> list = List.of(
                 aPullRequest().withState(new PullRequestState.Ignored()).withCiStatus(CiStatus.PASSED).build(),
-                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo("user", Instant.now())))
+                aPullRequest().withState(new PullRequestState.Merged(new MergeInfo(Actor.from("user"), Instant.now())))
                         .withCiStatus(CiStatus.PASSED).build(),
                 aPullRequest().withState(new PullRequestState.Closed()).withCiStatus(CiStatus.PASSED).build(),
                 aPullRequest().withState(new PullRequestState.Open()).withCiStatus(CiStatus.FAILED).build());

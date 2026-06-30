@@ -1,6 +1,7 @@
 package com.pullrequesttracker.testfixtures.domain.valueobject;
 
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.Review;
 
 import java.time.Instant;
@@ -30,6 +31,6 @@ public class ReviewTestBuilder {
     }
 
     public Review build() {
-        return new Review(reviewer, status, submittedAt);
+        return new Review(Actor.from(reviewer), status, submittedAt);
     }
 }

@@ -21,21 +21,21 @@ public class RecentActivityCalculator extends StatisticsCalculator {
 
         for (PullRequest pr : prs) {
             if (pr.getStatus() == PullRequestStatus.MERGED) {
-                pr.getMergeInfo().ifPresent(info -> events.add(new RecentActivityEntry(info.mergedBy(),
+                pr.getMergeInfo().ifPresent(info -> events.add(new RecentActivityEntry(info.mergedBy().value(),
                         RecentActivityType.MERGED, pr.getExternalId(), info.mergedAt())));
             }
             if (pr.getStatus() == PullRequestStatus.OPEN) {
-                events.add(new RecentActivityEntry(pr.getAuthor(), RecentActivityType.OPENED, pr.getExternalId(),
+                events.add(new RecentActivityEntry(pr.getAuthor().value(), RecentActivityType.OPENED, pr.getExternalId(),
                         pr.getCreatedAt()));
             }
             for (Review review : pr.getReviewSummary().reviews()) {
                 if (review.status() == ReviewStatus.APPROVED) {
-                    events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.APPROVED,
+                    events.add(new RecentActivityEntry(review.reviewer().value(), RecentActivityType.APPROVED,
                             pr.getExternalId(), review.submittedAt()));
                 }
 
                 if (review.status() == ReviewStatus.CHANGES_REQUESTED) {
-                    events.add(new RecentActivityEntry(review.reviewer(), RecentActivityType.CHANGES_REQUESTED,
+                    events.add(new RecentActivityEntry(review.reviewer().value(), RecentActivityType.CHANGES_REQUESTED,
                             pr.getExternalId(), review.submittedAt()));
                 }
             }

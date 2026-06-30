@@ -1,6 +1,7 @@
 package com.pullrequesttracker.testfixtures.domain.model;
 
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.Review;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ public class ReviewTestBuilder {
     }
 
     public static ReviewTestBuilder copyOf(Review review) {
-        return aReview().withReviewer(review.reviewer()).withReviewStatus(review.status())
+        return aReview().withReviewer(review.reviewer().value()).withReviewStatus(review.status())
                 .withSubmittedAt(review.submittedAt());
     }
 
@@ -35,6 +36,6 @@ public class ReviewTestBuilder {
     }
 
     public Review build() {
-        return new Review(reviewer, reviewStatus, submittedAt);
+        return new Review(Actor.from(reviewer), reviewStatus, submittedAt);
     }
 }
