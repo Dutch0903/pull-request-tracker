@@ -14,4 +14,8 @@ public class NavigationEventPublisher {
     public void navigateTo(String viewName) {
         eventPublisher.publishEvent(new NavigationEvent(viewName));
     }
+
+    public void navigateBack() {
+        eventPublisher.publishEvent(new NavigationPopEvent());
+    }
 }

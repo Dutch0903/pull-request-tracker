@@ -37,7 +37,8 @@ public class PullRequestMapper {
 
     public PullRequest toDomain(PullRequestDto dto) {
         List<Review> reviews = dto.reviews().stream()
-                .map(r -> new Review(Actor.from(r.reviewer()), ReviewStatus.valueOf(r.state()), r.submittedAt())).toList();
+                .map(r -> new Review(Actor.from(r.reviewer()), ReviewStatus.valueOf(r.state()), r.submittedAt()))
+                .toList();
 
         ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
 
@@ -49,9 +50,8 @@ public class PullRequestMapper {
         };
 
         return PullRequestFactory.reconstitute(new PullRequestId(dto.id()),
-                CodeRepositoryId.from(dto.codeRepositoryId()), dto.externalId(),
-                Actor.from(dto.author()), dto.createdAt(),
-                new Title(dto.title()), dto.draft(), state, CiStatus.valueOf(dto.ciStatus()),
+                CodeRepositoryId.from(dto.codeRepositoryId()), dto.externalId(), Actor.from(dto.author()),
+                dto.createdAt(), new Title(dto.title()), dto.draft(), state, CiStatus.valueOf(dto.ciStatus()),
                 dto.labels(), reviewSummary, dto.commentCount(), dto.updatedAt());
     }
 }

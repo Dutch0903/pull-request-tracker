@@ -25,8 +25,8 @@ public class RecentActivityCalculator extends StatisticsCalculator {
                         RecentActivityType.MERGED, pr.getExternalId(), info.mergedAt())));
             }
             if (pr.getStatus() == PullRequestStatus.OPEN) {
-                events.add(new RecentActivityEntry(pr.getAuthor().value(), RecentActivityType.OPENED, pr.getExternalId(),
-                        pr.getCreatedAt()));
+                events.add(new RecentActivityEntry(pr.getAuthor().value(), RecentActivityType.OPENED,
+                        pr.getExternalId(), pr.getCreatedAt()));
             }
             for (Review review : pr.getReviewSummary().reviews()) {
                 if (review.status() == ReviewStatus.APPROVED) {

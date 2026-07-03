@@ -40,4 +40,9 @@ public class ViewManager {
     public void onNavigationEvent(NavigationEvent event) {
         push(event.viewName());
     }
+
+    @EventListener
+    public void onNavigationPopEvent(NavigationPopEvent event) {
+        pop();
+    }
 }

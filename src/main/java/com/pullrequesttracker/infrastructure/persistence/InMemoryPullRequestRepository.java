@@ -1,5 +1,6 @@
 package com.pullrequesttracker.infrastructure.persistence;
 
+import com.pullrequesttracker.domain.filter.PullRequestFilter;
 import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.repository.PullRequestRepository;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
@@ -48,6 +49,23 @@ public class InMemoryPullRequestRepository implements PullRequestRepository {
 
     public List<PullRequest> findAll() {
         return List.copyOf(pullRequests.values());
+    }
+
+    @Override
+    public List<PullRequest> findAll(List<PullRequestFilter> filters) {
+        return pullRequests.values().stream().filter(pr -> filters.stream().allMatch(f -> matches(pr, f))).toList();
+    }
+
+    private boolean matches(PullRequest pr, PullRequestFilter filter) {
+        return switch (filter.field()) {
+            case STATUS -> pr.getStatus() == filter.value();
+            case CODE_REPOSITORY -> pr.getCodeRepositoryId().equals(filter.value());
+            case SEARCH -> {
+                String term = ((String) filter.value()).toLowerCase();
+                yield pr.getTitle().value().toLowerCase().contains(term)
+                        || pr.getAuthor().value().toLowerCase().contains(term);
+            }
+        };
     }
 
     @Override

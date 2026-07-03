@@ -34,9 +34,9 @@ public class PullRequest {
     private int commentCount;
     private Instant updatedAt;
 
-    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, Actor author,
-                Instant createdAt, Title title, boolean draft, PullRequestState state, CiStatus ciStatus,
-                List<String> labels, ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
+    PullRequest(PullRequestId id, CodeRepositoryId codeRepositoryId, int externalId, Actor author, Instant createdAt,
+            Title title, boolean draft, PullRequestState state, CiStatus ciStatus, List<String> labels,
+            ReviewSummary reviewSummary, int commentCount, Instant updatedAt) {
         Objects.requireNonNull(id, "Pull request id must not be null");
         Objects.requireNonNull(codeRepositoryId, "Code repository id must not be null");
         if (externalId <= 0)

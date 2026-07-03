@@ -16,7 +16,7 @@ public class KeyBindingBar {
     }
 
     public Element render() {
-        var items = keyBindings.stream().map(kb -> text(kb.toString())).toArray(Element[]::new);
+        var items = keyBindings.stream().map(kb -> text(kb.toString() + " ")).toArray(Element[]::new);
         return row(items);
     }
 }

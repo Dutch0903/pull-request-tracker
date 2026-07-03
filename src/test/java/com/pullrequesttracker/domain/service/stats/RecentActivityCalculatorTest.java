@@ -33,7 +33,8 @@ public class RecentActivityCalculatorTest {
     @Test
     void calculate_withMergedPullRequest_shouldIncludeMergedEvent() {
         Instant mergedAt = Instant.parse("2026-01-01T00:00:00Z");
-        PullRequest pr = aPullRequest().withMergeInfo(new MergeInfo(Actor.from("merger"), mergedAt)).withExternalId(42).build();
+        PullRequest pr = aPullRequest().withMergeInfo(new MergeInfo(Actor.from("merger"), mergedAt)).withExternalId(42)
+                .build();
         RecentActivityCalculator calculator = new RecentActivityCalculator(UNLIMITED);
 
         List<RecentActivityEntry> result = calculator.calculate(List.of(pr));
@@ -102,9 +103,9 @@ public class RecentActivityCalculatorTest {
         Instant first = Instant.parse("2026-01-03T00:00:00Z");
         Instant second = Instant.parse("2026-01-02T00:00:00Z");
         Instant third = Instant.parse("2026-01-01T00:00:00Z");
-        List<PullRequest> list = List.of(aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),third)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),first)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),second)).build());
+        List<PullRequest> list = List.of(aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), third)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), first)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), second)).build());
         RecentActivityCalculator calculator = new RecentActivityCalculator(UNLIMITED);
 
         List<RecentActivityEntry> result = calculator.calculate(list);
@@ -117,11 +118,11 @@ public class RecentActivityCalculatorTest {
     @Test
     void calculate_shouldLimitResultsByMaxEntries() {
         Instant base = Instant.parse("2026-01-01T00:00:00Z");
-        List<PullRequest> list = List.of(aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),base)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),base)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),base)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),base)).build(),
-                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"),base)).build());
+        List<PullRequest> list = List.of(aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), base)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), base)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), base)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), base)).build(),
+                aPullRequest().withMergeInfo(new MergeInfo(Actor.from("user"), base)).build());
         RecentActivityCalculator calculator = new RecentActivityCalculator(new StatisticsConfiguration(0, 3));
 
         List<RecentActivityEntry> result = calculator.calculate(list);

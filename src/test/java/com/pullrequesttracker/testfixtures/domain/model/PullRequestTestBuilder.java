@@ -111,7 +111,7 @@ public class PullRequestTestBuilder {
 
     public PullRequest build() {
         ReviewSummary reviewSummary = new ReviewSummary(reviews, reviewStatus);
-        return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft,
-                state, ciStatus, labels, reviewSummary, commentCount, updatedAt);
+        return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft, state,
+                ciStatus, labels, reviewSummary, commentCount, updatedAt);
     }
 }
