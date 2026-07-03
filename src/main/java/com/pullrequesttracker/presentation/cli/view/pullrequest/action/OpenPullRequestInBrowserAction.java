@@ -45,10 +45,8 @@ public class OpenPullRequestInBrowserAction implements PullRequestListViewAction
     public void execute(KeyEvent event) {
         PullRequestListItemDto pr = pullRequestList.getSelectedItem();
         try {
-            new ProcessBuilder(browserCommand(), pr.url())
-                    .redirectOutput(ProcessBuilder.Redirect.DISCARD)
-                    .redirectError(ProcessBuilder.Redirect.DISCARD)
-                    .start();
+            new ProcessBuilder(browserCommand(), pr.url()).redirectOutput(ProcessBuilder.Redirect.DISCARD)
+                    .redirectError(ProcessBuilder.Redirect.DISCARD).start();
         } catch (Exception e) {
             log.warn("Failed to open pull request in browser: {}", pr.url(), e);
         }

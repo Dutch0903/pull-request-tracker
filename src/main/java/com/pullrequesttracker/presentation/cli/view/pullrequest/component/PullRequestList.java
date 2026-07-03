@@ -4,7 +4,9 @@ import com.pullrequesttracker.application.dto.PullRequestListItemDto;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.presentation.cli.view.pullrequest.PullRequestListState;
+import dev.tamboui.layout.Margin;
 import dev.tamboui.layout.Padding;
+import dev.tamboui.style.AnsiColor;
 import dev.tamboui.style.Color;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.StyledElement;
@@ -46,31 +48,29 @@ public class PullRequestList {
     }
 
     private StyledElement<?> renderItem(PullRequestListItemDto pr) {
-        return column(row(text(formatLine1(pr)), spacer()), row(text(formatLine2(pr)).dim(), spacer()));
+        return column(row(text(formatLine1(pr)), spacer(), text(formatAge(pr.updatedAt()))),
+                row(ciSymbol(pr.ciStatus()), text(formatLine2Rest(pr)).dim()).margin(new Margin(0, 0, 1, 0)).length(2));
     }
 
     private String formatLine1(PullRequestListItemDto pr) {
-        String prefix = pr.draft() ? "[DRAFT]" : "o";
-        String age = formatAge(pr.updatedAt());
-        return String.format("%s #%d  %s  @%s  %s", prefix, pr.externalId(), pr.title(), pr.author(), age);
+        String prefix = pr.draft() ? "[DRAFT] " : "";
+        return String.format("%s#%d  %s", prefix, pr.externalId(), pr.title());
     }
 
-    private String formatLine2(PullRequestListItemDto pr) {
-        String ci = formatCiStatus(pr.ciStatus());
+    private StyledElement<?> ciSymbol(CiStatus ciStatus) {
+        return switch (ciStatus) {
+            case PASSED -> text("    ✓  ").fg(Color.ansi(AnsiColor.BRIGHT_GREEN));
+            case FAILED -> text("    ✗  ").fg(Color.ansi(AnsiColor.BRIGHT_RED));
+            case IN_PROGRESS -> text("    ⏳  ").fg(Color.ansi(AnsiColor.BRIGHT_YELLOW));
+            default -> text("    ·  ").dim();
+        };
+    }
+
+    private String formatLine2Rest(PullRequestListItemDto pr) {
         String review = formatReviewStatus(pr.reviewStatus(), pr.approvalCount());
-        String comments = pr.commentCount() + " comments";
+        String comments = "💬 " + pr.commentCount();
         String labels = pr.labels().isEmpty() ? "" : "  [" + String.join(", ", pr.labels()) + "]";
-        return String.format("    %s  %s  %s%s", ci, review, comments, labels);
-    }
-
-    private String formatCiStatus(CiStatus ciStatus) {
-        if (ciStatus == CiStatus.PASSED)
-            return "CI ok";
-        if (ciStatus == CiStatus.FAILED)
-            return "CI fail";
-        if (ciStatus == CiStatus.IN_PROGRESS)
-            return "CI running";
-        return "CI pending";
+        return String.format("@%s  %s  %s%s", pr.author(), review, comments, labels);
     }
 
     private String formatReviewStatus(ReviewStatus reviewStatus, int approvalCount) {
