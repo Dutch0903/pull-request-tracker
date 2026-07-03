@@ -8,8 +8,6 @@ import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import dev.tamboui.toolkit.element.Element;
-import dev.tamboui.toolkit.element.RenderContext;
-import dev.tamboui.toolkit.element.Size;
 
 import java.util.List;
 
@@ -28,11 +26,6 @@ public class DashboardView extends View {
         this.state = state;
         this.controller.loadCodeRepositorySummaries();
         this.controller.loadPullRequestSummary();
-    }
-
-    @Override
-    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
-        return Size.UNKNOWN;
     }
 
     @Override

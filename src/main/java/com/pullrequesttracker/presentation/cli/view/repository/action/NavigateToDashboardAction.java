@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.repository.action;
 
-import com.pullrequesttracker.presentation.cli.action.KeyAction;
+import com.pullrequesttracker.presentation.cli.action.RepositoryListViewAction;
 import com.pullrequesttracker.presentation.cli.navigation.NavigationEventPublisher;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import dev.tamboui.tui.event.KeyEvent;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class NavigateToDashboardAction implements KeyAction {
+public class NavigateToDashboardAction implements RepositoryListViewAction {
     private final NavigationEventPublisher navigationEventPublisher;
 
     @Override
@@ -28,7 +28,12 @@ public class NavigateToDashboardAction implements KeyAction {
     }
 
     @Override
-    public void execute() {
+    public int order() {
+        return 0;
+    }
+
+    @Override
+    public void execute(KeyEvent event) {
         navigationEventPublisher.navigateTo(ViewName.DASHBOARD);
     }
 }

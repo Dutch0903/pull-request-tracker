@@ -6,8 +6,6 @@ import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import com.pullrequesttracker.presentation.cli.view.token.component.TokenList;
 import dev.tamboui.toolkit.element.Element;
-import dev.tamboui.toolkit.element.RenderContext;
-import dev.tamboui.toolkit.element.Size;
 import dev.tamboui.tui.event.KeyEvent;
 import dev.tamboui.toolkit.event.EventResult;
 
@@ -37,10 +35,5 @@ public class TokenManagerView extends View {
             return renderedDialog.handleKeyEvent(event, true);
         }
         return super.handleKeyEvent(event, focused);
-    }
-
-    @Override
-    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
-        return Size.UNKNOWN;
     }
 }

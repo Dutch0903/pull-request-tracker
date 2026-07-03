@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.token.action;
 
-import com.pullrequesttracker.presentation.cli.action.KeyAction;
+import com.pullrequesttracker.presentation.cli.action.TokenManagerViewAction;
 import com.pullrequesttracker.presentation.cli.view.token.dialog.UpdateTokenDialogAction;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OpenUpdateTokenDialog implements KeyAction {
+public class OpenUpdateTokenDialog implements TokenManagerViewAction {
     private final UpdateTokenDialogAction updateTokenDialogAction;
 
     @Override
@@ -27,7 +27,12 @@ public class OpenUpdateTokenDialog implements KeyAction {
     }
 
     @Override
-    public void execute() {
+    public int order() {
+        return 2;
+    }
+
+    @Override
+    public void execute(KeyEvent event) {
         updateTokenDialogAction.open();
     }
 }

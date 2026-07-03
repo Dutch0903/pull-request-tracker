@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.token.action;
 
-import com.pullrequesttracker.presentation.cli.action.KeyAction;
+import com.pullrequesttracker.presentation.cli.action.TokenManagerViewAction;
 import com.pullrequesttracker.presentation.cli.view.token.dialog.DeleteTokenDialogAction;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OpenDeleteTokenDialog implements KeyAction {
+public class OpenDeleteTokenDialog implements TokenManagerViewAction {
     private final DeleteTokenDialogAction deleteTokenDialogAction;
 
     @Override
@@ -27,7 +27,12 @@ public class OpenDeleteTokenDialog implements KeyAction {
     }
 
     @Override
-    public void execute() {
+    public int order() {
+        return 3;
+    }
+
+    @Override
+    public void execute(KeyEvent event) {
         deleteTokenDialogAction.open();
     }
 }

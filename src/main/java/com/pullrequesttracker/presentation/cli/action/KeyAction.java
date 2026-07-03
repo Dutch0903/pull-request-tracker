@@ -6,5 +6,9 @@ public interface KeyAction {
     boolean matches(KeyEvent keyEvent);
     String getKey();
     String getLabel();
-    void execute();
+    int order();
+    void execute(KeyEvent event);
+    default boolean isAvailable() {
+        return true;
+    }
 }

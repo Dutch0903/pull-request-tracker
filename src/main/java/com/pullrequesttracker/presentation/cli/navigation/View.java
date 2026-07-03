@@ -7,6 +7,7 @@ import dev.tamboui.layout.Rect;
 import dev.tamboui.terminal.Frame;
 import dev.tamboui.toolkit.element.Element;
 import dev.tamboui.toolkit.element.RenderContext;
+import dev.tamboui.toolkit.element.Size;
 import dev.tamboui.toolkit.elements.DialogElement;
 import dev.tamboui.toolkit.event.EventResult;
 import dev.tamboui.tui.event.KeyEvent;
@@ -29,6 +30,11 @@ public abstract class View implements Element {
         Element ui = dock().center(renderBody()).bottom(renderNavigationFooter());
         ui.render(frame, area, context);
         renderOverlay(frame, area, context);
+    }
+
+    @Override
+    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
+        return Size.UNKNOWN;
     }
 
     protected abstract Element renderBody();

@@ -1,14 +1,21 @@
 package com.pullrequesttracker.presentation.cli.action;
 
 import com.pullrequesttracker.presentation.cli.navigation.NavigationEventPublisher;
+import com.pullrequesttracker.presentation.cli.navigation.ViewStack;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class NavigateBackAction implements KeyAction {
+public class NavigateBackAction implements SharedAction {
     private final NavigationEventPublisher navigationEventPublisher;
+    private final ViewStack viewStack;
+
+    @Override
+    public boolean isAvailable() {
+        return viewStack.size() > 1;
+    }
 
     @Override
     public boolean matches(KeyEvent keyEvent) {
@@ -26,7 +33,12 @@ public class NavigateBackAction implements KeyAction {
     }
 
     @Override
-    public void execute() {
+    public int order() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public void execute(KeyEvent event) {
         navigationEventPublisher.navigateBack();
     }
 }

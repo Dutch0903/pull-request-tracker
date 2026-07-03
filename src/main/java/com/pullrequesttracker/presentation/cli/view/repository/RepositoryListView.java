@@ -10,8 +10,6 @@ import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import com.pullrequesttracker.presentation.cli.view.repository.component.RepositoryDetailPanel;
 import com.pullrequesttracker.presentation.cli.view.repository.component.RepositoryList;
 import dev.tamboui.toolkit.element.Element;
-import dev.tamboui.toolkit.element.RenderContext;
-import dev.tamboui.toolkit.element.Size;
 
 import static dev.tamboui.toolkit.Toolkit.row;
 
@@ -45,10 +43,5 @@ public class RepositoryListView extends View {
         }
 
         return row(repositoryList.render(), new RepositoryDetailPanel(selected, currentStats).render().fill());
-    }
-
-    @Override
-    public Size preferredSize(int availableWidth, int availableHeight, RenderContext context) {
-        return Size.UNKNOWN;
     }
 }

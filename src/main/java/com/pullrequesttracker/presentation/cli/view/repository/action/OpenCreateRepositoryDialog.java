@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.repository.action;
 
-import com.pullrequesttracker.presentation.cli.action.KeyAction;
+import com.pullrequesttracker.presentation.cli.action.RepositoryListViewAction;
 import com.pullrequesttracker.presentation.cli.view.repository.CreateRepositoryDialogAction;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OpenCreateRepositoryDialog implements KeyAction {
+public class OpenCreateRepositoryDialog implements RepositoryListViewAction {
     private final CreateRepositoryDialogAction createRepositoryDialogAction;
 
     @Override
@@ -27,7 +27,12 @@ public class OpenCreateRepositoryDialog implements KeyAction {
     }
 
     @Override
-    public void execute() {
+    public int order() {
+        return 1;
+    }
+
+    @Override
+    public void execute(KeyEvent event) {
         createRepositoryDialogAction.open();
     }
 }

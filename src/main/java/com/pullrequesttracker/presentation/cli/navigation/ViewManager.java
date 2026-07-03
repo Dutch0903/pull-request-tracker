@@ -4,16 +4,14 @@ import dev.tamboui.toolkit.element.Element;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 @Component
 public class ViewManager {
     private final ViewRegistry viewRegistry;
-    private final Deque<Element> viewStack = new ArrayDeque<>();
+    private final ViewStack viewStack;
 
-    public ViewManager(ViewRegistry viewRegistry) {
+    public ViewManager(ViewRegistry viewRegistry, ViewStack viewStack) {
         this.viewRegistry = viewRegistry;
+        this.viewStack = viewStack;
         viewStack.push(viewRegistry.getView(viewRegistry.getStartViewName()));
     }
 
@@ -22,7 +20,7 @@ public class ViewManager {
     }
 
     public void pop() {
-        if (!viewStack.isEmpty()) {
+        if (viewStack.size() > 1) {
             viewStack.pop();
         }
     }
