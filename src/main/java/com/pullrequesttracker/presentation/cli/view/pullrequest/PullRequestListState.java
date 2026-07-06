@@ -46,5 +46,6 @@ public class PullRequestListState extends StateManager {
     public void resetFilters() {
         this.statusFilter = null;
         this.searchQuery = null;
+        this.codeRepositoryFilter = null;
     }
 }
