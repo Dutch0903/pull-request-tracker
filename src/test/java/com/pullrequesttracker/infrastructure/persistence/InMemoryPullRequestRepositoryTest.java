@@ -60,4 +60,38 @@ class InMemoryPullRequestRepositoryTest {
 
         assertThat(result).containsExactly(pr1);
     }
+
+    @Test
+    void findAll_whenAuthorFilterIsApplied_shouldReturnOnlyMatchingPullRequests() {
+        PullRequest alicePr = aPullRequest().withAuthor("alice").build();
+        PullRequest bobPr = aPullRequest().withAuthor("bob").build();
+        repository.save(alicePr);
+        repository.save(bobPr);
+
+        List<PullRequest> result = repository.findAll(List.of(PullRequestFilter.author("alice")));
+
+        assertThat(result).containsExactly(alicePr);
+    }
+
+    @Test
+    void findAll_whenAuthorFilterWithUnknownAuthor_shouldReturnEmptyList() {
+        PullRequest pr = aPullRequest().withAuthor("alice").build();
+        repository.save(pr);
+
+        List<PullRequest> result = repository.findAll(List.of(PullRequestFilter.author("unknown")));
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void findAllAuthors_withMultiplePullRequests_shouldReturnDistinctSortedAuthors() {
+        repository.save(aPullRequest().withAuthor("charlie").build());
+        repository.save(aPullRequest().withAuthor("alice").build());
+        repository.save(aPullRequest().withAuthor("bob").build());
+        repository.save(aPullRequest().withAuthor("alice").build());
+
+        List<String> result = repository.findAllAuthors();
+
+        assertThat(result).containsExactly("alice", "bob", "charlie");
+    }
 }

@@ -65,7 +65,13 @@ public class InMemoryPullRequestRepository implements PullRequestRepository {
                 yield pr.getTitle().value().toLowerCase().contains(term)
                         || pr.getAuthor().value().toLowerCase().contains(term);
             }
+            case AUTHOR -> pr.getAuthor().value().equalsIgnoreCase((String) filter.value());
         };
+    }
+
+    @Override
+    public List<String> findAllAuthors() {
+        return pullRequests.values().stream().map(pr -> pr.getAuthor().value()).distinct().sorted().toList();
     }
 
     @Override

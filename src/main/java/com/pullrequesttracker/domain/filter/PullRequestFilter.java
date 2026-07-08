@@ -20,6 +20,10 @@ public record PullRequestFilter(PullRequestFilterField field, Object value) {
         return new PullRequestFilter(PullRequestFilterField.CODE_REPOSITORY, repoId);
     }
 
+    public static PullRequestFilter author(String username) {
+        return new PullRequestFilter(PullRequestFilterField.AUTHOR, username);
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -42,6 +46,12 @@ public record PullRequestFilter(PullRequestFilterField field, Object value) {
         public Builder codeRepository(CodeRepositoryId repoId) {
             if (repoId != null)
                 filters.add(PullRequestFilter.codeRepository(repoId));
+            return this;
+        }
+
+        public Builder author(String username) {
+            if (username != null && !username.isBlank())
+                filters.add(PullRequestFilter.author(username));
             return this;
         }
 

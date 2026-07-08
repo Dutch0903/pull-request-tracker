@@ -35,8 +35,7 @@ public class ClearFiltersAction implements PullRequestListViewAction {
 
     @Override
     public boolean isAvailable() {
-        return state.getStatusFilter() != null || state.getSearchQuery() != null
-                || state.getCodeRepositoryFilter() != null;
+        return state.hasActiveFilters();
     }
 
     @Override

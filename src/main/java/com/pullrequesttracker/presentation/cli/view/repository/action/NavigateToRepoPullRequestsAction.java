@@ -1,12 +1,12 @@
 package com.pullrequesttracker.presentation.cli.view.repository.action;
 
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
-import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
 import com.pullrequesttracker.presentation.cli.action.RepositoryListViewAction;
 import com.pullrequesttracker.presentation.cli.navigation.NavigationEventPublisher;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import com.pullrequesttracker.presentation.cli.view.pullrequest.PullRequestListController;
 import com.pullrequesttracker.presentation.cli.view.pullrequest.PullRequestListState;
+import com.pullrequesttracker.presentation.cli.view.pullrequest.FilterFormFields;
 import com.pullrequesttracker.presentation.cli.view.repository.component.RepositoryList;
 import dev.tamboui.tui.event.KeyEvent;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class NavigateToRepoPullRequestsAction implements RepositoryListViewActio
     @Override
     public void execute(KeyEvent event) {
         CodeRepositoryDto repo = repositoryList.getSelectedRepository();
-        pullRequestListState.setCodeRepositoryFilter(CodeRepositoryId.from(repo.id()));
+        pullRequestListState.setFilterValue(FilterFormFields.REPOSITORY, repo.owner() + "/" + repo.name());
         pullRequestListController.loadPullRequests();
         navigationEventPublisher.navigateTo(ViewName.PULL_REQUESTS);
     }

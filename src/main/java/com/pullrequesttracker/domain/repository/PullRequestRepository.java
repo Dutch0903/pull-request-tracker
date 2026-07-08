@@ -14,4 +14,5 @@ public interface PullRequestRepository {
     List<PullRequest> findAll();
     List<PullRequest> findAll(List<PullRequestFilter> filters);
     List<PullRequest> findAllOpen();
+    List<String> findAllAuthors();
 }
