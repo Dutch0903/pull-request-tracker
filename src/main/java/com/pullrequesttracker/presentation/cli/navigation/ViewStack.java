@@ -1,6 +1,5 @@
 package com.pullrequesttracker.presentation.cli.navigation;
 
-import dev.tamboui.toolkit.element.Element;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayDeque;
@@ -8,9 +7,9 @@ import java.util.Deque;
 
 @Component
 public class ViewStack {
-    private final Deque<Element> stack = new ArrayDeque<>();
+    private final Deque<View> stack = new ArrayDeque<>();
 
-    public void push(Element view) {
+    public void push(View view) {
         stack.push(view);
     }
 
@@ -18,7 +17,7 @@ public class ViewStack {
         stack.pop();
     }
 
-    public Element peek() {
+    public View peek() {
         return stack.peek();
     }
 

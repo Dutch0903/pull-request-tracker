@@ -30,9 +30,9 @@ query pullRequests($searchQuery: String!) {
             submittedAt
           }
         }
-        commits(last: 1) {
-          nodes {
-            commit {
+        headRef {
+          target {
+            ... on Commit {
               statusCheckRollup {
                 state
               }

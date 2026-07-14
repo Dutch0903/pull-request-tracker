@@ -1,6 +1,7 @@
 package com.pullrequesttracker.presentation.cli.view.pullrequest;
 
 import com.pullrequesttracker.application.dto.PullRequestListItemDto;
+import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -12,7 +13,6 @@ import dev.tamboui.toolkit.element.Element;
 import java.util.Collections;
 import java.util.List;
 
-import static dev.tamboui.toolkit.Toolkit.dock;
 
 @ViewComponent(name = ViewName.PULL_REQUESTS)
 public class PullRequestListView extends View {
@@ -23,19 +23,23 @@ public class PullRequestListView extends View {
 
     public PullRequestListView(DialogManager dialogManager, PullRequestListKeyHandler keyHandler,
             PullRequestListController controller, PullRequestListState state, PullRequestList pullRequestList,
-            FilterBar filterBar) {
-        super(dialogManager, keyHandler);
+            FilterBar filterBar, ViewRefreshProperties viewRefreshProperties) {
+        super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;
         this.pullRequestList = pullRequestList;
         this.filterBar = filterBar;
-        this.controller.loadPullRequests();
+    }
+
+    @Override
+    protected void refreshState() {
+        controller.loadPullRequests();
     }
 
     @Override
     protected Element renderBody() {
-        List<PullRequestListItemDto> items = state.get(PullRequestListState.PULL_REQUEST_ITEMS)
-                .getOrElse(Collections.emptyList());
-        return dock().top(filterBar.render(state)).center(pullRequestList.render(items));
+        List<PullRequestListItemDto> items = state.getOrElse(PullRequestListState.PULL_REQUEST_ITEMS,
+                Collections.emptyList());
+        return pullRequestList.render(items, filterBar.render(state));
     }
 }

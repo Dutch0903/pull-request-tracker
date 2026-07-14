@@ -1,22 +1,23 @@
 package com.pullrequesttracker.presentation.cli.state;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StateManager {
-    private final Map<SnapshotKey<?>, Snapshot<?>> snapshots = new HashMap<>();
+    private final Map<SnapshotKey<?>, Object> data = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public <T> Snapshot<T> get(SnapshotKey<T> snapshotKey) {
-        return (Snapshot<T>) snapshots.getOrDefault(snapshotKey, Snapshot.empty());
+    public <T> T get(SnapshotKey<T> key) {
+        return (T) data.get(key);
     }
 
-    public <T> void set(SnapshotKey<T> snapshotKey, T data) {
-        snapshots.put(snapshotKey, new Snapshot<>(data, Instant.now()));
+    @SuppressWarnings("unchecked")
+    public <T> T getOrElse(SnapshotKey<T> key, T defaultValue) {
+        T value = (T) data.get(key);
+        return value != null ? value : defaultValue;
     }
 
-    public <T> boolean isStale(SnapshotKey<T> snapshotKey) {
-        return get(snapshotKey).isOlderThan(snapshotKey.ttl());
+    public <T> void set(SnapshotKey<T> key, T value) {
+        data.put(key, value);
     }
 }

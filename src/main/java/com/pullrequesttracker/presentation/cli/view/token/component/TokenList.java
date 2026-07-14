@@ -36,7 +36,7 @@ public class TokenList {
     }
 
     public TokenDto getSelectedToken() {
-        List<TokenDto> tokens = state.get(TokenManagerState.TOKENS).getOrElse(Collections.emptyList());
+        List<TokenDto> tokens = state.getOrElse(TokenManagerState.TOKENS, Collections.emptyList());
         if (tokens.isEmpty())
             return null;
         int index = listElement.selected();
@@ -44,7 +44,7 @@ public class TokenList {
     }
 
     public Element render() {
-        List<TokenDto> tokens = state.get(TokenManagerState.TOKENS).getOrElse(Collections.emptyList());
+        List<TokenDto> tokens = state.getOrElse(TokenManagerState.TOKENS, Collections.emptyList());
         if (tokens.isEmpty()) {
             return panel(text("No tokens configured. Press c to create one.").dim()).fill().focusable()
                     .focusedBorderColor(Color.CYAN);

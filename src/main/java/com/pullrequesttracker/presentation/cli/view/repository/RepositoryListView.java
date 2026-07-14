@@ -3,6 +3,7 @@ package com.pullrequesttracker.presentation.cli.view.repository;
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import com.pullrequesttracker.application.dto.CodeRepositoryStatisticsDto;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
+import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -20,25 +21,29 @@ public class RepositoryListView extends View {
     private final RepositoryList repositoryList;
 
     public RepositoryListView(DialogManager dialogManager, RepositoryListKeyHandler keyHandler,
-            RepositoryListController controller, RepositoryListState state, RepositoryList repositoryList) {
-        super(dialogManager, keyHandler);
+            RepositoryListController controller, RepositoryListState state, RepositoryList repositoryList,
+            ViewRefreshProperties viewRefreshProperties) {
+        super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;
         this.repositoryList = repositoryList;
-        this.controller.loadRepositories();
+    }
+
+    @Override
+    protected void refreshState() {
+        controller.loadRepositories();
     }
 
     @Override
     protected Element renderBody() {
         CodeRepositoryDto selected = repositoryList.getSelectedRepository();
-        CodeRepositoryStatisticsDto currentStats = state.get(RepositoryListState.REPOSITORY_STATS).data();
+        CodeRepositoryStatisticsDto currentStats = state.get(RepositoryListState.REPOSITORY_STATS);
 
         if (selected != null) {
-            boolean statsOutdated = currentStats == null || !currentStats.codeRepositoryId().equals(selected.id())
-                    || state.isStale(RepositoryListState.REPOSITORY_STATS);
-            if (statsOutdated) {
+            boolean wrongRepo = currentStats == null || !currentStats.codeRepositoryId().equals(selected.id());
+            if (wrongRepo) {
                 controller.loadRepositoryStats(CodeRepositoryId.from(selected.id()));
-                currentStats = state.get(RepositoryListState.REPOSITORY_STATS).data();
+                currentStats = state.get(RepositoryListState.REPOSITORY_STATS);
             }
         }
 

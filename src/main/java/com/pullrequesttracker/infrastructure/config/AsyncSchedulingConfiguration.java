@@ -16,7 +16,7 @@ import java.time.Clock;
 @Configuration
 @EnableScheduling
 @EnableAsync
-@EnableConfigurationProperties(RepositoryCheckProperties.class)
+@EnableConfigurationProperties({RepositoryCheckProperties.class, ViewRefreshProperties.class})
 @Slf4j
 public class AsyncSchedulingConfiguration implements AsyncConfigurer {
 

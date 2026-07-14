@@ -1,6 +1,5 @@
 package com.pullrequesttracker.presentation.cli.navigation;
 
-import dev.tamboui.toolkit.element.Element;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +11,12 @@ public class ViewManager {
     public ViewManager(ViewRegistry viewRegistry, ViewStack viewStack) {
         this.viewRegistry = viewRegistry;
         this.viewStack = viewStack;
-        viewStack.push(viewRegistry.getView(viewRegistry.getStartViewName()));
+        push(viewRegistry.getStartViewName());
     }
 
     public void push(String viewName) {
         viewStack.push(viewRegistry.getView(viewName));
+        viewStack.peek().triggerRefresh();
     }
 
     public void pop() {
@@ -25,7 +25,7 @@ public class ViewManager {
         }
     }
 
-    public Element getCurrentView() {
+    public View getCurrentView() {
         return viewStack.peek();
     }
 
@@ -42,5 +42,10 @@ public class ViewManager {
     @EventListener
     public void onNavigationPopEvent(NavigationPopEvent event) {
         pop();
+    }
+
+    @EventListener
+    public void onRefreshEvent(RefreshEvent event) {
+        viewStack.peek().triggerRefresh();
     }
 }

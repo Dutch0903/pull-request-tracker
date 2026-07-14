@@ -81,10 +81,10 @@ public class PullRequest {
 
     public PullRequestStatus getStatus() {
         return switch (state) {
-            case PullRequestState.Open o -> PullRequestStatus.OPEN;
-            case PullRequestState.Merged m -> PullRequestStatus.MERGED;
-            case PullRequestState.Closed c -> PullRequestStatus.CLOSED;
-            case PullRequestState.Ignored i -> PullRequestStatus.IGNORED;
+            case PullRequestState.Open _ -> PullRequestStatus.OPEN;
+            case PullRequestState.Merged _ -> PullRequestStatus.MERGED;
+            case PullRequestState.Closed _ -> PullRequestStatus.CLOSED;
+            case PullRequestState.Ignored _ -> PullRequestStatus.IGNORED;
         };
     }
 

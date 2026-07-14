@@ -6,14 +6,13 @@ import com.pullrequesttracker.presentation.cli.state.SnapshotKey;
 import com.pullrequesttracker.presentation.cli.state.StateManager;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.util.List;
 
 @Component
 public class DashboardState extends StateManager {
     public static final SnapshotKey<List<CodeRepositorySummaryDto>> REPOSITORY_SUMMARIES = new SnapshotKey<>(
-            "codeRepositorySummaries", Duration.ofMinutes(10));
+            "codeRepositorySummaries");
 
     public static final SnapshotKey<PullRequestSummaryDto> PULL_REQUEST_SUMMARY = new SnapshotKey<>(
-            "pullRequestSummary", Duration.ofMinutes(10));
+            "pullRequestSummary");
 }

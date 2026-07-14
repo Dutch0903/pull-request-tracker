@@ -1,6 +1,5 @@
 package com.pullrequesttracker.presentation.cli.navigation;
 
-import dev.tamboui.toolkit.element.Element;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -9,11 +8,11 @@ import java.util.Map;
 
 @Component
 public class ViewRegistry {
-    private final Map<String, Element> viewCache = new HashMap<>();
+    private final Map<String, View> viewCache = new HashMap<>();
     private String startViewName;
 
-    public ViewRegistry(List<Element> views) {
-        for (Element view : views) {
+    public ViewRegistry(List<View> views) {
+        for (View view : views) {
             ViewComponent annotation = view.getClass().getAnnotation(ViewComponent.class);
 
             if (annotation == null) {
@@ -28,8 +27,8 @@ public class ViewRegistry {
         }
     }
 
-    public Element getView(String name) {
-        Element view = viewCache.get(name);
+    public View getView(String name) {
+        View view = viewCache.get(name);
 
         if (view == null) {
             throw new IllegalArgumentException("View not found: " + name);

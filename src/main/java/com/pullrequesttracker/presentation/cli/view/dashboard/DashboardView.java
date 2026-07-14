@@ -2,6 +2,7 @@ package com.pullrequesttracker.presentation.cli.view.dashboard;
 
 import com.pullrequesttracker.application.dto.CodeRepositorySummaryDto;
 import com.pullrequesttracker.application.dto.PullRequestSummaryDto;
+import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
 import com.pullrequesttracker.presentation.cli.component.CharSpacer;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
@@ -20,12 +21,16 @@ public class DashboardView extends View {
     private final DashboardState state;
 
     public DashboardView(DialogManager dialogManager, DashboardController controller, DashboardState state,
-            DashboardKeyHandler keyHandler) {
-        super(dialogManager, keyHandler);
+            DashboardKeyHandler keyHandler, ViewRefreshProperties viewRefreshProperties) {
+        super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;
-        this.controller.loadCodeRepositorySummaries();
-        this.controller.loadPullRequestSummary();
+    }
+
+    @Override
+    protected void refreshState() {
+        controller.loadCodeRepositorySummaries();
+        controller.loadPullRequestSummary();
     }
 
     @Override
@@ -43,7 +48,7 @@ public class DashboardView extends View {
     }
 
     private Element repositoriesSection() {
-        List<CodeRepositorySummaryDto> repos = state.get(DashboardState.REPOSITORY_SUMMARIES).data();
+        List<CodeRepositorySummaryDto> repos = state.get(DashboardState.REPOSITORY_SUMMARIES);
         Element content = repos.isEmpty()
                 ? text("No repositories configured.").dim()
                 : column(repos.stream().map(r -> overviewRow(r.fullName(), "" + r.pullRequestCount()))
@@ -53,7 +58,7 @@ public class DashboardView extends View {
     }
 
     private Element overviewSection() {
-        PullRequestSummaryDto summary = state.get(DashboardState.PULL_REQUEST_SUMMARY).data();
+        PullRequestSummaryDto summary = state.get(DashboardState.PULL_REQUEST_SUMMARY);
 
         return sectionPanel("OVERVIEW",
                 column(overviewRow("Open PRs", "" + summary.open()),

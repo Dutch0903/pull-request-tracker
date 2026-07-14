@@ -7,9 +7,9 @@ import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
 import com.pullrequesttracker.domain.valueobject.Review;
-import com.pullrequesttracker.infrastructure.external.github.graphql.dto.Commit;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.GithubPullRequest;
 import com.pullrequesttracker.infrastructure.external.github.graphql.dto.Label;
+import com.pullrequesttracker.infrastructure.external.github.graphql.dto.StatusCheckRollup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -34,15 +34,19 @@ public class GitHubPullRequestMapper {
     }
 
     private CiStatus determineCiStatus(GithubPullRequest pr) {
-        List<Commit> commits = pr.commits().nodes();
-        if (commits.isEmpty())
+        if (pr.headRef() == null || pr.headRef().target() == null)
             return CiStatus.UNKNOWN;
 
-        Commit latestCommit = commits.getFirst();
-        if (latestCommit.statusCheckRollup() == null)
+        StatusCheckRollup statusCheckRollup = pr.headRef().target().statusCheckRollup();
+
+        log.info("Status check rollup: {}", statusCheckRollup);
+
+        if (statusCheckRollup == null)
             return CiStatus.UNKNOWN;
 
-        return switch (latestCommit.statusCheckRollup().state()) {
+        log.info("Status check rollup state: {}", statusCheckRollup.state());
+
+        return switch (statusCheckRollup.state()) {
             case "ERROR", "FAILED" -> CiStatus.FAILED;
             case "PENDING" -> CiStatus.PENDING;
             case "EXPECTED" -> CiStatus.IN_PROGRESS;

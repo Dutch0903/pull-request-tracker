@@ -28,7 +28,7 @@ public class RepositoryList {
     }
 
     public CodeRepositoryDto getSelectedRepository() {
-        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(Collections.emptyList());
+        var repos = state.getOrElse(RepositoryListState.REPOSITORIES, Collections.emptyList());
         if (repos.isEmpty())
             return null;
         int index = listElement.selected();
@@ -36,7 +36,7 @@ public class RepositoryList {
     }
 
     public Element render() {
-        var repos = state.get(RepositoryListState.REPOSITORIES).getOrElse(Collections.emptyList());
+        var repos = state.getOrElse(RepositoryListState.REPOSITORIES, Collections.emptyList());
         Element content = repos.isEmpty()
                 ? text("No repositories configured.").dim()
                 : listElement.data(repos, repo -> row(text(repo.owner() + "/" + repo.name()), spacer()));

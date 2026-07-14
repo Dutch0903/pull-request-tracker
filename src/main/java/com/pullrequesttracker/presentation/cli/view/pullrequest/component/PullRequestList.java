@@ -31,19 +31,19 @@ public class PullRequestList {
     }
 
     public PullRequestListItemDto getSelectedItem() {
-        List<PullRequestListItemDto> items = state.get(PullRequestListState.PULL_REQUEST_ITEMS)
-                .getOrElse(Collections.emptyList());
+        List<PullRequestListItemDto> items = state.getOrElse(PullRequestListState.PULL_REQUEST_ITEMS,
+                Collections.emptyList());
         if (items.isEmpty())
             return null;
         int index = listElement.selected();
         return index < items.size() ? items.get(index) : null;
     }
 
-    public Element render(List<PullRequestListItemDto> items) {
-        Element content = items.isEmpty()
+    public Element render(List<PullRequestListItemDto> items, Element filterBarElement) {
+        Element listContent = items.isEmpty()
                 ? text("No pull requests found.").dim()
                 : listElement.data(items, this::renderItem);
-        return panel("Pull Requests", content).fill().padding(Padding.symmetric(1, 2)).focusable()
+        return panel("Pull Requests", filterBarElement, listContent).fill().padding(Padding.symmetric(1, 2)).focusable()
                 .onKeyEvent(event -> listElement.handleKeyEvent(event, true));
     }
 

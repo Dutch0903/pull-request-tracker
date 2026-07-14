@@ -6,7 +6,6 @@ import com.pullrequesttracker.presentation.cli.state.StateManager;
 import com.pullrequesttracker.presentation.cli.view.pullrequest.filter.FilterDefinition;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
 @Component
 public class PullRequestListState extends StateManager {
     public static final SnapshotKey<List<PullRequestListItemDto>> PULL_REQUEST_ITEMS = new SnapshotKey<>(
-            "pullRequestItems", Duration.ofMinutes(1));
+            "pullRequestItems");
 
     private final Map<String, String> activeFilterValues = new HashMap<>();
 
