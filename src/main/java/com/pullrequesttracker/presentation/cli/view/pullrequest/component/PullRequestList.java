@@ -24,7 +24,7 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class PullRequestList {
     private final PullRequestListState state;
     private final ListElement<?> listElement = list().highlightColor(Color.LIGHT_GREEN).highlightSymbol(">> ")
-            .autoScroll();
+            .autoScroll().fill();
 
     public PullRequestList(PullRequestListState state) {
         this.state = state;
