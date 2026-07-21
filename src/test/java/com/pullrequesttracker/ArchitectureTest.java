@@ -17,8 +17,9 @@ class ArchitectureTest {
             .definedBy("com.pullrequesttracker.application..").layer("Infrastructure")
             .definedBy("com.pullrequesttracker.infrastructure..").layer("Domain")
             .definedBy("com.pullrequesttracker.domain..").whereLayer("Presentation")
-            .mayOnlyAccessLayers("Application", "Domain").whereLayer("Application").mayOnlyAccessLayers("Domain")
-            .whereLayer("Infrastructure").mayOnlyAccessLayers("Application", "Domain").whereLayer("Domain")
+            .mayOnlyAccessLayers("Application", "Domain", "Infrastructure").whereLayer("Application")
+            .mayOnlyAccessLayers("Domain").whereLayer("Infrastructure")
+            .mayOnlyAccessLayers("Application", "Domain", "Presentation").whereLayer("Domain")
             .mayNotAccessAnyLayer();
 
     @ArchTest

@@ -5,6 +5,7 @@ import com.pullrequesttracker.domain.model.PullRequest;
 import com.pullrequesttracker.domain.repository.PullRequestRepository;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.ReviewSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.pullrequesttracker.testfixtures.domain.model.PullRequestTestBuilder.aPullRequest;
+import static com.pullrequesttracker.testfixtures.domain.valueobject.ReviewSummaryTestBuilder.aReviewSummary;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -51,13 +53,16 @@ public class FetchPullRequestSummaryTest {
     void execute_shouldReturnAnAccurateSummary() {
         Instant staleInstant = Instant.parse("2026-06-10T00:00:00Z");
 
+        ReviewSummary approvedReviewSummary = aReviewSummary().withReviewStatus(ReviewStatus.APPROVED).build();
+        ReviewSummary reviewRequiredReviewSummary = aReviewSummary().withReviewStatus(ReviewStatus.REVIEW_REQUIRED).build();
+
         PullRequest pr1 = aPullRequest().withDraft(true).withUpdatedAt(fixedNow).build();
         PullRequest pr2 = aPullRequest().withDraft(true).withUpdatedAt(staleInstant).build();
-        PullRequest pr3 = aPullRequest().withDraft(false).withReviewStatus(ReviewStatus.REVIEW_REQUIRED)
+        PullRequest pr3 = aPullRequest().withDraft(false).withReviewSummary(reviewRequiredReviewSummary)
                 .withCiStatus(CiStatus.PENDING).withUpdatedAt(fixedNow).build();
-        PullRequest pr4 = aPullRequest().withDraft(false).withReviewStatus(ReviewStatus.APPROVED)
+        PullRequest pr4 = aPullRequest().withDraft(false).withReviewSummary(approvedReviewSummary)
                 .withCiStatus(CiStatus.FAILED).withUpdatedAt(fixedNow).build();
-        PullRequest pr5 = aPullRequest().withDraft(false).withReviewStatus(ReviewStatus.APPROVED)
+        PullRequest pr5 = aPullRequest().withDraft(false).withReviewSummary(approvedReviewSummary)
                 .withCiStatus(CiStatus.PENDING).withUpdatedAt(staleInstant).build();
 
         when(pullRequestRepository.findAllOpen()).thenReturn(List.of(pr1, pr2, pr3, pr4, pr5));

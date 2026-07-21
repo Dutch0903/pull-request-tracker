@@ -2,11 +2,7 @@ package com.pullrequesttracker.domain.model;
 
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
-import com.pullrequesttracker.domain.valueobject.Actor;
-import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
-import com.pullrequesttracker.domain.valueobject.PullRequestId;
-import com.pullrequesttracker.domain.valueobject.Title;
-import com.pullrequesttracker.domain.valueobject.ReviewSummary;
+import com.pullrequesttracker.domain.valueobject.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -15,7 +11,7 @@ import java.util.UUID;
 public class PullRequestFactory {
 
     public static PullRequest create(CodeRepositoryId codeRepositoryId, PullRequestSyncData syncData) {
-        ReviewSummary reviewSummary = new ReviewSummary(syncData.reviews(), syncData.reviewStatus());
+        ReviewSummary reviewSummary = new ReviewSummary(syncData.reviews(), syncData.reviewStatus(), syncData.requestedReviewers());
         return new PullRequest(new PullRequestId(UUID.randomUUID()), codeRepositoryId, syncData.externalId(),
                 syncData.author(), syncData.createdAt(), new Title(syncData.title()), syncData.isDraft(),
                 syncData.state(), syncData.ciStatus(), syncData.labels(), reviewSummary, syncData.commentCount(),

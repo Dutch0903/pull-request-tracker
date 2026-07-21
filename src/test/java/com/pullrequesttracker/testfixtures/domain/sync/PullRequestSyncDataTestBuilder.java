@@ -10,6 +10,7 @@ import com.pullrequesttracker.domain.valueobject.Review;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class PullRequestSyncDataTestBuilder {
     private int externalId = 1;
@@ -21,6 +22,7 @@ public class PullRequestSyncDataTestBuilder {
     private List<String> labels = Collections.emptyList();
     private List<Review> reviews = Collections.emptyList();
     private ReviewStatus reviewStatus = ReviewStatus.REVIEW_REQUIRED;
+    private Set<Actor> reviewRequests = Collections.emptySet();
     private int commentCount = 0;
     private Instant createdAt = Instant.now();
     private Instant updatedAt = Instant.now();
@@ -74,6 +76,11 @@ public class PullRequestSyncDataTestBuilder {
         return this;
     }
 
+    public PullRequestSyncDataTestBuilder withReviewRequests(Set<Actor> reviewRequests) {
+        this.reviewRequests = reviewRequests;
+        return this;
+    }
+
     public PullRequestSyncDataTestBuilder withCommentCount(int commentCount) {
         this.commentCount = commentCount;
         return this;
@@ -91,6 +98,6 @@ public class PullRequestSyncDataTestBuilder {
 
     public PullRequestSyncData build() {
         return new PullRequestSyncData(externalId, title, Actor.from(author), isDraft, state, ciStatus, labels, reviews,
-                reviewStatus, commentCount, createdAt, updatedAt);
+                reviewStatus, reviewRequests, commentCount, createdAt, updatedAt);
     }
 }

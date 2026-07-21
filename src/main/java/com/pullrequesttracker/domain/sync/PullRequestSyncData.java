@@ -9,10 +9,11 @@ import com.pullrequesttracker.domain.valueobject.Review;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public record PullRequestSyncData(int externalId, String title, Actor author, boolean isDraft, PullRequestState state,
-        CiStatus ciStatus, List<String> labels, List<Review> reviews, ReviewStatus reviewStatus, int commentCount,
-        Instant createdAt, Instant updatedAt) {
+                                  CiStatus ciStatus, List<String> labels, List<Review> reviews, ReviewStatus reviewStatus, Set<Actor> requestedReviewers, int commentCount,
+                                  Instant createdAt, Instant updatedAt) {
     public PullRequestSyncData {
         if (externalId <= 0)
             throw new IllegalArgumentException("External id must be positive");
@@ -23,6 +24,7 @@ public record PullRequestSyncData(int externalId, String title, Actor author, bo
         Objects.requireNonNull(labels, "Labels must not be null");
         Objects.requireNonNull(reviews, "Reviews must not be null");
         Objects.requireNonNull(reviewStatus, "Review status must not be null");
+        Objects.requireNonNull(requestedReviewers, "Requested reviewers must not be null");
         if (commentCount < 0)
             throw new IllegalArgumentException("Comment count must not be negative");
         Objects.requireNonNull(createdAt, "Created at must not be null");

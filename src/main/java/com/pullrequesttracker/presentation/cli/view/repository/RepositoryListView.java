@@ -3,7 +3,7 @@ package com.pullrequesttracker.presentation.cli.view.repository;
 import com.pullrequesttracker.application.dto.CodeRepositoryDto;
 import com.pullrequesttracker.application.dto.CodeRepositoryStatisticsDto;
 import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
-import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
+import com.pullrequesttracker.presentation.cli.navigation.ViewRefreshConfiguration;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -22,7 +22,7 @@ public class RepositoryListView extends View {
 
     public RepositoryListView(DialogManager dialogManager, RepositoryListKeyHandler keyHandler,
             RepositoryListController controller, RepositoryListState state, RepositoryList repositoryList,
-            ViewRefreshProperties viewRefreshProperties) {
+            ViewRefreshConfiguration viewRefreshProperties) {
         super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;

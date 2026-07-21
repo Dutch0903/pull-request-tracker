@@ -3,13 +3,8 @@ package com.pullrequesttracker.domain.model;
 import com.pullrequesttracker.domain.sync.PullRequestSyncData;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.PullRequestStatus;
-import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
-import com.pullrequesttracker.domain.valueobject.MergeInfo;
-import com.pullrequesttracker.domain.valueobject.Actor;
-import com.pullrequesttracker.domain.valueobject.PullRequestId;
-import com.pullrequesttracker.domain.valueobject.Title;
-import com.pullrequesttracker.domain.valueobject.Review;
-import com.pullrequesttracker.domain.valueobject.ReviewSummary;
+import com.pullrequesttracker.domain.type.ReviewStatus;
+import com.pullrequesttracker.domain.valueobject.*;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -69,6 +64,7 @@ public class PullRequest {
         updateCommentCount(syncData.commentCount());
         syncData.reviews().forEach(this::addReview);
         reviewSummary.updateReviewStatus(syncData.reviewStatus());
+        reviewSummary.updateRequestedReviewers(syncData.requestedReviewers());
 
         if (syncData.state() instanceof PullRequestState.Merged(MergeInfo mergeInfo)) {
             merge(mergeInfo);
@@ -153,6 +149,18 @@ public class PullRequest {
 
         setLabels(labels);
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isAuthoredBy(Actor author) {
+        return this.author.equals(author);
+    }
+
+    public boolean hasChangesRequested() {
+        return reviewSummary.reviewStatus() == ReviewStatus.CHANGES_REQUESTED;
+    }
+
+    public boolean hasReviewRequestedFor(Actor actor) {
+        return reviewSummary.hasRequestedReviewer(actor);
     }
 
     private void setCiStatus(CiStatus ciStatus) {

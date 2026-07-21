@@ -1,7 +1,7 @@
 package com.pullrequesttracker.presentation.cli.view.pullrequest;
 
 import com.pullrequesttracker.application.dto.PullRequestListItemDto;
-import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
+import com.pullrequesttracker.presentation.cli.navigation.ViewRefreshConfiguration;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -23,7 +23,7 @@ public class PullRequestListView extends View {
 
     public PullRequestListView(DialogManager dialogManager, PullRequestListKeyHandler keyHandler,
             PullRequestListController controller, PullRequestListState state, PullRequestList pullRequestList,
-            FilterBar filterBar, ViewRefreshProperties viewRefreshProperties) {
+            FilterBar filterBar, ViewRefreshConfiguration viewRefreshProperties) {
         super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;

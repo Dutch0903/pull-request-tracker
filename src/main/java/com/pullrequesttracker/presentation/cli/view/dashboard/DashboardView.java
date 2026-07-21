@@ -1,15 +1,18 @@
 package com.pullrequesttracker.presentation.cli.view.dashboard;
 
+import com.pullrequesttracker.application.dto.AttentionItemDto;
 import com.pullrequesttracker.application.dto.CodeRepositorySummaryDto;
 import com.pullrequesttracker.application.dto.PullRequestSummaryDto;
-import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
+import com.pullrequesttracker.presentation.cli.navigation.ViewRefreshConfiguration;
 import com.pullrequesttracker.presentation.cli.component.CharSpacer;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
 import com.pullrequesttracker.presentation.cli.navigation.ViewName;
 import dev.tamboui.toolkit.element.Element;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.pullrequesttracker.presentation.cli.component.SectionPanel.sectionPanel;
@@ -19,18 +22,22 @@ import static dev.tamboui.toolkit.Toolkit.*;
 public class DashboardView extends View {
     private final DashboardController controller;
     private final DashboardState state;
+    private final int attentionPreviewLimit;
 
     public DashboardView(DialogManager dialogManager, DashboardController controller, DashboardState state,
-            DashboardKeyHandler keyHandler, ViewRefreshProperties viewRefreshProperties) {
+            DashboardKeyHandler keyHandler, ViewRefreshConfiguration viewRefreshProperties,
+            @Value("${dashboard.attention-preview-limit:4}") int attentionPreviewLimit) {
         super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.state = state;
+        this.attentionPreviewLimit = attentionPreviewLimit;
     }
 
     @Override
     protected void refreshState() {
         controller.loadCodeRepositorySummaries();
         controller.loadPullRequestSummary();
+        controller.loadAttentionItems();
     }
 
     @Override
@@ -40,7 +47,19 @@ public class DashboardView extends View {
     }
 
     private Element needsAttentionSection() {
-        return sectionPanel("NEEDS YOUR ATTENTION", text("✓ Nothing needs your attention right now."));
+        List<AttentionItemDto> all = state.getOrElse(DashboardState.ATTENTION_ITEMS, List.of());
+
+        if (all.isEmpty()) {
+            return sectionPanel("NEEDS YOUR ATTENTION", text("✓ Nothing needs your attention right now.").dim());
+        }
+
+        List<Element> rows = new ArrayList<>();
+        all.stream().limit(attentionPreviewLimit)
+                .forEach(pr -> rows.add(text("#" + pr.externalId() + "  " + pr.title())));
+        if (all.size() > attentionPreviewLimit) {
+            rows.add(text("... and " + (all.size() - attentionPreviewLimit) + " more  [a to view]").dim());
+        }
+        return sectionPanel("NEEDS YOUR ATTENTION", column(rows.toArray(Element[]::new)));
     }
 
     private Element readyToMergeSection() {

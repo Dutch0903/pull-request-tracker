@@ -1,6 +1,5 @@
 package com.pullrequesttracker.presentation.cli.navigation;
 
-import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
 import com.pullrequesttracker.presentation.cli.action.KeyHandler;
 import com.pullrequesttracker.presentation.cli.component.CountdownTimer;
 import com.pullrequesttracker.presentation.cli.component.KeyBindingBar;
@@ -27,10 +26,10 @@ public abstract class View implements Element {
     private Instant lastRefreshedAt = Instant.EPOCH;
     private final Duration refreshInterval;
 
-    protected View(DialogManager dialogManager, KeyHandler keyHandler, ViewRefreshProperties viewRefreshProperties) {
+    protected View(DialogManager dialogManager, KeyHandler keyHandler, ViewRefreshConfiguration viewRefreshConfiguration) {
         this.dialogManager = dialogManager;
         this.keyHandler = keyHandler;
-        this.refreshInterval = Duration.ofMillis(viewRefreshProperties.intervalMs());
+        this.refreshInterval = Duration.ofMillis(viewRefreshConfiguration.intervalMs());
     }
 
     void triggerRefresh() {

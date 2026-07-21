@@ -5,19 +5,15 @@ import com.pullrequesttracker.domain.model.PullRequestFactory;
 import com.pullrequesttracker.domain.model.PullRequestState;
 import com.pullrequesttracker.domain.type.CiStatus;
 import com.pullrequesttracker.domain.type.ReviewStatus;
-import com.pullrequesttracker.domain.valueobject.Actor;
-import com.pullrequesttracker.domain.valueobject.CodeRepositoryId;
-import com.pullrequesttracker.domain.valueobject.MergeInfo;
-import com.pullrequesttracker.domain.valueobject.PullRequestId;
-import com.pullrequesttracker.domain.valueobject.Title;
-import com.pullrequesttracker.domain.valueobject.Review;
-import com.pullrequesttracker.domain.valueobject.ReviewSummary;
+import com.pullrequesttracker.domain.valueobject.*;
 import com.pullrequesttracker.testfixtures.domain.valueobject.ActorTestBuilder;
 import com.pullrequesttracker.testfixtures.domain.valueobject.PullRequestTitleTestBuilder;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pullrequesttracker.testfixtures.domain.valueobject.ReviewSummaryTestBuilder.aReviewSummary;
 
 public class PullRequestTestBuilder {
     private PullRequestId id = PullRequestId.create();
@@ -32,8 +28,7 @@ public class PullRequestTestBuilder {
     private CiStatus ciStatus = CiStatus.PENDING;
     private int commentCount = 0;
     private List<String> labels = List.of("label1", "label2");
-    private List<Review> reviews = new ArrayList<>();
-    private ReviewStatus reviewStatus = ReviewStatus.REVIEW_REQUIRED;
+    private ReviewSummary reviewSummary = aReviewSummary().build();
 
     public static PullRequestTestBuilder aPullRequest() {
         return new PullRequestTestBuilder();
@@ -74,13 +69,8 @@ public class PullRequestTestBuilder {
         return this;
     }
 
-    public PullRequestTestBuilder withReviews(List<Review> reviews) {
-        this.reviews = new ArrayList<>(reviews);
-        return this;
-    }
-
-    public PullRequestTestBuilder withReviewStatus(ReviewStatus reviewStatus) {
-        this.reviewStatus = reviewStatus;
+    public PullRequestTestBuilder withReviewSummary(ReviewSummary reviewSummary) {
+        this.reviewSummary = reviewSummary;
         return this;
     }
 
@@ -110,7 +100,7 @@ public class PullRequestTestBuilder {
     }
 
     public PullRequest build() {
-        ReviewSummary reviewSummary = new ReviewSummary(reviews, reviewStatus);
+
         return PullRequestFactory.reconstitute(id, codeRepositoryId, externalId, author, createdAt, title, draft, state,
                 ciStatus, labels, reviewSummary, commentCount, updatedAt);
     }

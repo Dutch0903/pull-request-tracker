@@ -1,6 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.token;
 
-import com.pullrequesttracker.infrastructure.config.ViewRefreshProperties;
+import com.pullrequesttracker.presentation.cli.navigation.ViewRefreshConfiguration;
 import com.pullrequesttracker.presentation.cli.dialog.DialogManager;
 import com.pullrequesttracker.presentation.cli.navigation.View;
 import com.pullrequesttracker.presentation.cli.navigation.ViewComponent;
@@ -18,7 +18,7 @@ public class TokenManagerView extends View {
     private final TokenList tokenList;
 
     public TokenManagerView(DialogManager dialogManager, TokenManagerKeyHandler keyHandler,
-            TokenManagerController controller, TokenList tokenList, ViewRefreshProperties viewRefreshProperties) {
+            TokenManagerController controller, TokenList tokenList, ViewRefreshConfiguration viewRefreshProperties) {
         super(dialogManager, keyHandler, viewRefreshProperties);
         this.controller = controller;
         this.tokenList = tokenList;

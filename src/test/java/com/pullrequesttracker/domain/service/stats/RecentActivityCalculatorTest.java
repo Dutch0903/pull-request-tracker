@@ -7,12 +7,14 @@ import com.pullrequesttracker.domain.type.RecentActivityType;
 import com.pullrequesttracker.domain.type.ReviewStatus;
 import com.pullrequesttracker.domain.valueobject.Actor;
 import com.pullrequesttracker.domain.valueobject.MergeInfo;
+import com.pullrequesttracker.domain.valueobject.ReviewSummary;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.List;
 
 import static com.pullrequesttracker.testfixtures.domain.model.PullRequestTestBuilder.aPullRequest;
+import static com.pullrequesttracker.testfixtures.domain.valueobject.ReviewSummaryTestBuilder.aReviewSummary;
 import static com.pullrequesttracker.testfixtures.domain.valueobject.ReviewTestBuilder.aReview;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -63,8 +65,10 @@ public class RecentActivityCalculatorTest {
     @Test
     void calculate_withApprovedReview_shouldIncludeApprovedEvent() {
         Instant submittedAt = Instant.parse("2026-01-01T00:00:00Z");
-        PullRequest pr = aPullRequest().withExternalId(42).withReviews(List.of(aReview().withReviewer("reviewer")
+        ReviewSummary reviewSummary = aReviewSummary().withReviews(List.of(aReview().withReviewer("reviewer")
                 .withStatus(ReviewStatus.APPROVED).withSubmittedAt(submittedAt).build())).build();
+
+        PullRequest pr = aPullRequest().withExternalId(42).withReviewSummary(reviewSummary).build();
         RecentActivityCalculator calculator = new RecentActivityCalculator(UNLIMITED);
 
         List<RecentActivityEntry> approvedEvents = calculator.calculate(List.of(pr)).stream()
@@ -78,8 +82,9 @@ public class RecentActivityCalculatorTest {
 
     @Test
     void calculate_withChangesRequestedReview_shouldNotIncludeApprovedEvent() {
+        ReviewSummary reviewSummary = aReviewSummary().withReviews(List.of(aReview().withStatus(ReviewStatus.CHANGES_REQUESTED).build())).build();
         PullRequest pr = aPullRequest()
-                .withReviews(List.of(aReview().withStatus(ReviewStatus.CHANGES_REQUESTED).build())).build();
+                .withReviewSummary(reviewSummary).build();
         RecentActivityCalculator calculator = new RecentActivityCalculator(UNLIMITED);
 
         List<RecentActivityEntry> result = calculator.calculate(List.of(pr));

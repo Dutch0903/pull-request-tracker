@@ -18,6 +18,8 @@ import com.pullrequesttracker.infrastructure.persistence.dto.ReviewDto;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PullRequestMapper {
@@ -30,7 +32,7 @@ public class PullRequestMapper {
                 pullRequest.getExternalId(), pullRequest.getAuthor().value(), pullRequest.getCreatedAt(),
                 pullRequest.getTitle().value(), pullRequest.isDraft(), pullRequest.getStatus().name(),
                 pullRequest.getCiStatus().name(), List.copyOf(pullRequest.getLabels()), reviewDtos,
-                pullRequest.getReviewSummary().reviewStatus().name(), pullRequest.getCommentCount(),
+                pullRequest.getReviewSummary().reviewStatus().name(), pullRequest.getReviewSummary().requestedReviewers().stream().map(Actor::toString).toList(), pullRequest.getCommentCount(),
                 pullRequest.getMergeInfo().map(m -> m.mergedBy().value()).orElse(null),
                 pullRequest.getMergeInfo().map(MergeInfo::mergedAt).orElse(null), pullRequest.getUpdatedAt());
     }
@@ -40,7 +42,11 @@ public class PullRequestMapper {
                 .map(r -> new Review(Actor.from(r.reviewer()), ReviewStatus.valueOf(r.state()), r.submittedAt()))
                 .toList();
 
-        ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()));
+        Set<Actor> reviewRequests = dto.requestedReviewers().stream()
+                .map(Actor::new)
+                .collect(Collectors.toSet());
+
+        ReviewSummary reviewSummary = new ReviewSummary(reviews, ReviewStatus.valueOf(dto.reviewStatus()), reviewRequests);
 
         PullRequestState state = switch (PullRequestStatus.valueOf(dto.status())) {
             case MERGED -> new PullRequestState.Merged(new MergeInfo(Actor.from(dto.mergedBy()), dto.mergedAt()));

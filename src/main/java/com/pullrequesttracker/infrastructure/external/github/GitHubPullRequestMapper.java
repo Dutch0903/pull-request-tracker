@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -22,7 +24,7 @@ public class GitHubPullRequestMapper {
     public PullRequestSyncData toSyncData(GithubPullRequest pr) {
         return new PullRequestSyncData(pr.number(), pr.title(), Actor.from(pr.author().login()), pr.isDraft(),
                 determineState(pr), determineCiStatus(pr), mapLabels(pr), mapReviews(pr), mapReviewDecision(pr),
-                pr.totalCommentsCount(), pr.createdAt(), pr.updatedAt());
+                mapRequestedReviewers(pr), pr.totalCommentsCount(), pr.createdAt(), pr.updatedAt());
     }
 
     private PullRequestState determineState(GithubPullRequest pr) {
@@ -80,5 +82,12 @@ public class GitHubPullRequestMapper {
             case "DISMISSED" -> ReviewStatus.DISMISSED;
             default -> ReviewStatus.REVIEW_REQUIRED;
         };
+    }
+
+    private Set<Actor> mapRequestedReviewers(GithubPullRequest pr) {
+        return pr.reviewRequests().nodes().stream()
+                .filter(r -> r.requestedReviewer() != null && r.requestedReviewer().login() != null)
+                .map(r -> Actor.from(r.requestedReviewer().login()))
+                .collect(Collectors.toSet());
     }
 }

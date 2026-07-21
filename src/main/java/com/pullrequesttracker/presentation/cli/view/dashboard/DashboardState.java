@@ -1,5 +1,6 @@
 package com.pullrequesttracker.presentation.cli.view.dashboard;
 
+import com.pullrequesttracker.application.dto.AttentionItemDto;
 import com.pullrequesttracker.application.dto.CodeRepositorySummaryDto;
 import com.pullrequesttracker.application.dto.PullRequestSummaryDto;
 import com.pullrequesttracker.presentation.cli.state.SnapshotKey;
@@ -15,4 +16,6 @@ public class DashboardState extends StateManager {
 
     public static final SnapshotKey<PullRequestSummaryDto> PULL_REQUEST_SUMMARY = new SnapshotKey<>(
             "pullRequestSummary");
+
+    public static final SnapshotKey<List<AttentionItemDto>> ATTENTION_ITEMS = new SnapshotKey<>("attentionItems");
 }

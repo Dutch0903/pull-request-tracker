@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ReviewSummaryTest {
     @Test
     void approvalCount_whenNoReviews_shouldReturnZero() {
-        ReviewSummary summary = new ReviewSummary(Collections.emptyList(), ReviewStatus.REVIEW_REQUIRED);
+        ReviewSummary summary = new ReviewSummary(Collections.emptyList(), ReviewStatus.REVIEW_REQUIRED, Collections.emptySet());
 
         assertEquals(0, summary.approvalCount());
     }
@@ -21,7 +21,7 @@ class ReviewSummaryTest {
     void approvalCount_whenAllApproved_shouldReturnCount() {
         List<Review> reviews = List.of(new Review(Actor.from("alice"), ReviewStatus.APPROVED, Instant.now()),
                 new Review(Actor.from("bob"), ReviewStatus.APPROVED, Instant.now()));
-        ReviewSummary summary = new ReviewSummary(reviews, ReviewStatus.APPROVED);
+        ReviewSummary summary = new ReviewSummary(reviews, ReviewStatus.APPROVED, Collections.emptySet());
 
         assertEquals(2, summary.approvalCount());
     }
@@ -31,7 +31,7 @@ class ReviewSummaryTest {
         List<Review> reviews = List.of(new Review(Actor.from("alice"), ReviewStatus.APPROVED, Instant.now()),
                 new Review(Actor.from("bob"), ReviewStatus.CHANGES_REQUESTED, Instant.now()),
                 new Review(Actor.from("carol"), ReviewStatus.REVIEW_REQUIRED, Instant.now()));
-        ReviewSummary summary = new ReviewSummary(reviews, ReviewStatus.CHANGES_REQUESTED);
+        ReviewSummary summary = new ReviewSummary(reviews, ReviewStatus.CHANGES_REQUESTED, Collections.emptySet());
 
         assertEquals(1, summary.approvalCount());
     }
